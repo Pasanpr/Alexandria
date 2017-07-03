@@ -9,12 +9,26 @@
 /* Begin PBXBuildFile section */
 		9703870F1F06E707000EF0F6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9703870E1F06E707000EF0F6 /* AppDelegate.swift */; };
 		970387111F06E707000EF0F6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970387101F06E707000EF0F6 /* ViewController.swift */; };
-		970387141F06E707000EF0F6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 970387121F06E707000EF0F6 /* Main.storyboard */; };
 		970387171F06E707000EF0F6 /* Alexandria.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 970387151F06E707000EF0F6 /* Alexandria.xcdatamodeld */; };
 		970387191F06E707000EF0F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 970387181F06E707000EF0F6 /* Assets.xcassets */; };
 		9703871C1F06E707000EF0F6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9703871A1F06E707000EF0F6 /* LaunchScreen.storyboard */; };
 		970387271F06E707000EF0F6 /* AlexandriaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970387261F06E707000EF0F6 /* AlexandriaTests.swift */; };
 		970387321F06E707000EF0F6 /* AlexandriaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970387311F06E707000EF0F6 /* AlexandriaUITests.swift */; };
+		9795B33D1F09B8CF00419EC3 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9795B33C1F09B8CF00419EC3 /* Coordinator.swift */; };
+		9795B3401F09B97000419EC3 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9795B33F1F09B97000419EC3 /* CoreDataStack.swift */; };
+		9795B3431F09BB7400419EC3 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9795B3421F09BB7400419EC3 /* AppCoordinator.swift */; };
+		9795B3451F09BDB900419EC3 /* CurrentlyReadingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9795B3441F09BDB900419EC3 /* CurrentlyReadingController.swift */; };
+		9795B3481F09BF7900419EC3 /* Goodreads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9795B3471F09BF7900419EC3 /* Goodreads.swift */; };
+		9795B34A1F09BFA300419EC3 /* URLQueryItem+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9795B3491F09BFA300419EC3 /* URLQueryItem+Extensions.swift */; };
+		9795B34C1F09C01E00419EC3 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9795B34B1F09C01E00419EC3 /* Endpoint.swift */; };
+		9795B34E1F09C22A00419EC3 /* GoodreadsClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9795B34D1F09C22A00419EC3 /* GoodreadsClient.swift */; };
+		9795B3501F09C24000419EC3 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9795B34F1F09C24000419EC3 /* Result.swift */; };
+		9795B3521F0A75B500419EC3 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9795B3511F0A75B500419EC3 /* APIError.swift */; };
+		9795B3541F0A769B00419EC3 /* GoodreadsUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9795B3531F0A769B00419EC3 /* GoodreadsUser.swift */; };
+		97B626641F06FDB500A07463 /* OAuthSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 970387451F06F86C000EF0F6 /* OAuthSwift.framework */; };
+		97E319B81F0A871700D6177B /* GoodreadsKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E319B71F0A871700D6177B /* GoodreadsKeychain.swift */; };
+		97F4A4141F096F3B0040DC1A /* GoodreadsAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F4A4131F096F3B0040DC1A /* GoodreadsAccount.swift */; };
+		97F4A4171F0972980040DC1A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F4A4161F0972980040DC1A /* LoginViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,7 +52,6 @@
 		9703870B1F06E707000EF0F6 /* Alexandria.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Alexandria.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9703870E1F06E707000EF0F6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		970387101F06E707000EF0F6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		970387131F06E707000EF0F6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		970387161F06E707000EF0F6 /* Alexandria.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Alexandria.xcdatamodel; sourceTree = "<group>"; };
 		970387181F06E707000EF0F6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9703871B1F06E707000EF0F6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -50,6 +63,23 @@
 		970387311F06E707000EF0F6 /* AlexandriaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlexandriaUITests.swift; sourceTree = "<group>"; };
 		970387331F06E707000EF0F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9703873F1F06E782000EF0F6 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		970387451F06F86C000EF0F6 /* OAuthSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OAuthSwift.framework; path = Carthage/Build/iOS/OAuthSwift.framework; sourceTree = "<group>"; };
+		9795B33A1F09806100419EC3 /* SWXMLHash.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SWXMLHash.framework; path = Carthage/Build/iOS/SWXMLHash.framework; sourceTree = "<group>"; };
+		9795B33C1F09B8CF00419EC3 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		9795B33F1F09B97000419EC3 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		9795B3421F09BB7400419EC3 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		9795B3441F09BDB900419EC3 /* CurrentlyReadingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentlyReadingController.swift; sourceTree = "<group>"; };
+		9795B3471F09BF7900419EC3 /* Goodreads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Goodreads.swift; sourceTree = "<group>"; };
+		9795B3491F09BFA300419EC3 /* URLQueryItem+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLQueryItem+Extensions.swift"; sourceTree = "<group>"; };
+		9795B34B1F09C01E00419EC3 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
+		9795B34D1F09C22A00419EC3 /* GoodreadsClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodreadsClient.swift; sourceTree = "<group>"; };
+		9795B34F1F09C24000419EC3 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
+		9795B3511F0A75B500419EC3 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
+		9795B3531F0A769B00419EC3 /* GoodreadsUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodreadsUser.swift; sourceTree = "<group>"; };
+		97E319B71F0A871700D6177B /* GoodreadsKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodreadsKeychain.swift; sourceTree = "<group>"; };
+		97F4A4131F096F3B0040DC1A /* GoodreadsAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodreadsAccount.swift; sourceTree = "<group>"; };
+		97F4A4151F0970020040DC1A /* Locksmith.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Locksmith.framework; path = Carthage/Build/iOS/Locksmith.framework; sourceTree = "<group>"; };
+		97F4A4161F0972980040DC1A /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97B626641F06FDB500A07463 /* OAuthSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,6 +116,7 @@
 				970387251F06E707000EF0F6 /* AlexandriaTests */,
 				970387301F06E707000EF0F6 /* AlexandriaUITests */,
 				9703870C1F06E707000EF0F6 /* Products */,
+				970387441F06F86B000EF0F6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -101,9 +133,12 @@
 		9703870D1F06E707000EF0F6 /* Alexandria */ = {
 			isa = PBXGroup;
 			children = (
+				9795B33B1F09B8C100419EC3 /* Shared */,
 				9703870E1F06E707000EF0F6 /* AppDelegate.swift */,
+				9795B3421F09BB7400419EC3 /* AppCoordinator.swift */,
+				9795B3461F09BE8800419EC3 /* Currently Reading */,
 				970387101F06E707000EF0F6 /* ViewController.swift */,
-				970387121F06E707000EF0F6 /* Main.storyboard */,
+				97F4A4161F0972980040DC1A /* LoginViewController.swift */,
 				970387181F06E707000EF0F6 /* Assets.xcassets */,
 				9703871A1F06E707000EF0F6 /* LaunchScreen.storyboard */,
 				9703871D1F06E707000EF0F6 /* Info.plist */,
@@ -130,6 +165,66 @@
 			path = AlexandriaUITests;
 			sourceTree = "<group>";
 		};
+		970387441F06F86B000EF0F6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9795B33A1F09806100419EC3 /* SWXMLHash.framework */,
+				97F4A4151F0970020040DC1A /* Locksmith.framework */,
+				970387451F06F86C000EF0F6 /* OAuthSwift.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9795B33B1F09B8C100419EC3 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				9795B33E1F09B96700419EC3 /* Core Data */,
+				9795B33C1F09B8CF00419EC3 /* Coordinator.swift */,
+				97E319B51F0A86AA00D6177B /* Networking */,
+				97E319B61F0A86B300D6177B /* Models */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		9795B33E1F09B96700419EC3 /* Core Data */ = {
+			isa = PBXGroup;
+			children = (
+				9795B33F1F09B97000419EC3 /* CoreDataStack.swift */,
+			);
+			path = "Core Data";
+			sourceTree = "<group>";
+		};
+		9795B3461F09BE8800419EC3 /* Currently Reading */ = {
+			isa = PBXGroup;
+			children = (
+				9795B3441F09BDB900419EC3 /* CurrentlyReadingController.swift */,
+			);
+			path = "Currently Reading";
+			sourceTree = "<group>";
+		};
+		97E319B51F0A86AA00D6177B /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				9795B3471F09BF7900419EC3 /* Goodreads.swift */,
+				9795B34B1F09C01E00419EC3 /* Endpoint.swift */,
+				9795B3491F09BFA300419EC3 /* URLQueryItem+Extensions.swift */,
+				9795B34F1F09C24000419EC3 /* Result.swift */,
+				9795B3511F0A75B500419EC3 /* APIError.swift */,
+				9795B34D1F09C22A00419EC3 /* GoodreadsClient.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		97E319B61F0A86B300D6177B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				97E319B71F0A871700D6177B /* GoodreadsKeychain.swift */,
+				9795B3531F0A769B00419EC3 /* GoodreadsUser.swift */,
+				97F4A4131F096F3B0040DC1A /* GoodreadsAccount.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -140,6 +235,8 @@
 				970387071F06E707000EF0F6 /* Sources */,
 				970387081F06E707000EF0F6 /* Frameworks */,
 				970387091F06E707000EF0F6 /* Resources */,
+				97B626631F06F95800A07463 /* ShellScript */,
+				9795B3411F09BB5400419EC3 /* Commit Logging */,
 			);
 			buildRules = (
 			);
@@ -236,7 +333,6 @@
 			files = (
 				9703871C1F06E707000EF0F6 /* LaunchScreen.storyboard in Resources */,
 				970387191F06E707000EF0F6 /* Assets.xcassets in Resources */,
-				970387141F06E707000EF0F6 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,14 +352,64 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		9795B3411F09BB5400419EC3 /* Commit Logging */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Commit Logging";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Copied from: http://blog.jaredsinclair.com/post/97193356620/the-best-of-all-possible-xcode-automated-build#fn:p97193356620-1\n# Set the build number to the current git commit count.\n# If we're using the Dev scheme, then we'll suffix the build\n# number with the current branch name, to make collisions\n# far less likely across feature branches.\n# Based on: http://w3facility.info/question/how-do-i-force-xcode-to-rebuild-the-info-plist-file-in-my-project-every-time-i-build-the-project/\n#\n# Updated with dSYM handling from http://yellowfeather.co.uk/blog/auto-incrementing-build-number-in-xcode-revisited/\n#\n\ngit=`sh /etc/profile; which git`\nappBuild=`\"$git\" rev-list HEAD --count`\nif [ $CONFIGURATION = \"Debug\" ]; then\nbranchName=`\"$git\" rev-parse --abbrev-ref HEAD`\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $appBuild\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $appBuild\" \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}.dSYM/Contents/Info.plist\"\nelse\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $appBuild\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $appBuild\" \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}.dSYM/Contents/Info.plist\"\nfi\necho \"Incremented the build number ${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"";
+		};
+		97B626631F06F95800A07463 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/OAuthSwift.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Locksmith.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/SWXMLHash.framework",
+			);
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/OAuthSwift.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Locksmith.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SWXMLHash.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		970387071F06E707000EF0F6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9795B3401F09B97000419EC3 /* CoreDataStack.swift in Sources */,
+				9795B34E1F09C22A00419EC3 /* GoodreadsClient.swift in Sources */,
 				970387111F06E707000EF0F6 /* ViewController.swift in Sources */,
 				970387171F06E707000EF0F6 /* Alexandria.xcdatamodeld in Sources */,
+				9795B3501F09C24000419EC3 /* Result.swift in Sources */,
+				9795B3541F0A769B00419EC3 /* GoodreadsUser.swift in Sources */,
+				9795B33D1F09B8CF00419EC3 /* Coordinator.swift in Sources */,
+				9795B3431F09BB7400419EC3 /* AppCoordinator.swift in Sources */,
+				97F4A4141F096F3B0040DC1A /* GoodreadsAccount.swift in Sources */,
+				9795B3521F0A75B500419EC3 /* APIError.swift in Sources */,
+				9795B3481F09BF7900419EC3 /* Goodreads.swift in Sources */,
+				97E319B81F0A871700D6177B /* GoodreadsKeychain.swift in Sources */,
+				9795B3451F09BDB900419EC3 /* CurrentlyReadingController.swift in Sources */,
+				97F4A4171F0972980040DC1A /* LoginViewController.swift in Sources */,
 				9703870F1F06E707000EF0F6 /* AppDelegate.swift in Sources */,
+				9795B34C1F09C01E00419EC3 /* Endpoint.swift in Sources */,
+				9795B34A1F09BFA300419EC3 /* URLQueryItem+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -299,14 +445,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		970387121F06E707000EF0F6 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				970387131F06E707000EF0F6 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		9703871A1F06E707000EF0F6 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -370,6 +508,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -417,6 +556,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -426,6 +566,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = GCVMC536K4;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = Alexandria/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pasanpremaratne.Alexandria;
@@ -440,6 +584,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = GCVMC536K4;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = Alexandria/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pasanpremaratne.Alexandria;
@@ -530,6 +678,7 @@
 				970387381F06E707000EF0F6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		970387391F06E707000EF0F6 /* Build configuration list for PBXNativeTarget "AlexandriaTests" */ = {
 			isa = XCConfigurationList;
@@ -538,6 +687,7 @@
 				9703873B1F06E707000EF0F6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9703873C1F06E707000EF0F6 /* Build configuration list for PBXNativeTarget "AlexandriaUITests" */ = {
 			isa = XCConfigurationList;
@@ -546,6 +696,7 @@
 				9703873E1F06E707000EF0F6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
