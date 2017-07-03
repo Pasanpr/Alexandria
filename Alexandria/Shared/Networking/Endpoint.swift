@@ -34,13 +34,6 @@ extension Endpoint {
     }
     
     var request: URLRequest {
-        guard var components = URLComponents(string: base) else { fatalError("Valid URL could not be constructed from base") }
-        components.path = path
-        
-        if !queryItems.isEmpty {
-            components.queryItems = queryItems
-        }
-        
-        return URLRequest(url: components.url!)
+       return URLRequest(url: url)
     }
 }

@@ -29,6 +29,11 @@ struct GoodreadsAccount {
 }
 
 extension GoodreadsAccount {
+    
+    init(credential: OAuthSwiftCredential) {
+        self.init(secret: credential.oauthTokenSecret, token: credential.oauthToken)
+    }
+    
     static var oauthSwiftCredential: OAuthSwiftCredential? {
         if let account = GoodreadsAccount.load() {
             let credential = OAuthSwiftCredential(consumerKey: account.consumerKey, consumerSecret: account.consumerSecret)

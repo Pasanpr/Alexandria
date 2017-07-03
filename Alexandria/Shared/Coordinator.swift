@@ -22,3 +22,11 @@ protocol Coordinator: class {
     /// controller by the coordinator.
     func start()
 }
+
+extension Array where Element == Coordinator {
+    mutating func removeCoordinator(_ coordinator: Coordinator) {
+        for (index, x) in self.enumerated() where x === coordinator {
+            remove(at: index)
+        }
+    }
+}
