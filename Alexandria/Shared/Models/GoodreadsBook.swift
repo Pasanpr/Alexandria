@@ -27,8 +27,8 @@ enum BookFormat: XMLElementDeserializable {
 
 struct GoodreadsBook: XMLIndexerDeserializable {
     let id: Int
-    let isbn: Int
-    let isbn13: Int
+    let isbn: String
+    let isbn13: String
     let reviewsCount: Int
     let title: String
     let titleWithoutSeries: String

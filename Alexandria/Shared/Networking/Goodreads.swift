@@ -18,7 +18,7 @@ enum GoodreadsSortParameter: String {
     case datePublishedEdition = "date_pub_edition"
     case dateStarted = "date_started"
     case dateRead = "date_read"
-    case dateUpdate = "date_updated"
+    case dateUpdated = "date_updated"
     case dateAdded = "date_added"
     case recommender
     case averageRating = "avg_rating"
@@ -95,16 +95,25 @@ extension Goodreads: Endpoint {
             switch shelves {
             case .all(let userId): return [(Keys.Shelves.userId, userId)].queryItems()
             case .books(let userId, let shelfName, let sortType, let order, let query, let page, let resultsPerPage):
-                let params: [(key: String, value: String?)] = [
+                var params: [(key: String, value: String?)] = [
                     (Keys.Shelves.version, "2"),
                     (Keys.Shelves.userId, userId),
                     (Keys.Shelves.shelfName, shelfName),
                     (Keys.Shelves.shelfSortType, sortType?.rawValue),
-                    (Keys.Shelves.shelfSortOrder, order?.rawValue),
-                    (Keys.Shelves.shelfSearchQuery, query),
-                    (Keys.Shelves.shelfResultsPageNumber, page?.description),
-                    (Keys.Shelves.shelfResultsPerPage, resultsPerPage?.description)
+                    (Keys.Shelves.shelfSortOrder, order?.rawValue)
                 ]
+                
+                if let query = query {
+                    params.append((Keys.Shelves.shelfSearchQuery, query))
+                }
+                
+                if let page = page {
+                    params.append((Keys.Shelves.shelfResultsPageNumber, page.description))
+                }
+                
+                if let resultsPerPage = resultsPerPage {
+                    params.append((Keys.Shelves.shelfResultsPerPage, resultsPerPage.description))
+                }
                 
                 return params.queryItems()
             }

@@ -12,13 +12,13 @@ import SWXMLHash
 struct GoodreadsReviewShelf: XMLIndexerDeserializable {
     let name: String
     let exclusive: Bool
-    let id: Int
+    let id: String?
     
     static func deserialize(_ node: XMLIndexer) throws -> GoodreadsReviewShelf {
         return GoodreadsReviewShelf(
             name: node.element!.attribute(by: "name")!.text,
             exclusive: node.element!.attribute(by: "exclusive")!.text == "true" ? true : false,
-            id: Int(node.element!.attribute(by: "review_shelf_id")!.text)!
+            id: node.element?.attribute(by: "review_shelf_id")?.text
         )
     }
 }

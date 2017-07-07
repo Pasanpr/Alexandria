@@ -10,16 +10,51 @@ import UIKit
 
 final class ShelfController: UIViewController {
     
+    private lazy var collectionViewLayout: UICollectionViewLayout = {
+        let layout = UICollectionViewFlowLayout()
+        return layout
+    }()
+    
+    private lazy var collectionView: UICollectionView = {
+        let view = UICollectionView(frame: .zero, collectionViewLayout: self.collectionViewLayout)
+        return view
+    }()
+    
+    private lazy var dataSource: ShelfListDataSource = {
+        return ShelfListDataSource(shelves: [])
+    }()
+    
     var onViewDidLoad: (() -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .yellow
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: BookCell.reuseIdentifier)
+        collectionView.dataSource = dataSource
+        collectionView.backgroundColor = .white
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(collectionView)
         
         if let onViewDidLoad = onViewDidLoad {
             print("Executing onViewDidLoad")
             onViewDidLoad()
         }
     }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        NSLayoutConstraint.activate([
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            collectionView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+    
+    func updateDataSource(with shelves: [Shelf]) {
+        dataSource.update(with: shelves)
+        collectionView.reloadData()
+    }
+    
 }

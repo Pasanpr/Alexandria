@@ -26,6 +26,7 @@ final class ShelfCoordinator: Coordinator {
     }()
     
     private let shelfController = ShelfController()
+    private let operationQueue = OperationQueue()
     
     var onLoad: (() -> Void)? {
         didSet {
@@ -41,17 +42,39 @@ final class ShelfCoordinator: Coordinator {
     func start() {
         shelfController.view.backgroundColor = .green
         
-        client.books(forUserId: goodreadsUser.id, onShelf: "2017") { result in
-            switch result {
-            case .success(let reviews):
-                for review in reviews {
-                    print("\(review.book.title) by \(review.book.authors.first!.name)")
-                    
-                }
-            case .failure(let error):
-                print("Failed to obtain books for shelf. Error: \(error.localizedDescription)")
+        var shelves = [Shelf]()
+        
+        let allOperation = AllShelvesOperation(user: goodreadsUser, credential: credential)
+        
+        let completionOperation = BlockOperation { [unowned self] in
+            DispatchQueue.main.async { 
+                self.shelfController.updateDataSource(with: shelves)
             }
         }
+        
+        let adapterOperation = BlockOperation {
+            let reviewOperations = allOperation.shelves.map { [unowned self] in
+                return ShelfReviewsOperation(user: self.goodreadsUser, credential: self.credential, shelf: $0, sortType: .dateUpdated, sortOrder: .descending, resultsPerPage: 10)
+            }
+            
+            reviewOperations.forEach({ reviewOperation in
+                
+                completionOperation.addDependency(reviewOperation)
+                
+                reviewOperation.completionBlock = {
+                    let shelf = Shelf(shelf: reviewOperation.shelf!, reviews: reviewOperation.reviews)
+                    shelves.append(shelf)
+                }
+            })
+            
+            let _ = reviewOperations.flatMap { self.operationQueue.addOperation($0) }
+        }
+        
+        adapterOperation.addDependency(allOperation)
+        
+        operationQueue.addOperation(allOperation)
+        operationQueue.addOperation(adapterOperation)
+        operationQueue.addOperation(completionOperation)
     }
     
     func setAsRoot() {
