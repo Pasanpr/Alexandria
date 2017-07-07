@@ -30,6 +30,8 @@
 		9795B3541F0A769B00419EC3 /* GoodreadsUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9795B3531F0A769B00419EC3 /* GoodreadsUser.swift */; };
 		97B626641F06FDB500A07463 /* OAuthSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 970387451F06F86C000EF0F6 /* OAuthSwift.framework */; };
 		97C2E6191F0FD30000EC8977 /* LoadAllShelvesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C2E6181F0FD30000EC8977 /* LoadAllShelvesOperation.swift */; };
+		97C2E61B1F0FE43300EC8977 /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C2E61A1F0FE43300EC8977 /* ListCell.swift */; };
+		97C2E61D1F0FE5CD00EC8977 /* ListCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C2E61C1F0FE5CD00EC8977 /* ListCollectionView.swift */; };
 		97CE71D31F0F2B7500E955E5 /* ShelfListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CE71D21F0F2B7500E955E5 /* ShelfListDataSource.swift */; };
 		97CE71D51F0F2CCB00E955E5 /* Shelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CE71D41F0F2CCB00E955E5 /* Shelf.swift */; };
 		97CE71D71F0F2EB200E955E5 /* BookCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CE71D61F0F2EB200E955E5 /* BookCell.swift */; };
@@ -93,6 +95,8 @@
 		9795B3511F0A75B500419EC3 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		9795B3531F0A769B00419EC3 /* GoodreadsUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodreadsUser.swift; sourceTree = "<group>"; };
 		97C2E6181F0FD30000EC8977 /* LoadAllShelvesOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadAllShelvesOperation.swift; sourceTree = "<group>"; };
+		97C2E61A1F0FE43300EC8977 /* ListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
+		97C2E61C1F0FE5CD00EC8977 /* ListCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCollectionView.swift; sourceTree = "<group>"; };
 		97CE71D21F0F2B7500E955E5 /* ShelfListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShelfListDataSource.swift; sourceTree = "<group>"; };
 		97CE71D41F0F2CCB00E955E5 /* Shelf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shelf.swift; sourceTree = "<group>"; };
 		97CE71D61F0F2EB200E955E5 /* BookCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCell.swift; sourceTree = "<group>"; };
@@ -226,8 +230,10 @@
 				97E319B91F0A8C5100D6177B /* ShelfCoordinator.swift */,
 				9795B3441F09BDB900419EC3 /* ShelfController.swift */,
 				97CE71D21F0F2B7500E955E5 /* ShelfListDataSource.swift */,
-				97CE71D61F0F2EB200E955E5 /* BookCell.swift */,
 				97CE71D81F0FABF800E955E5 /* Operations */,
+				97C2E61A1F0FE43300EC8977 /* ListCell.swift */,
+				97CE71D61F0F2EB200E955E5 /* BookCell.swift */,
+				97C2E61C1F0FE5CD00EC8977 /* ListCollectionView.swift */,
 			);
 			path = Shelves;
 			sourceTree = "<group>";
@@ -465,10 +471,12 @@
 				97CE71DE1F0FB03700E955E5 /* ShelfReviewsOperation.swift in Sources */,
 				97CE71DA1F0FAC0E00E955E5 /* AllShelvesOperation.swift in Sources */,
 				9795B33D1F09B8CF00419EC3 /* Coordinator.swift in Sources */,
+				97C2E61B1F0FE43300EC8977 /* ListCell.swift in Sources */,
 				9795B3431F09BB7400419EC3 /* AppCoordinator.swift in Sources */,
 				97F4A4141F096F3B0040DC1A /* GoodreadsAccount.swift in Sources */,
 				9795B3521F0A75B500419EC3 /* APIError.swift in Sources */,
 				9795B3481F09BF7900419EC3 /* Goodreads.swift in Sources */,
+				97C2E61D1F0FE5CD00EC8977 /* ListCollectionView.swift in Sources */,
 				97CE71DC1F0FAC1C00E955E5 /* AsynchronousOperation.swift in Sources */,
 				97E319B81F0A871700D6177B /* GoodreadsKeychain.swift in Sources */,
 				9795B3451F09BDB900419EC3 /* ShelfController.swift in Sources */,

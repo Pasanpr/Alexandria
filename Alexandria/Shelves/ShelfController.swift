@@ -10,13 +10,11 @@ import UIKit
 
 final class ShelfController: UIViewController {
     
-    private lazy var collectionViewLayout: UICollectionViewLayout = {
-        let layout = UICollectionViewFlowLayout()
-        return layout
-    }()
-    
-    private lazy var collectionView: UICollectionView = {
-        let view = UICollectionView(frame: .zero, collectionViewLayout: self.collectionViewLayout)
+    lazy var shelfView: UITableView = {
+        let view = UITableView(frame: .zero, style: .grouped)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.dataSource = self.dataSource
+        view.delegate = self
         return view
     }()
     
@@ -29,11 +27,11 @@ final class ShelfController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: BookCell.reuseIdentifier)
-        collectionView.dataSource = dataSource
-        collectionView.backgroundColor = .white
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(collectionView)
+        navigationController?.navigationBar.prefersLargeTitles = true
+        self.title = "Lists"
+        
+        shelfView.register(ListCell.self, forCellReuseIdentifier: ListCell.reuseIdentifier)
+        view.addSubview(shelfView)
         
         if let onViewDidLoad = onViewDidLoad {
             print("Executing onViewDidLoad")
@@ -45,16 +43,16 @@ final class ShelfController: UIViewController {
         super.viewWillLayoutSubviews()
         
         NSLayoutConstraint.activate([
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-            collectionView.rightAnchor.constraint(equalTo: view.rightAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            shelfView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            shelfView.topAnchor.constraint(equalTo: view.topAnchor),
+            shelfView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            shelfView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
     
     func updateDataSource(with shelves: [Shelf]) {
         dataSource.update(with: shelves)
-        collectionView.reloadData()
+        shelfView.reloadData()
         
         for shelf in dataSource.shelves {
             print("Shelf name after reload: \(shelf.shelf.name)")
@@ -66,9 +64,15 @@ final class ShelfController: UIViewController {
     }
     
     func reloadData() {
-        collectionView.reloadData()
+        shelfView.reloadData()
         for shelf in dataSource.shelves {
             print("Shelf name after reload: \(shelf.shelf.name)")
         }
+    }
+}
+
+extension ShelfController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 140.0
     }
 }
