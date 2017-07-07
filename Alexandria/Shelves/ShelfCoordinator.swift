@@ -40,41 +40,14 @@ final class ShelfCoordinator: Coordinator {
     }
     
     func start() {
-        shelfController.view.backgroundColor = .green
-        
-        var shelves = [Shelf]()
-        
-        let allOperation = AllShelvesOperation(user: goodreadsUser, credential: credential)
-        
-        let completionOperation = BlockOperation { [unowned self] in
-            DispatchQueue.main.async { 
-                self.shelfController.updateDataSource(with: shelves)
+        let loadAllShelvesAndBooks = LoadAllShelvesAndBooksOperation(user: goodreadsUser, credential: credential, sortType: .dateUpdated, sortOrder: .descending, resultsPerPage: 10)
+        loadAllShelvesAndBooks.completionBlock = {
+            DispatchQueue.main.async {
+                self.shelfController.updateDataSource(with: loadAllShelvesAndBooks.shelves)
             }
         }
         
-        let adapterOperation = BlockOperation {
-            let reviewOperations = allOperation.shelves.map { [unowned self] in
-                return ShelfReviewsOperation(user: self.goodreadsUser, credential: self.credential, shelf: $0, sortType: .dateUpdated, sortOrder: .descending, resultsPerPage: 10)
-            }
-            
-            reviewOperations.forEach({ reviewOperation in
-                
-                completionOperation.addDependency(reviewOperation)
-                
-                reviewOperation.completionBlock = {
-                    let shelf = Shelf(shelf: reviewOperation.shelf!, reviews: reviewOperation.reviews)
-                    shelves.append(shelf)
-                }
-            })
-            
-            let _ = reviewOperations.flatMap { self.operationQueue.addOperation($0) }
-        }
-        
-        adapterOperation.addDependency(allOperation)
-        
-        operationQueue.addOperation(allOperation)
-        operationQueue.addOperation(adapterOperation)
-        operationQueue.addOperation(completionOperation)
+        operationQueue.addOperation(loadAllShelvesAndBooks)
     }
     
     func setAsRoot() {

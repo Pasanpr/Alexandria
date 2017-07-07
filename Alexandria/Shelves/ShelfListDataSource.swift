@@ -35,6 +35,11 @@ class ShelfListDataSource: NSObject, UICollectionViewDataSource {
     func update(with shelves: [Shelf]) {
         self.shelves = shelves
     }
+    
+    func update(with shelf: Shelf) {
+        print("Updating data source with shelf: \(shelf.shelf.name)")
+        self.shelves.append(shelf)
+    }
 }
 
 //extension ShelfListDataSource: UICollectionViewDataSourcePrefetching {

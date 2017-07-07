@@ -55,6 +55,20 @@ final class ShelfController: UIViewController {
     func updateDataSource(with shelves: [Shelf]) {
         dataSource.update(with: shelves)
         collectionView.reloadData()
+        
+        for shelf in dataSource.shelves {
+            print("Shelf name after reload: \(shelf.shelf.name)")
+        }
     }
     
+    func updateDataSource(with shelf: Shelf) {
+        dataSource.update(with: shelf)
+    }
+    
+    func reloadData() {
+        collectionView.reloadData()
+        for shelf in dataSource.shelves {
+            print("Shelf name after reload: \(shelf.shelf.name)")
+        }
+    }
 }
