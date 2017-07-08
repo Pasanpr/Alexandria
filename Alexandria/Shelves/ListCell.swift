@@ -17,7 +17,7 @@ final class ListCell: UITableViewCell {
         layout.scrollDirection = .horizontal
         layout.itemSize = CGSize(width: 80.0, height: 120.0)
         layout.minimumInteritemSpacing = 18
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 18, bottom: 0, right: 0)
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         return layout
     }()
     
@@ -33,5 +33,12 @@ final class ListCell: UITableViewCell {
         super.layoutSubviews()
         
         contentView.addSubview(collectionView)
+        
+        NSLayoutConstraint.activate([
+            collectionView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 20.0),
+            collectionView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            collectionView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ])
     }
 }

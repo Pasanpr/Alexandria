@@ -17,6 +17,8 @@ final class GoodreadsClient {
         self.client = OAuthSwiftClient(credential: credential)
     }
     
+    // MARK: Authentication
+    
     func userId(completion: @escaping (Result<GoodreadsUser, APIError>) -> Void) {
         get(Goodreads.userId) { result in
             switch result {
@@ -36,6 +38,8 @@ final class GoodreadsClient {
             }
         }
     }
+    
+    // MARK: Shelf
     
     func shelves(forUserId id: String, completion: @escaping (Result<[GoodreadsShelf], APIError>) -> Void) {
         let endpoint = Goodreads.shelves(.all(forUserId: id))
@@ -93,6 +97,31 @@ final class GoodreadsClient {
         
     }
     
+    // MARK: Search
+    
+    func searchBooks(query: String, searchField field: GoodreadsSearchField, pageNumber page: Int = 1, completion: @escaping (Result<[GoodreadsWork], APIError>) -> Void) {
+        let books = Goodreads.Search.books(query: query, page: page, searchField: field)
+        
+        get(Goodreads.search(books)) { result in
+            switch result {
+            case .success(let xml):
+                do {
+                    let works: [GoodreadsWork] = try xml.byKey("GoodreadsResponse").byKey("search").byKey("results").byKey("work").value()
+                    completion(.success(works))
+                } catch let error as IndexingError {
+                    let error = APIError.xmlParsingFailure(message: error.description)
+                    completion(.failure(error))
+                } catch let error as XMLDeserializationError {
+                    completion(.failure(.xmlParsingFailure(message: error.description)))
+                } catch {
+                    completion(.failure(.xmlParsingFailure(message: error.localizedDescription)))
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
     private func get(_ endpoint: Goodreads, completion: @escaping (Result<XMLIndexer, APIError>) -> Void) {
         let _ = client.get(endpoint.urlString, success: { response in
             let xml = SWXMLHash.parse(response.data)
@@ -103,3 +132,15 @@ final class GoodreadsClient {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

@@ -7,20 +7,33 @@
 //
 
 import UIKit
+import OAuthSwift
 
 final class ShelfController: UIViewController {
+    
+    var credential: OAuthSwiftCredential!
     
     lazy var shelfView: UITableView = {
         let view = UITableView(frame: .zero, style: .grouped)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.dataSource = self.dataSource
         view.delegate = self
+        view.backgroundColor = .white
+        view.separatorColor = .clear
         return view
     }()
     
     private lazy var dataSource: ShelfListDataSource = {
-        return ShelfListDataSource(shelves: [])
+        return ShelfListDataSource(shelves: [], credential: self.credential)
     }()
+    
+    init() {
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     var onViewDidLoad: (() -> Void)?
     

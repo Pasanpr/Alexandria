@@ -8,12 +8,38 @@
 
 import Foundation
 import UIKit
+import OAuthSwift
+
+struct ListPath {
+    let list: Int
+    let book: Int
+}
+
+extension ListPath: Hashable {
+    
+    var hashValue: Int {
+        return list ^ book
+    }
+    
+    static func ==(lhs: ListPath, rhs: ListPath) -> Bool {
+        return lhs.list == rhs.list && lhs.book == rhs.book
+    }
+}
+
+class PendingBookCoverOperations {
+    lazy var downloadsInProgress = [ListPath: Operation]()
+    
+    let downloadQueue = OperationQueue()
+}
 
 class ShelfListDataSource: NSObject, UICollectionViewDataSource {
     var shelves: [Shelf]
+    let credential: OAuthSwiftCredential
+    let pendingOperations = PendingBookCoverOperations()
     
-    init(shelves: [Shelf]) {
+    init(shelves: [Shelf], credential: OAuthSwiftCredential) {
         self.shelves = shelves
+        self.credential = credential
         super.init()
     }
     
@@ -32,9 +58,22 @@ class ShelfListDataSource: NSObject, UICollectionViewDataSource {
         
         let listCollectionView = collectionView as! ListCollectionView
         let reviews = shelves[listCollectionView.index].reviews
-        
         let book = reviews[indexPath.row].book
-        print(book.title)
+        
+//        print("At list path: (\(listCollectionView.index),\(indexPath.row) - imageUrl: \(book.imageUrl) for book: \(book.title). Book contains valid imageURL: \(book.hasValidImage)")
+        
+        if let cover = book.image {
+            cell.bookCoverView.image = cover
+        } else {
+            cell.bookCoverView.image = #imageLiteral(resourceName: "BookCover")
+        }
+        
+        switch book.imageDownloadState {
+        case .placeholder:
+            let listPath = ListPath(list: listCollectionView.index, book: indexPath.row)
+            startOperation(for: book, at: listPath, in: listCollectionView)
+        default: break
+        }
         
         return cell
     }
@@ -44,12 +83,34 @@ class ShelfListDataSource: NSObject, UICollectionViewDataSource {
     }
     
     func update(with shelf: Shelf) {
-        print("Updating data source with shelf: \(shelf.shelf.name)")
         self.shelves.append(shelf)
     }
     
     func shelf(at indexPath: IndexPath) -> GoodreadsShelf {
         return shelves[indexPath.section].shelf
+    }
+    
+    func startOperation(for book: GoodreadsBook, at listPath: ListPath, in collectionView: ListCollectionView) {
+        if let _ = pendingOperations.downloadsInProgress[listPath] {
+            return
+        }
+        
+        let operation = BookCoverDownloadOperation(book: book, credential: credential)
+        
+        operation.completionBlock = {
+            if operation.isCancelled { return }
+            self.pendingOperations.downloadsInProgress.removeValue(forKey: listPath)
+            let indexPath = IndexPath(item: listPath.book, section: 0)
+            
+            DispatchQueue.main.async {
+                collectionView.reloadItems(at: [indexPath])
+            }
+            
+            print("Completed operation for \(book.title) (id: \(book.id)) (\(book.isbn)). Book state: \(book.imageDownloadState)")
+        }
+        
+        pendingOperations.downloadsInProgress[listPath] = operation
+        pendingOperations.downloadQueue.addOperation(operation)
     }
 }
 

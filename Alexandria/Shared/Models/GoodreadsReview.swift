@@ -31,6 +31,7 @@ struct GoodreadsReview: XMLIndexerDeserializable {
     let spoilerFlag: Bool
     let spoilersState: String
     let shelves: [GoodreadsReviewShelf]
+    let startedAtString: String?
     let readAtString: String?
     let dateAddedString: String
     let dateUpdatedString: String
@@ -45,6 +46,7 @@ struct GoodreadsReview: XMLIndexerDeserializable {
             spoilerFlag: node["spoiler_flag"].value(),
             spoilersState: node["spoilers_state"].value(),
             shelves: node["shelves"]["shelf"].value(),
+            startedAtString: node["started_at"].value(),
             readAtString: node["read_at"].value(),
             dateAddedString: node["date_added"].value(),
             dateUpdatedString: node["date_updated"].value(),

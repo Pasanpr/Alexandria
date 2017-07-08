@@ -12,12 +12,12 @@ import SWXMLHash
 struct GoodreadsAuthor: XMLIndexerDeserializable {
     let id: Int
     let name: String
-    let imageUrl: String
-    let smallImageUrl: String
-    let link: String
-    let averageRating: Double
-    let ratingsCount: Int
-    let textReviewsCount: Int
+    let imageUrl: String?
+    let smallImageUrl: String?
+    let link: String?
+    let averageRating: Double?
+    let ratingsCount: Int?
+    let textReviewsCount: Int?
     
     static func deserialize(_ node: XMLIndexer) throws -> GoodreadsAuthor {
         return try GoodreadsAuthor(

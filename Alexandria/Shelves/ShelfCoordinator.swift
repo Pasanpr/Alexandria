@@ -10,6 +10,13 @@ import Foundation
 import UIKit
 import OAuthSwift
 
+/*
+ If the image does not have a valid URL, we're going to search for the book by title
+ The result set is an array of GoodreadWork. We're going to check if the work objects
+ have an associated review. If it does, we'll grab the image URL, modify it and assign
+ it to the image related properties
+ */
+
 protocol ShelfCoordinatorDelegate: class {
     
 }
@@ -19,13 +26,19 @@ final class ShelfCoordinator: Coordinator {
     var childCoordinators: [Coordinator] = []
     weak var delegate: ShelfCoordinatorDelegate?
     
-    private var credential: OAuthSwiftCredential!
+    private var credential: OAuthSwiftCredential! {
+        didSet {
+            if let credential = credential {
+                shelfController.credential = credential
+            }
+        }
+    }
     private var goodreadsUser: GoodreadsUser!
     private lazy var client: GoodreadsClient = {
         return GoodreadsClient(credential: self.credential)
     }()
     
-    private let shelfController = ShelfController()
+    let shelfController: ShelfController
     private let operationQueue = OperationQueue()
     
     var onLoad: (() -> Void)? {
@@ -36,6 +49,7 @@ final class ShelfCoordinator: Coordinator {
     
     init(navigationController: UINavigationController, delegate: ShelfCoordinatorDelegate?) {
         self.navigationController = navigationController
+        self.shelfController = ShelfController()
         self.delegate = delegate
     }
     
@@ -62,3 +76,32 @@ final class ShelfCoordinator: Coordinator {
         self.goodreadsUser = user
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

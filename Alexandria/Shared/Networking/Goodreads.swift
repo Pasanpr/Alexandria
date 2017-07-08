@@ -47,13 +47,25 @@ enum GoodreadsSortOrder: String {
     case descending = "d"
 }
 
+enum GoodreadsSearchField: String {
+    case title
+    case author
+    case all
+}
+
+
 enum Goodreads {
     case userId
     case shelves(Shelves)
+    case search(Search)
     
     enum Shelves {
         case all(forUserId: String)
         case books(userId: String, shelfName: String, sortType: GoodreadsSortParameter?, order: GoodreadsSortOrder?, query: String?, page: Int?, resultsPerPage: Int?)
+    }
+    
+    enum Search {
+        case books(query: String, page: Int?, searchField: GoodreadsSearchField)
     }
 }
 
@@ -61,14 +73,21 @@ extension Goodreads: Endpoint {
     
     private struct Keys {
         struct Shelves {
-            static let userId = "user_id"
-            static let version = "v"
-            static let shelfName = "shelf"
-            static let shelfSortType = "sort"
-            static let shelfSortOrder = "order"
-            static let shelfResultsPageNumber = "page"
-            static let shelfResultsPerPage = "per_page"
-            static let shelfSearchQuery = "search[query]"
+            static let UserId = "user_id"
+            static let Version = "v"
+            static let Name = "shelf"
+            static let SortType = "sort"
+            static let SortOrder = "order"
+            static let ResultsPageNumber = "page"
+            static let ResultsPerPage = "per_page"
+            static let SearchQuery = "search[query]"
+            
+        }
+        
+        struct Search {
+            static let Query = "q"
+            static let SearchType = "search[field]"
+            static let Page = "page"
             
         }
     }
@@ -85,6 +104,10 @@ extension Goodreads: Endpoint {
             case .all: return "/shelf/list.xml"
             case .books(_, _, _, _, _, _, _): return "/review/list.xml"
             }
+        case .search(let search):
+            switch search {
+            case .books(_, _, _): return "/search/index.xml"
+            }
         }
     }
     
@@ -93,26 +116,40 @@ extension Goodreads: Endpoint {
         case .userId: return []
         case .shelves(let shelves):
             switch shelves {
-            case .all(let userId): return [(Keys.Shelves.userId, userId)].queryItems()
+            case .all(let userId): return [(Keys.Shelves.UserId, userId)].queryItems()
             case .books(let userId, let shelfName, let sortType, let order, let query, let page, let resultsPerPage):
                 var params: [(key: String, value: String?)] = [
-                    (Keys.Shelves.version, "2"),
-                    (Keys.Shelves.userId, userId),
-                    (Keys.Shelves.shelfName, shelfName),
-                    (Keys.Shelves.shelfSortType, sortType?.rawValue),
-                    (Keys.Shelves.shelfSortOrder, order?.rawValue)
+                    (Keys.Shelves.Version, "2"),
+                    (Keys.Shelves.UserId, userId),
+                    (Keys.Shelves.Name, shelfName),
+                    (Keys.Shelves.SortType, sortType?.rawValue),
+                    (Keys.Shelves.SortOrder, order?.rawValue)
                 ]
                 
                 if let query = query {
-                    params.append((Keys.Shelves.shelfSearchQuery, query))
+                    params.append((Keys.Shelves.SearchQuery, query))
                 }
                 
                 if let page = page {
-                    params.append((Keys.Shelves.shelfResultsPageNumber, page.description))
+                    params.append((Keys.Shelves.ResultsPageNumber, page.description))
                 }
                 
                 if let resultsPerPage = resultsPerPage {
-                    params.append((Keys.Shelves.shelfResultsPerPage, resultsPerPage.description))
+                    params.append((Keys.Shelves.ResultsPerPage, resultsPerPage.description))
+                }
+                
+                return params.queryItems()
+            }
+        case .search(let search):
+            switch search {
+            case .books(let query, let page, let searchField):
+                var params: [(key: String, value: String?)] = [
+                    (Keys.Search.Query, query),
+                    (Keys.Search.SearchType, searchField.rawValue)
+                ]
+                
+                if let page = page {
+                    params.append((Keys.Search.Page, page.description))
                 }
                 
                 return params.queryItems()

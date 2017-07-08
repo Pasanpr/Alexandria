@@ -11,18 +11,18 @@ import UIKit
 class BookCell: UICollectionViewCell {
     static let reuseIdentifier = "BookCell"
     
-//    lazy var bookCoverView: UIImageView = {
-//        let view = UIImageView()
-//        view.translatesAutoresizingMaskIntoConstraints = false
-//        return view
-//    }()
-    
-    lazy var bookCoverView: UIView = {
-        let view = UIView()
+    lazy var bookCoverView: UIImageView = {
+        let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .red
         return view
     }()
+    
+//    lazy var bookCoverView: UIView = {
+//        let view = UIView()
+//        view.translatesAutoresizingMaskIntoConstraints = false
+//        view.backgroundColor = .red
+//        return view
+//    }()
     
     override func layoutSubviews() {
         super.layoutSubviews()
