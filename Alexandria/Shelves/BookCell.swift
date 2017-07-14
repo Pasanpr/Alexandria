@@ -17,13 +17,6 @@ class BookCell: UICollectionViewCell {
         return view
     }()
     
-//    lazy var bookCoverView: UIView = {
-//        let view = UIView()
-//        view.translatesAutoresizingMaskIntoConstraints = false
-//        view.backgroundColor = .red
-//        return view
-//    }()
-    
     override func layoutSubviews() {
         super.layoutSubviews()
         
@@ -40,5 +33,8 @@ class BookCell: UICollectionViewCell {
     }
     
     override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        bookCoverView.image = nil
     }
 }

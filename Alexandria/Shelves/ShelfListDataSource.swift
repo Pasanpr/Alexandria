@@ -58,7 +58,8 @@ class ShelfListDataSource: NSObject, UICollectionViewDataSource {
         
         let listCollectionView = collectionView as! ListCollectionView
         let reviews = shelves[listCollectionView.index].reviews
-        let book = reviews[indexPath.row].book
+        
+        let book = reviews[indexPath.item].book
         
         if let cover = book.image {
             cell.bookCoverView.image = cover
@@ -103,8 +104,6 @@ class ShelfListDataSource: NSObject, UICollectionViewDataSource {
             DispatchQueue.main.async {
                 collectionView.reloadItems(at: [indexPath])
             }
-            
-//            print("Completed operation for \(book.title) (id: \(book.id)) (\(book.isbn)). Book state: \(book.imageDownloadState)")
         }
         
         pendingOperations.downloadsInProgress[listPath] = operation
@@ -130,6 +129,7 @@ extension ShelfListDataSource: UITableViewDataSource {
         
         listCell.collectionView.dataSource = self
         listCell.collectionView.index = indexPath.section
+        listCell.collectionView.reloadData()
         
         return listCell
     }

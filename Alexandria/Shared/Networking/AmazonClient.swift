@@ -17,10 +17,7 @@ final class AmazonClient {
     
     func coverImages(for title: String, completion: @escaping (Result<AmazonBookCover, APIError>) -> Void) {
         let endpoint = AmazonProductAdvertising.search(accessKeyId: accessKeyId, associateTag: associateTag, operation: .itemSearch, searchIndex: .books, keyword: title, itemId: nil, responseGroup: [.images], version: nil, date: Date())
-        
         let request = endpoint.signedRequest(withSecretKey: secretKey)
-        
-        print(request.url?.absoluteURL)
         
         let task = session.dataTask(with: request) { data, response, error in
             guard let httpResponse = response as? HTTPURLResponse else {
