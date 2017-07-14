@@ -1,3 +1,4 @@
 github "OAuthSwift/OAuthSwift" ~> 1.0
 github "matthewpalmer/Locksmith"
 github "drmohundro/SWXMLHash" ~> 4.0
+github "krzyzanowskim/CryptoSwift" "swift4"

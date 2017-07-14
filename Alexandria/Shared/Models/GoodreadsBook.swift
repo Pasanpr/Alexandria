@@ -39,9 +39,9 @@ final class GoodreadsBook: XMLIndexerDeserializable {
     let reviewsCount: Int
     let title: String
     let titleWithoutSeries: String
-    let imageUrl: String
-    let smallImageUrl: String
-    let largeImageUrl: String
+    var imageUrl: String
+    var smallImageUrl: String
+    var largeImageUrl: String
     let link: String
     let numberOfPages: String?
     let format: BookFormat

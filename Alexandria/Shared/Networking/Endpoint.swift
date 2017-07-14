@@ -8,6 +8,8 @@
 
 import Foundation
 
+public typealias URLParameter = (key: String, value: String?)
+
 protocol Endpoint {
     var base: String { get }
     var path: String { get }

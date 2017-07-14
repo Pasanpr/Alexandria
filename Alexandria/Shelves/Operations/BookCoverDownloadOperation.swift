@@ -13,6 +13,10 @@ final class BookCoverDownloadOperation: AsynchronousOperation {
     let book: GoodreadsBook
     let client: GoodreadsClient
     
+    lazy var amazonClient: AmazonClient = {
+        return AmazonClient()
+    }()
+    
     init(book: GoodreadsBook, credential: OAuthSwiftCredential) {
         self.book = book
         self.client = GoodreadsClient(credential: credential)
@@ -43,26 +47,19 @@ final class BookCoverDownloadOperation: AsynchronousOperation {
                 finish()
             }
         } else {
-            client.searchBooks(query: book.title, searchField: .title) { result in
+            
+            amazonClient.coverImages(for: book.titleWithoutSeries) { result in
                 switch result {
-                case .success(let works):
-                    let worksWithImages = works.filter({ $0.hasValidImage })
+                case .success(let amazonBookCover):
                     
-                    if worksWithImages.isEmpty {
-                        self.book.imageDownloadState = .failed
-                        self.finish()
-                    }
-                    
-                    guard let bestCaseWork = worksWithImages.filter({ $0.hasReview }).first else {
-                        self.book.imageDownloadState = .failed
-                        self.finish()
-                        return
-                    }
+                    self.book.largeImageUrl = amazonBookCover.largeImageUrl
+                    self.book.imageUrl = amazonBookCover.mediumImageUrl
+                    self.book.smallImageUrl = amazonBookCover.smallImageUrl
                     
                     do {
-                        let url = URL(string: bestCaseWork.bestBook.imageUrl)!
+                        let url = URL(string: self.book.imageUrl)!
                         let data = try Data(contentsOf: url)
-                        if self.isCancelled { self.finish() }
+                        if self.isCancelled { return }
                         
                         if data.isEmpty {
                             self.book.imageDownloadState = .failed
@@ -79,12 +76,56 @@ final class BookCoverDownloadOperation: AsynchronousOperation {
                         self.book.image = #imageLiteral(resourceName: "BookCover")
                         self.finish()
                     }
-                case .failure(let error):
+                    
+                case .failure:
                     self.book.image = #imageLiteral(resourceName: "BookCover")
                     self.book.imageDownloadState = .failed
                     self.finish()
                 }
             }
+            
+//            client.searchBooks(query: book.title, searchField: .title) { result in
+//                switch result {
+//                case .success(let works):
+//                    let worksWithImages = works.filter({ $0.hasValidImage })
+//
+//                    if worksWithImages.isEmpty {
+//                        self.book.imageDownloadState = .failed
+//                        self.finish()
+//                    }
+//
+//                    guard let bestCaseWork = worksWithImages.filter({ $0.hasReview }).first else {
+//                        self.book.imageDownloadState = .failed
+//                        self.finish()
+//                        return
+//                    }
+//
+//                    do {
+//                        let url = URL(string: bestCaseWork.bestBook.imageUrl)!
+//                        let data = try Data(contentsOf: url)
+//                        if self.isCancelled { self.finish() }
+//
+//                        if data.isEmpty {
+//                            self.book.imageDownloadState = .failed
+//                            self.book.image = #imageLiteral(resourceName: "BookCover")
+//                            self.finish()
+//                        } else {
+//                            let image = UIImage(data: data)!
+//                            self.book.image = image
+//                            self.book.imageDownloadState = .downloaded
+//                            self.finish()
+//                        }
+//                    } catch {
+//                        self.book.imageDownloadState = .failed
+//                        self.book.image = #imageLiteral(resourceName: "BookCover")
+//                        self.finish()
+//                    }
+//                case .failure(let error):
+//                    self.book.image = #imageLiteral(resourceName: "BookCover")
+//                    self.book.imageDownloadState = .failed
+//                    self.finish()
+//                }
+//            }
         }
     }
 }

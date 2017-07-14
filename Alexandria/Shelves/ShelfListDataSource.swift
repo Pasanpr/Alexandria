@@ -34,10 +34,10 @@ class PendingBookCoverOperations {
 
 class ShelfListDataSource: NSObject, UICollectionViewDataSource {
     var shelves: [Shelf]
-    let credential: OAuthSwiftCredential
+    let credential: OAuthSwiftCredential!
     let pendingOperations = PendingBookCoverOperations()
     
-    init(shelves: [Shelf], credential: OAuthSwiftCredential) {
+    init(shelves: [Shelf], credential: OAuthSwiftCredential!) {
         self.shelves = shelves
         self.credential = credential
         super.init()
@@ -59,8 +59,6 @@ class ShelfListDataSource: NSObject, UICollectionViewDataSource {
         let listCollectionView = collectionView as! ListCollectionView
         let reviews = shelves[listCollectionView.index].reviews
         let book = reviews[indexPath.row].book
-        
-//        print("At list path: (\(listCollectionView.index),\(indexPath.row) - imageUrl: \(book.imageUrl) for book: \(book.title). Book contains valid imageURL: \(book.hasValidImage)")
         
         if let cover = book.image {
             cell.bookCoverView.image = cover
@@ -106,7 +104,7 @@ class ShelfListDataSource: NSObject, UICollectionViewDataSource {
                 collectionView.reloadItems(at: [indexPath])
             }
             
-            print("Completed operation for \(book.title) (id: \(book.id)) (\(book.isbn)). Book state: \(book.imageDownloadState)")
+//            print("Completed operation for \(book.title) (id: \(book.id)) (\(book.isbn)). Book state: \(book.imageDownloadState)")
         }
         
         pendingOperations.downloadsInProgress[listPath] = operation
