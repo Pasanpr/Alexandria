@@ -2,9 +2,9 @@
 
 Lightweight book lists 
 
-### Task List
+## Task List
 
-* Version 0.1*
+**Version 0.1**
 
 - [x] Display first 10 books from every list on home page
 - [ ] See all button for each list
