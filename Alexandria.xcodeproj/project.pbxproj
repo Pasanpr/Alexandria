@@ -39,6 +39,7 @@
 		97AF9A511F10206500337F99 /* GoodreadsWork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97AF9A501F10206500337F99 /* GoodreadsWork.swift */; };
 		97AF9A531F1031BB00337F99 /* Array+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97AF9A521F1031BB00337F99 /* Array+Helpers.swift */; };
 		97B626641F06FDB500A07463 /* OAuthSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 970387451F06F86C000EF0F6 /* OAuthSwift.framework */; };
+		97C0348C1F1979A1005AB8A8 /* CurrentlyReadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C0348B1F1979A1005AB8A8 /* CurrentlyReadingCell.swift */; };
 		97C2E6191F0FD30000EC8977 /* LoadAllShelvesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C2E6181F0FD30000EC8977 /* LoadAllShelvesOperation.swift */; };
 		97C2E61B1F0FE43300EC8977 /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C2E61A1F0FE43300EC8977 /* ListCell.swift */; };
 		97C2E61D1F0FE5CD00EC8977 /* ListCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C2E61C1F0FE5CD00EC8977 /* ListCollectionView.swift */; };
@@ -52,6 +53,7 @@
 		97E319BA1F0A8C5100D6177B /* ShelfCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E319B91F0A8C5100D6177B /* ShelfCoordinator.swift */; };
 		97E319BD1F0A8E4400D6177B /* AuthenticationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E319BC1F0A8E4400D6177B /* AuthenticationCoordinator.swift */; };
 		97E319BF1F0A9CF500D6177B /* GoodreadsShelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E319BE1F0A9CF500D6177B /* GoodreadsShelf.swift */; };
+		97EB7E041F223135008360DE /* DelayAsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EB7E031F223135008360DE /* DelayAsyncOperation.swift */; };
 		97F4A4141F096F3B0040DC1A /* GoodreadsAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F4A4131F096F3B0040DC1A /* GoodreadsAccount.swift */; };
 		97F4A4171F0972980040DC1A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F4A4161F0972980040DC1A /* LoginViewController.swift */; };
 		97FE596F1F16E59B0027FC1F /* AmazonProductAdvertising.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FE596E1F16E59B0027FC1F /* AmazonProductAdvertising.swift */; };
@@ -112,6 +114,7 @@
 		97AF9A4E1F1007FE00337F99 /* BookCoverDownloadOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCoverDownloadOperation.swift; sourceTree = "<group>"; };
 		97AF9A501F10206500337F99 /* GoodreadsWork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodreadsWork.swift; sourceTree = "<group>"; };
 		97AF9A521F1031BB00337F99 /* Array+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Helpers.swift"; sourceTree = "<group>"; };
+		97C0348B1F1979A1005AB8A8 /* CurrentlyReadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentlyReadingCell.swift; sourceTree = "<group>"; };
 		97C2E6181F0FD30000EC8977 /* LoadAllShelvesOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadAllShelvesOperation.swift; sourceTree = "<group>"; };
 		97C2E61A1F0FE43300EC8977 /* ListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
 		97C2E61C1F0FE5CD00EC8977 /* ListCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCollectionView.swift; sourceTree = "<group>"; };
@@ -126,6 +129,7 @@
 		97E319B91F0A8C5100D6177B /* ShelfCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShelfCoordinator.swift; sourceTree = "<group>"; };
 		97E319BC1F0A8E4400D6177B /* AuthenticationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationCoordinator.swift; sourceTree = "<group>"; };
 		97E319BE1F0A9CF500D6177B /* GoodreadsShelf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodreadsShelf.swift; sourceTree = "<group>"; };
+		97EB7E031F223135008360DE /* DelayAsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelayAsyncOperation.swift; sourceTree = "<group>"; };
 		97F4A4131F096F3B0040DC1A /* GoodreadsAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodreadsAccount.swift; sourceTree = "<group>"; };
 		97F4A4151F0970020040DC1A /* Locksmith.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Locksmith.framework; path = Carthage/Build/iOS/Locksmith.framework; sourceTree = "<group>"; };
 		97F4A4161F0972980040DC1A /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -258,6 +262,7 @@
 				97CE71D81F0FABF800E955E5 /* Operations */,
 				97C2E61A1F0FE43300EC8977 /* ListCell.swift */,
 				97CE71D61F0F2EB200E955E5 /* BookCell.swift */,
+				97C0348B1F1979A1005AB8A8 /* CurrentlyReadingCell.swift */,
 				97C2E61C1F0FE5CD00EC8977 /* ListCollectionView.swift */,
 			);
 			path = Shelves;
@@ -288,6 +293,7 @@
 				9705A2F31F192E0F00F5E808 /* String+Encoding.swift */,
 				9795B3491F09BFA300419EC3 /* URLQueryItem+Extensions.swift */,
 				97CE71DB1F0FAC1C00E955E5 /* AsynchronousOperation.swift */,
+				97EB7E031F223135008360DE /* DelayAsyncOperation.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -490,6 +496,7 @@
 			files = (
 				9705A2F81F192F3800F5E808 /* AmazonBookCover.swift in Sources */,
 				972C2E341F0AC67300DBBF99 /* GoodreadsAuthor.swift in Sources */,
+				97C0348C1F1979A1005AB8A8 /* CurrentlyReadingCell.swift in Sources */,
 				9795B3401F09B97000419EC3 /* CoreDataStack.swift in Sources */,
 				97FE596F1F16E59B0027FC1F /* AmazonProductAdvertising.swift in Sources */,
 				97E319BF1F0A9CF500D6177B /* GoodreadsShelf.swift in Sources */,
@@ -517,6 +524,7 @@
 				9795B3521F0A75B500419EC3 /* APIError.swift in Sources */,
 				9795B3481F09BF7900419EC3 /* Goodreads.swift in Sources */,
 				97C2E61D1F0FE5CD00EC8977 /* ListCollectionView.swift in Sources */,
+				97EB7E041F223135008360DE /* DelayAsyncOperation.swift in Sources */,
 				97CE71DC1F0FAC1C00E955E5 /* AsynchronousOperation.swift in Sources */,
 				97E319B81F0A871700D6177B /* GoodreadsKeychain.swift in Sources */,
 				9795B3451F09BDB900419EC3 /* ShelfController.swift in Sources */,

@@ -9,7 +9,7 @@
 import UIKit
 import OAuthSwift
 
-final class BookCoverDownloadOperation: AsynchronousOperation {
+final class BookCoverDownloadOperation: DelayAsyncOperation {
     let book: GoodreadsBook
     let client: GoodreadsClient
     
@@ -20,66 +20,66 @@ final class BookCoverDownloadOperation: AsynchronousOperation {
     init(book: GoodreadsBook, credential: OAuthSwiftCredential) {
         self.book = book
         self.client = GoodreadsClient(credential: credential)
+        super.init(delay: 0.8, isDelayedAfter: false)
     }
     
     override func execute() {
         if isCancelled { return }
         
-        if book.hasValidImage {
+        if book.hasValidLargeImage {
             do {
-                let url = URL(string: book.imageUrl)!
+                let url = URL(string: book.largeImageUrl)!
                 let data = try Data(contentsOf: url)
                 if isCancelled { return }
                 
                 if data.isEmpty {
-                    book.imageDownloadState = .failed
-                    book.image = #imageLiteral(resourceName: "BookCover")
+                    book.largeImageDownloadState = .failed
+                    book.largeImage = #imageLiteral(resourceName: "BookCover")
                     finish()
                 } else {
                     let image = UIImage(data: data)!
-                    book.image = image
-                    book.imageDownloadState = .downloaded
+                    book.largeImage = image
+                    book.largeImageDownloadState = .downloaded
                     finish()
                 }
             } catch {
-                book.imageDownloadState = .failed
-                book.image = #imageLiteral(resourceName: "BookCover")
+                book.largeImageDownloadState = .failed
+                book.largeImage = #imageLiteral(resourceName: "BookCover")
                 finish()
             }
         } else {
-            
             amazonClient.coverImages(for: book.titleWithoutSeries) { result in
                 switch result {
                 case .success(let amazonBookCover):
                     
-                    self.book.largeImageUrl = amazonBookCover.largeImageUrl
-                    self.book.imageUrl = amazonBookCover.mediumImageUrl
-                    self.book.smallImageUrl = amazonBookCover.smallImageUrl
+                    self.book.largeImageUrl = amazonBookCover.largeImageUrl!
+                    self.book.imageUrl = amazonBookCover.mediumImageUrl!
+                    self.book.smallImageUrl = amazonBookCover.smallImageUrl!
                     
                     do {
-                        let url = URL(string: self.book.imageUrl)!
+                        let url = URL(string: self.book.largeImageUrl)!
                         let data = try Data(contentsOf: url)
                         if self.isCancelled { return }
                         
                         if data.isEmpty {
-                            self.book.imageDownloadState = .failed
-                            self.book.image = #imageLiteral(resourceName: "BookCover")
+                            self.book.largeImageDownloadState = .failed
+                            self.book.largeImage = #imageLiteral(resourceName: "BookCover")
                             self.finish()
                         } else {
                             let image = UIImage(data: data)!
-                            self.book.image = image
-                            self.book.imageDownloadState = .downloaded
+                            self.book.largeImage = image
+                            self.book.largeImageDownloadState = .downloaded
                             self.finish()
                         }
                     } catch {
-                        self.book.imageDownloadState = .failed
-                        self.book.image = #imageLiteral(resourceName: "BookCover")
+                        self.book.largeImageDownloadState = .failed
+                        self.book.largeImage = #imageLiteral(resourceName: "BookCover")
                         self.finish()
                     }
                     
                 case .failure:
-                    self.book.image = #imageLiteral(resourceName: "BookCover")
-                    self.book.imageDownloadState = .failed
+                    self.book.largeImage = #imageLiteral(resourceName: "BookCover")
+                    self.book.largeImageDownloadState = .failed
                     self.finish()
                 }
             }

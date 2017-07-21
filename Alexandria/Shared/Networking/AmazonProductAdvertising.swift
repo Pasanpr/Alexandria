@@ -59,7 +59,8 @@ extension AmazonProductAdvertising {
             }
             
             if let keyword = keyword {
-                baseParams.append(("Keywords", keyword.removedAllInstances(of: "\'")))
+                let sanitizedKeyword = keyword.removedAllInstances(of: "\'").removedAllInstances(of: "/").replacedPunctuation
+                baseParams.append(("Keywords", sanitizedKeyword))
             }
             
             if let itemId = itemId {

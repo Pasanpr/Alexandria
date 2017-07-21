@@ -29,7 +29,11 @@ extension ListPath: Hashable {
 class PendingBookCoverOperations {
     lazy var downloadsInProgress = [ListPath: Operation]()
     
-    let downloadQueue = OperationQueue()
+    lazy var downloadQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        return queue
+    }()
 }
 
 class ShelfListDataSource: NSObject, UICollectionViewDataSource {
@@ -61,13 +65,13 @@ class ShelfListDataSource: NSObject, UICollectionViewDataSource {
         
         let book = reviews[indexPath.item].book
         
-        if let cover = book.image {
+        if let cover = book.largeImage {
             cell.bookCoverView.image = cover
         } else {
             cell.bookCoverView.image = #imageLiteral(resourceName: "BookCover")
         }
         
-        switch book.imageDownloadState {
+        switch book.largeImageDownloadState {
         case .placeholder:
             let listPath = ListPath(list: listCollectionView.index, book: indexPath.row)
             startOperation(for: book, at: listPath, in: listCollectionView)
@@ -125,17 +129,34 @@ extension ShelfListDataSource: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let listCell = tableView.dequeueReusableCell(withIdentifier: ListCell.reuseIdentifier, for: indexPath) as! ListCell
-        
-        listCell.collectionView.dataSource = self
-        listCell.collectionView.index = indexPath.section
-        listCell.collectionView.reloadData()
-        
-        return listCell
+        switch indexPath.section {
+        case 0:
+            let currentlyReadingCell = tableView.dequeueReusableCell(withIdentifier: CurrentlyReadingCell.reuseIdentifier) as! CurrentlyReadingCell
+            
+            currentlyReadingCell.backgroundColor = UIColor(colorLiteralRed: 32/255.0, green: 36/255.0, blue: 44/255.0, alpha: 1.0)
+            
+            currentlyReadingCell.collectionView.dataSource = self
+            currentlyReadingCell.collectionView.index = indexPath.section
+            currentlyReadingCell.collectionView.reloadData()
+            
+            return currentlyReadingCell
+        default:
+            let listCell = tableView.dequeueReusableCell(withIdentifier: ListCell.reuseIdentifier, for: indexPath) as! ListCell
+            
+            listCell.collectionView.dataSource = self
+            listCell.collectionView.index = indexPath.section
+            listCell.collectionView.reloadData()
+            
+            return listCell
+        }
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let shelf = shelves[section]
-        return shelf.shelf.name
+        switch section {
+        case 0: return nil
+        default:
+            let shelf = shelves[section]
+            return shelf.shelf.name
+        }
     }
 }

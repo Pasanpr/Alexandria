@@ -20,6 +20,9 @@ final class AmazonClient {
         let request = endpoint.signedRequest(withSecretKey: secretKey)
         
         let task = session.dataTask(with: request) { data, response, error in
+            
+            let bookCoverRequest = request
+            
             guard let httpResponse = response as? HTTPURLResponse else {
                 let error = APIError.notHttpResponse
                 completion(.failure(error))
@@ -34,7 +37,7 @@ final class AmazonClient {
                     return
                 }
                 
-                let xml = SWXMLHash.parse(data)
+                let xml = SWXMLHash.parse(data) 
                 
                 do {
                     let bookCovers: [AmazonBookCover] = try xml.byKey("ItemSearchResponse").byKey("Items").byKey("Item").value()
@@ -52,8 +55,10 @@ final class AmazonClient {
             case 403:
                 let error = APIError.invalidSignature
                 completion(.failure(error))
+                print("Invalid signature error for \(title)")
             default:
                 let error = APIError.clientError(statusCode: httpResponse.statusCode)
+                print("Non signature related error for \(title). Status code: \(httpResponse.statusCode)")
                 completion(.failure(error))
             }
         }

@@ -5,7 +5,7 @@
 //  Created by Pasan Premaratne on 7/2/17.
 //  Copyright © 2017 Pasan Premaratne. All rights reserved.
 //
-
+import Foundation
 import UIKit
 import OAuthSwift
 
@@ -41,9 +41,13 @@ final class ShelfController: UIViewController {
         super.viewDidLoad()
         
         navigationController?.navigationBar.prefersLargeTitles = true
+        
+        let font = UIFont(name: "Palatino-Roman", size: 24.0)!
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font.rawValue: font]
         self.title = "Lists"
         
         shelfView.register(ListCell.self, forCellReuseIdentifier: ListCell.reuseIdentifier)
+        shelfView.register(CurrentlyReadingCell.self, forCellReuseIdentifier: CurrentlyReadingCell.reuseIdentifier)
         view.addSubview(shelfView)
         
         if let onViewDidLoad = onViewDidLoad {
@@ -79,6 +83,26 @@ final class ShelfController: UIViewController {
 
 extension ShelfController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 140.0
+        switch indexPath.section {
+        case 0: return 280.0
+        default: return 220.0
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        switch section {
+        case 0: return 1.0
+        default: return UITableViewAutomaticDimension
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        switch section {
+        case 0:
+            let view = UIView(frame: .zero)
+            view.backgroundColor = UIColor(colorLiteralRed: 32/255.0, green: 36/255.0, blue: 44/255.0, alpha: 1.0)
+            return view
+        default: return nil
+        }
     }
 }

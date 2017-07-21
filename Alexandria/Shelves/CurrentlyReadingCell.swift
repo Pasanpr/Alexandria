@@ -1,16 +1,16 @@
 //
-//  ListCell.swift
+//  CurrentlyReadingCell.swift
 //  Alexandria
 //
-//  Created by Pasan Premaratne on 7/7/17.
+//  Created by Pasan Premaratne on 7/14/17.
 //  Copyright © 2017 Pasan Premaratne. All rights reserved.
 //
 
 import UIKit
 
-final class ListCell: UITableViewCell {
+final class CurrentlyReadingCell: UITableViewCell {
     
-    static let reuseIdentifier = "ListCell"
+    static let reuseIdentifier = "CurrentlyReadingCell"
     
     private lazy var layout: UICollectionViewLayout = {
         let layout = UICollectionViewFlowLayout()
@@ -25,20 +25,32 @@ final class ListCell: UITableViewCell {
         let view = ListCollectionView(frame: self.contentView.frame, collectionViewLayout: self.layout)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.register(BookCell.self, forCellWithReuseIdentifier: BookCell.reuseIdentifier)
-        view.backgroundColor = .white
+        view.backgroundColor = .clear
         return view
+    }()
+    
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Currently Reading"
+        label.textColor = .white
+        label.font = UIFont(name: "Palatino-Roman", size: 16.0)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
+        contentView.addSubview(titleLabel)
         contentView.addSubview(collectionView)
         
         NSLayoutConstraint.activate([
+            titleLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 20.0),
+            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20.0),
             collectionView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 20.0),
-            collectionView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            collectionView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20.0),
             collectionView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20.0)
         ])
     }
 }

@@ -14,6 +14,7 @@ class BookCell: UICollectionViewCell {
     lazy var bookCoverView: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.contentMode = .scaleAspectFit
         return view
     }()
     
@@ -23,8 +24,6 @@ class BookCell: UICollectionViewCell {
         contentView.addSubview(bookCoverView)
         
         NSLayoutConstraint.activate([
-            contentView.widthAnchor.constraint(equalToConstant: 80.0),
-            contentView.heightAnchor.constraint(equalToConstant: 120.0),
             bookCoverView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
             bookCoverView.topAnchor.constraint(equalTo: contentView.topAnchor),
             bookCoverView.rightAnchor.constraint(equalTo: contentView.rightAnchor),

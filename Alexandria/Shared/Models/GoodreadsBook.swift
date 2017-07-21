@@ -121,4 +121,10 @@ extension GoodreadsBook {
         let components = imageUrl.split(separator: "/")
         return !components.contains("nophoto")
     }
+    
+    var hasValidLargeImage: Bool {
+        if largeImageUrl.isEmpty { return false }
+        let components = largeImageUrl.split(separator: "/")
+        return !components.contains("nophoto")
+    }
 }

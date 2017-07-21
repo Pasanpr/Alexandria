@@ -10,7 +10,7 @@ import Foundation
 
 // Modified for Swift 4 from: https://gist.github.com/calebd/93fa347397cec5f88233
 
-fileprivate enum OperationState: Int {
+enum OperationState: Int {
     case ready
     case executing
     case finished
@@ -34,7 +34,7 @@ open class AsynchronousOperation: Operation {
     
     private var rawState = OperationState.ready
     
-    private var state: OperationState {
+    var state: OperationState {
         get {
             return stateQueue.sync(execute: { rawState })
         }
@@ -100,7 +100,7 @@ open class AsynchronousOperation: Operation {
     
     /// Call this function after any work is done or after a call to `cancel()`
     /// to move the operation into a completed state.
-    public final func finish() {
+    open func finish() {
         state = .finished
     }
 }

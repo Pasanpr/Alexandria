@@ -10,11 +10,11 @@ import Foundation
 import SWXMLHash
 
 final class AmazonBookCover: XMLIndexerDeserializable {
-    let smallImageUrl: String
-    let mediumImageUrl: String
-    let largeImageUrl: String
+    let smallImageUrl: String?
+    let mediumImageUrl: String?
+    let largeImageUrl: String?
     
-    init(smallUrl: String, mediumUrl: String, largeUrl: String) {
+    init(smallUrl: String?, mediumUrl: String?, largeUrl: String?) {
         self.smallImageUrl = smallUrl
         self.mediumImageUrl = mediumUrl
         self.largeImageUrl = largeUrl
