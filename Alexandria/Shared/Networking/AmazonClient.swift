@@ -56,9 +56,12 @@ final class AmazonClient {
                 let error = APIError.invalidSignature
                 completion(.failure(error))
                 print("Invalid signature error for \(title)")
+            case 503:
+                let error = APIError.clientThrottled
+                print("\(title) throttled")
+                completion(.failure(error))
             default:
                 let error = APIError.clientError(statusCode: httpResponse.statusCode)
-                print("Non signature related error for \(title). Status code: \(httpResponse.statusCode)")
                 completion(.failure(error))
             }
         }

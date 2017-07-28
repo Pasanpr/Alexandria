@@ -29,6 +29,7 @@ enum BookFormat: XMLElementDeserializable {
 enum ImageDownloadState {
     case placeholder
     case downloaded
+    case throttled
     case failed
 }
 

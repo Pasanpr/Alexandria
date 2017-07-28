@@ -72,7 +72,7 @@ class ShelfListDataSource: NSObject, UICollectionViewDataSource {
         }
         
         switch book.largeImageDownloadState {
-        case .placeholder:
+        case .placeholder, .throttled:
             let listPath = ListPath(list: listCollectionView.index, book: indexPath.row)
             startOperation(for: book, at: listPath, in: listCollectionView)
         default: break
@@ -115,9 +115,26 @@ class ShelfListDataSource: NSObject, UICollectionViewDataSource {
     }
 }
 
-//extension ShelfListDataSource: UICollectionViewDataSourcePrefetching {
-//    // FIXME: UICollectionViewDataSourcePrefetching
-//}
+extension ShelfListDataSource: UICollectionViewDataSourcePrefetching {
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        
+        print("Prefetching at indexPaths: \(indexPaths)")
+        
+        let listCollectionView = collectionView as! ListCollectionView
+        let reviews = shelves[listCollectionView.index].reviews
+        
+        for indexPath in indexPaths {
+            let book = reviews[indexPath.item].book
+            
+            switch book.largeImageDownloadState {
+            case .placeholder, .throttled:
+                let listPath = ListPath(list: listCollectionView.index, book: indexPath.row)
+                startOperation(for: book, at: listPath, in: listCollectionView)
+            default: break
+            }
+        }
+    }
+}
 
 extension ShelfListDataSource: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -133,9 +150,10 @@ extension ShelfListDataSource: UITableViewDataSource {
         case 0:
             let currentlyReadingCell = tableView.dequeueReusableCell(withIdentifier: CurrentlyReadingCell.reuseIdentifier) as! CurrentlyReadingCell
             
-            currentlyReadingCell.backgroundColor = UIColor(colorLiteralRed: 32/255.0, green: 36/255.0, blue: 44/255.0, alpha: 1.0)
+            currentlyReadingCell.backgroundColor = UIColor(red: 32/255.0, green: 36/255.0, blue: 44/255.0, alpha: 1.0)
             
             currentlyReadingCell.collectionView.dataSource = self
+            currentlyReadingCell.collectionView.prefetchDataSource = self
             currentlyReadingCell.collectionView.index = indexPath.section
             currentlyReadingCell.collectionView.reloadData()
             
@@ -144,6 +162,7 @@ extension ShelfListDataSource: UITableViewDataSource {
             let listCell = tableView.dequeueReusableCell(withIdentifier: ListCell.reuseIdentifier, for: indexPath) as! ListCell
             
             listCell.collectionView.dataSource = self
+            listCell.collectionView.prefetchDataSource = self
             listCell.collectionView.index = indexPath.section
             listCell.collectionView.reloadData()
             

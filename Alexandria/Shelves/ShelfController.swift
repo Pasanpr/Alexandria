@@ -43,7 +43,8 @@ final class ShelfController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         
         let font = UIFont(name: "Palatino-Roman", size: 24.0)!
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font.rawValue: font]
+        let attributedStringKey = NSAttributedStringKey(NSAttributedStringKey.font.rawValue)
+        navigationController?.navigationBar.titleTextAttributes = [attributedStringKey: font]
         self.title = "Lists"
         
         shelfView.register(ListCell.self, forCellReuseIdentifier: ListCell.reuseIdentifier)
@@ -100,7 +101,7 @@ extension ShelfController: UITableViewDelegate {
         switch section {
         case 0:
             let view = UIView(frame: .zero)
-            view.backgroundColor = UIColor(colorLiteralRed: 32/255.0, green: 36/255.0, blue: 44/255.0, alpha: 1.0)
+            view.backgroundColor = UIColor(red: 32/255.0, green: 36/255.0, blue: 44/255.0, alpha: 1.0)
             return view
         default: return nil
         }

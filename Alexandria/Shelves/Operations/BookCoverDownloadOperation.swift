@@ -20,7 +20,7 @@ final class BookCoverDownloadOperation: DelayAsyncOperation {
     init(book: GoodreadsBook, credential: OAuthSwiftCredential) {
         self.book = book
         self.client = GoodreadsClient(credential: credential)
-        super.init(delay: 0.8, isDelayedAfter: false)
+        super.init(delay: 0.0, isDelayedAfter: false)
     }
     
     override func execute() {
@@ -76,10 +76,15 @@ final class BookCoverDownloadOperation: DelayAsyncOperation {
                         self.book.largeImage = #imageLiteral(resourceName: "BookCover")
                         self.finish()
                     }
+                case .failure(let error):
+                    switch error {
+                    case .clientThrottled:
+                        self.book.largeImageDownloadState = .throttled
+                    default:
+                        self.book.largeImageDownloadState = .failed
+                    }
                     
-                case .failure:
                     self.book.largeImage = #imageLiteral(resourceName: "BookCover")
-                    self.book.largeImageDownloadState = .failed
                     self.finish()
                 }
             }
