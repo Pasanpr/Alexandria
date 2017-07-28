@@ -33,7 +33,7 @@ final class CurrentlyReadingCell: UITableViewCell {
         let label = UILabel()
         label.text = "Currently Reading"
         label.textColor = .white
-        label.font = UIFont(name: "Palatino-Roman", size: 16.0)
+        label.font = UIFont(name: "Palatino-Roman", size: 22.0)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

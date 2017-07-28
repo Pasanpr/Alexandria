@@ -23,7 +23,6 @@ class DelayAsyncOperation: AsynchronousOperation {
         
         DispatchQueue.global(qos: .default).asyncAfter(deadline: deadline) {
             self.state = .finished
-            print("Finished after delay")
         }
         
     }

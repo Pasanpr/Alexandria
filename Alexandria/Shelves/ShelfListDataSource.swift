@@ -37,15 +37,23 @@ class PendingBookCoverOperations {
 }
 
 class ShelfListDataSource: NSObject, UICollectionViewDataSource {
-    var shelves: [Shelf]
-    let credential: OAuthSwiftCredential!
-    let pendingOperations = PendingBookCoverOperations()
+    private var shelves: [Shelf]
+    private let credential: OAuthSwiftCredential!
+    private let pendingOperations = PendingBookCoverOperations()
     
     init(shelves: [Shelf], credential: OAuthSwiftCredential!) {
         self.shelves = shelves
         self.credential = credential
         super.init()
     }
+    
+    // MARK: - Data Accessors
+    
+    func shelf(inSection section: Int) -> Shelf {
+        return shelves[section]
+    }
+    
+    // MARK: - UICollectionViewDataSource
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -117,9 +125,6 @@ class ShelfListDataSource: NSObject, UICollectionViewDataSource {
 
 extension ShelfListDataSource: UICollectionViewDataSourcePrefetching {
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        
-        print("Prefetching at indexPaths: \(indexPaths)")
-        
         let listCollectionView = collectionView as! ListCollectionView
         let reviews = shelves[listCollectionView.index].reviews
         

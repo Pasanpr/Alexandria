@@ -23,6 +23,7 @@
 		972C2E301F0AC16000DBBF99 /* GoodreadsReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972C2E2F1F0AC16000DBBF99 /* GoodreadsReview.swift */; };
 		972C2E321F0AC43700DBBF99 /* GoodreadsBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972C2E311F0AC43700DBBF99 /* GoodreadsBook.swift */; };
 		972C2E341F0AC67300DBBF99 /* GoodreadsAuthor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972C2E331F0AC67300DBBF99 /* GoodreadsAuthor.swift */; };
+		978BDD291F2B895200F3A52C /* ShelvesListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978BDD281F2B895200F3A52C /* ShelvesListHeaderView.swift */; };
 		9795B33D1F09B8CF00419EC3 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9795B33C1F09B8CF00419EC3 /* Coordinator.swift */; };
 		9795B3401F09B97000419EC3 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9795B33F1F09B97000419EC3 /* CoreDataStack.swift */; };
 		9795B3431F09BB7400419EC3 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9795B3421F09BB7400419EC3 /* AppCoordinator.swift */; };
@@ -98,6 +99,7 @@
 		972C2E2F1F0AC16000DBBF99 /* GoodreadsReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodreadsReview.swift; sourceTree = "<group>"; };
 		972C2E311F0AC43700DBBF99 /* GoodreadsBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodreadsBook.swift; sourceTree = "<group>"; };
 		972C2E331F0AC67300DBBF99 /* GoodreadsAuthor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodreadsAuthor.swift; sourceTree = "<group>"; };
+		978BDD281F2B895200F3A52C /* ShelvesListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShelvesListHeaderView.swift; sourceTree = "<group>"; };
 		9795B33A1F09806100419EC3 /* SWXMLHash.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SWXMLHash.framework; path = Carthage/Build/iOS/SWXMLHash.framework; sourceTree = "<group>"; };
 		9795B33C1F09B8CF00419EC3 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		9795B33F1F09B97000419EC3 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
@@ -264,6 +266,7 @@
 				97CE71D61F0F2EB200E955E5 /* BookCell.swift */,
 				97C0348B1F1979A1005AB8A8 /* CurrentlyReadingCell.swift */,
 				97C2E61C1F0FE5CD00EC8977 /* ListCollectionView.swift */,
+				978BDD281F2B895200F3A52C /* ShelvesListHeaderView.swift */,
 			);
 			path = Shelves;
 			sourceTree = "<group>";
@@ -513,6 +516,7 @@
 				9705A2F61F192E7000F5E808 /* AmazonClient.swift in Sources */,
 				9795B3501F09C24000419EC3 /* Result.swift in Sources */,
 				97C2E6191F0FD30000EC8977 /* LoadAllShelvesOperation.swift in Sources */,
+				978BDD291F2B895200F3A52C /* ShelvesListHeaderView.swift in Sources */,
 				9795B3541F0A769B00419EC3 /* GoodreadsUser.swift in Sources */,
 				97CE71DE1F0FB03700E955E5 /* ShelfReviewsOperation.swift in Sources */,
 				97CE71DA1F0FAC0E00E955E5 /* AllShelvesOperation.swift in Sources */,

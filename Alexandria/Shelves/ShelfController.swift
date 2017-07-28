@@ -52,7 +52,6 @@ final class ShelfController: UIViewController {
         view.addSubview(shelfView)
         
         if let onViewDidLoad = onViewDidLoad {
-            print("Executing onViewDidLoad")
             onViewDidLoad()
         }
     }
@@ -93,7 +92,7 @@ extension ShelfController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         switch section {
         case 0: return 1.0
-        default: return UITableViewAutomaticDimension
+        default: return 48
         }
     }
     
@@ -103,7 +102,11 @@ extension ShelfController: UITableViewDelegate {
             let view = UIView(frame: .zero)
             view.backgroundColor = UIColor(red: 32/255.0, green: 36/255.0, blue: 44/255.0, alpha: 1.0)
             return view
-        default: return nil
+        default:
+            let view = ShelvesListHeaderView(frame: .zero)
+            let shelf = dataSource.shelf(inSection: section)
+            view.titleForHeader(shelf.shelf.prettyName, inSection: section)
+            return view
         }
     }
 }

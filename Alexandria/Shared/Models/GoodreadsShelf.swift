@@ -39,3 +39,8 @@ struct GoodreadsShelf: XMLIndexerDeserializable {
     }
 }
 
+extension GoodreadsShelf {
+    var prettyName: String {
+        return name.components(separatedBy: .punctuationCharacters).map({ $0.capitalized }).joined(separator: " ")
+    }
+}

@@ -27,6 +27,19 @@ extension String {
         return addingPercentEncoding(withAllowedCharacters: rfc3986UnreservedEncodedSet)!
     }
     
+    func replacedAllInstances(of characterToReplace: Character, with replacement: Character) -> String {
+        var mutableString = self
+        
+        for character in mutableString.characters where character == characterToReplace {
+            if let index = mutableString.index(of: character) {
+                mutableString.remove(at: index)
+                mutableString.insert(replacement, at: index)
+            }
+        }
+        
+        return mutableString
+    }
+    
     func removedAllInstances(of character: Character) -> String {
         var mutableString = self
         
