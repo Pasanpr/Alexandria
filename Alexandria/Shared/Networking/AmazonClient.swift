@@ -21,8 +21,6 @@ final class AmazonClient {
         
         let task = session.dataTask(with: request) { data, response, error in
             
-            let bookCoverRequest = request
-            
             guard let httpResponse = response as? HTTPURLResponse else {
                 let error = APIError.notHttpResponse
                 completion(.failure(error))

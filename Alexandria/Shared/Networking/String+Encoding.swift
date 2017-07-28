@@ -33,7 +33,6 @@ extension String {
         while mutableString.contains(character) {
             if let index = mutableString.index(of: character) {
                 mutableString.remove(at: index)
-                mutableString.insert(" ", at: index)
             }
         }
         
@@ -47,7 +46,7 @@ extension String {
             .filter{!$0.isEmpty}
     }
     
-    var replacedPunctuation: String {
+    var replacedPunctuation: String {        
         return words.joined(separator: " ")
     }
 }
