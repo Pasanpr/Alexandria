@@ -9,6 +9,10 @@ import Foundation
 import UIKit
 import OAuthSwift
 
+protocol ShelfControllerDelegate: class {
+    func didSelectShelf(_ shelf: Shelf)
+}
+
 final class ShelfController: UIViewController {
     
     var credential: OAuthSwiftCredential!
@@ -27,8 +31,15 @@ final class ShelfController: UIViewController {
         return ShelfListDataSource(shelves: [], credential: self.credential)
     }()
     
-    init() {
+    weak var delegate: ShelfControllerDelegate?
+    
+    init(delegate: ShelfControllerDelegate?) {
+        self.delegate = delegate
         super.init(nibName: nil, bundle: nil)
+    }
+    
+    convenience init() {
+        self.init(delegate: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -106,7 +117,13 @@ extension ShelfController: UITableViewDelegate {
             let view = ShelvesListHeaderView(frame: .zero)
             let shelf = dataSource.shelf(inSection: section)
             view.titleForHeader(shelf.shelf.prettyName, inSection: section)
+            view.addDetailTarget(self, action: #selector(ShelfController.loadListDetail(_:)))
             return view
         }
+    }
+    
+    @objc func loadListDetail(_ sender: UIButton) {
+        let shelf = dataSource.shelf(inSection: sender.tag)
+        delegate?.didSelectShelf(shelf)
     }
 }

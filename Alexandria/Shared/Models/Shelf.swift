@@ -8,7 +8,13 @@
 
 import Foundation
 
-struct Shelf {
+final class Shelf: NSObject {
     let shelf: GoodreadsShelf
     let reviews: [GoodreadsReview]
+    
+    init(shelf: GoodreadsShelf, reviews: [GoodreadsReview]) {
+        self.shelf = shelf
+        self.reviews = reviews
+        super.init()
+    }
 }

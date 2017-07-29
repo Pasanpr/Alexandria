@@ -10,24 +10,8 @@ import Foundation
 import UIKit
 import OAuthSwift
 
-struct ListPath {
-    let list: Int
-    let book: Int
-}
-
-extension ListPath: Hashable {
-    
-    var hashValue: Int {
-        return list ^ book
-    }
-    
-    static func ==(lhs: ListPath, rhs: ListPath) -> Bool {
-        return lhs.list == rhs.list && lhs.book == rhs.book
-    }
-}
-
 class PendingBookCoverOperations {
-    lazy var downloadsInProgress = [ListPath: Operation]()
+    lazy var downloadsInProgress = [IndexPath: Operation]()
     
     lazy var downloadQueue: OperationQueue = {
         let queue = OperationQueue()
@@ -81,8 +65,8 @@ class ShelfListDataSource: NSObject, UICollectionViewDataSource {
         
         switch book.largeImageDownloadState {
         case .placeholder, .throttled:
-            let listPath = ListPath(list: listCollectionView.index, book: indexPath.row)
-            startOperation(for: book, at: listPath, in: listCollectionView)
+            let indexPath = IndexPath(item: indexPath.row, section: listCollectionView.index)
+            startOperation(for: book, at: indexPath, in: listCollectionView)
         default: break
         }
         
@@ -101,8 +85,8 @@ class ShelfListDataSource: NSObject, UICollectionViewDataSource {
         return shelves[indexPath.section].shelf
     }
     
-    func startOperation(for book: GoodreadsBook, at listPath: ListPath, in collectionView: ListCollectionView) {
-        if let _ = pendingOperations.downloadsInProgress[listPath] {
+    func startOperation(for book: GoodreadsBook, at indexPath: IndexPath, in collectionView: ListCollectionView) {
+        if let _ = pendingOperations.downloadsInProgress[indexPath] {
             return
         }
         
@@ -110,15 +94,15 @@ class ShelfListDataSource: NSObject, UICollectionViewDataSource {
         
         operation.completionBlock = {
             if operation.isCancelled { return }
-            self.pendingOperations.downloadsInProgress.removeValue(forKey: listPath)
-            let indexPath = IndexPath(item: listPath.book, section: 0)
+            self.pendingOperations.downloadsInProgress.removeValue(forKey: indexPath)
+            let indexPath = IndexPath(item: indexPath.item, section: 0)
             
             DispatchQueue.main.async {
                 collectionView.reloadItems(at: [indexPath])
             }
         }
         
-        pendingOperations.downloadsInProgress[listPath] = operation
+        pendingOperations.downloadsInProgress[indexPath] = operation
         pendingOperations.downloadQueue.addOperation(operation)
     }
 }
@@ -133,7 +117,7 @@ extension ShelfListDataSource: UICollectionViewDataSourcePrefetching {
             
             switch book.largeImageDownloadState {
             case .placeholder, .throttled:
-                let listPath = ListPath(list: listCollectionView.index, book: indexPath.row)
+                let listPath = IndexPath(item: indexPath.row, section: listCollectionView.index)
                 startOperation(for: book, at: listPath, in: listCollectionView)
             default: break
             }

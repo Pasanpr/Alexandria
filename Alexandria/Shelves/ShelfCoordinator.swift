@@ -10,13 +10,6 @@ import Foundation
 import UIKit
 import OAuthSwift
 
-/*
- If the image does not have a valid URL, we're going to search for the book by title
- The result set is an array of GoodreadWork. We're going to check if the work objects
- have an associated review. If it does, we'll grab the image URL, modify it and assign
- it to the image related properties
- */
-
 protocol ShelfCoordinatorDelegate: class {
     
 }
@@ -38,7 +31,10 @@ final class ShelfCoordinator: Coordinator {
         return GoodreadsClient(credential: self.credential)
     }()
     
-    let shelfController: ShelfController
+    lazy var shelfController: ShelfController = {
+        return ShelfController(delegate: self)
+    }()
+    
     private let operationQueue = OperationQueue()
     
     var onLoad: (() -> Void)? {
@@ -49,12 +45,13 @@ final class ShelfCoordinator: Coordinator {
     
     init(navigationController: UINavigationController, delegate: ShelfCoordinatorDelegate?) {
         self.navigationController = navigationController
-        self.shelfController = ShelfController()
         self.delegate = delegate
     }
     
     func start() {
-        let loadAllShelvesAndBooks = LoadAllShelvesAndBooksOperation(user: goodreadsUser, credential: credential, sortType: .dateUpdated, sortOrder: .descending, resultsPerPage: 10)
+        shelfController.delegate = self
+        
+        let loadAllShelvesAndBooks = LoadAllShelvesAndBooksOperation(user: goodreadsUser, credential: credential, sortType: .dateAdded, sortOrder: .descending, resultsPerPage: 12)
         loadAllShelvesAndBooks.completionBlock = {
             DispatchQueue.main.async {
                 self.shelfController.updateDataSource(with: loadAllShelvesAndBooks.shelves)
@@ -77,7 +74,19 @@ final class ShelfCoordinator: Coordinator {
     }
 }
 
+extension ShelfCoordinator: ShelfControllerDelegate {
+    func didSelectShelf(_ shelf: Shelf) {
+        let listCoordinator = ListCoordinator(navigationController: self.navigationController, credential: self.credential, goodreadsUser: self.goodreadsUser, shelf: shelf)
+        listCoordinator.delegate = self
+        childCoordinators.append(listCoordinator)
+        
+        listCoordinator.start()
+    }
+}
 
+extension ShelfCoordinator: ListCoordinatorDelegate {
+    
+}
 
 
 

@@ -42,4 +42,8 @@ class ShelvesListHeaderView: UIView {
         titleLabel.text = title
         detailButton.tag = section
     }
+    
+    func addDetailTarget(_ target: Any?, action: Selector) {
+        detailButton.addTarget(target, action: action, for: .touchUpInside)
+    }
 }

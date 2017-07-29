@@ -34,7 +34,7 @@ final class LoadAllShelvesAndBooksOperation: AsynchronousOperation {
     }
     
     convenience init(user: GoodreadsUser, credential: OAuthSwiftCredential) {
-        self.init(user: user, credential: credential, sortType: .dateAdded, sortOrder: .descending, resultsPerPage: 20)
+        self.init(user: user, credential: credential, sortType: .dateAdded, sortOrder: .descending, resultsPerPage: 12)
     }
     
     override func execute() {
@@ -48,7 +48,7 @@ final class LoadAllShelvesAndBooksOperation: AsynchronousOperation {
         
         let adapterOperation = BlockOperation {
             let reviewOperations = allOperation.shelves.map {
-                return ShelfReviewsOperation(user: self.user, credential: self.credential, shelf: $0, sortType: .dateUpdated, sortOrder: .descending, resultsPerPage: 10)
+                return ShelfReviewsOperation(user: self.user, credential: self.credential, shelf: $0, sortType: self.sortType, sortOrder: self.sortOrder, resultsPerPage: self.resultsPerPage)
             }
             
             for reviewOperation in reviewOperations {

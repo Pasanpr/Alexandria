@@ -48,7 +48,11 @@ final class BookCoverDownloadOperation: DelayAsyncOperation {
                 finish()
             }
         } else {
-            amazonClient.coverImages(for: book.titleWithoutSeries) { result in
+            
+            let authorsLastName = book.authors.first!.name.words.last!
+            let query = book.title.words.count <= 2 ? "\(book.titleWithoutSeries) \(authorsLastName)" : book.titleWithoutSeries
+            
+            amazonClient.coverImages(for: query) { result in
                 switch result {
                 case .success(let amazonBookCover):
                     

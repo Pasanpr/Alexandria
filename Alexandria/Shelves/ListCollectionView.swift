@@ -10,5 +10,4 @@ import UIKit
 
 class ListCollectionView: UICollectionView {
     var index: Int = 0
-
 }

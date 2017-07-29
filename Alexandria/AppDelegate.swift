@@ -15,6 +15,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var persistentContainer: NSPersistentContainer!
+    
+    var appCoordinator: AppCoordinator!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
@@ -25,9 +27,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             guard let window = self.window else { return }
             window.backgroundColor = .white
             
-            let coordinator = AppCoordinator(managedObjectContext: container.viewContext)
-            window.rootViewController = coordinator.navigationController
-            coordinator.start()
+            self.appCoordinator = AppCoordinator(managedObjectContext: container.viewContext)
+            window.rootViewController = self.appCoordinator.navigationController
+            self.appCoordinator.start()
             
             window.makeKeyAndVisible()
         }
