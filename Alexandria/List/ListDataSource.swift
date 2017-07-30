@@ -27,7 +27,7 @@ final class ListDataSource: NSObject {
         return GoodreadsClient(credential: self.credential)
     }()
     
-    var currentFetchRange = 0..<12
+    var currentFetchRange = 0..<Preferences.booksPerShelf
     
     init(collectionView: UICollectionView, shelf: Shelf, credential: OAuthSwiftCredential, goodreadsUser: GoodreadsUser) {
         self.collectionView = collectionView
@@ -100,16 +100,14 @@ extension ListDataSource: UICollectionViewDataSource {
 
 extension ListDataSource: UICollectionViewDataSourcePrefetching {
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        
         let maxCurrentFetch = currentFetchRange.max()!
         let maxPrefetch = indexPaths.last!.item
-        
         let shouldFetchRange = (maxCurrentFetch - 2)...maxCurrentFetch
+        
         if maxCurrentFetch <= booksOnShelf && shouldFetchRange.contains(maxPrefetch) {
-            print("Prefetching. Index Paths: \(indexPaths)")
-            currentFetchRange = maxCurrentFetch..<(maxCurrentFetch + 12)
+            currentFetchRange = maxCurrentFetch..<(maxCurrentFetch + Preferences.booksPerShelf)
             
-            goodreadsClient.books(forUserId: goodreadsUser.id, onShelf: shelf.name, sortType: .dateAdded, sortOrder: .descending, query: nil, page: currentPage + 1, resultsPerPage: 12) { result in
+            goodreadsClient.books(forUserId: goodreadsUser.id, onShelf: shelf.name, sortType: .dateAdded, sortOrder: .descending, query: nil, page: currentPage + 1, resultsPerPage: Preferences.booksPerShelf) { result in
                 switch result {
                 case .success(let reviews):
                     self.append(reviews)

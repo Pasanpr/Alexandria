@@ -10,13 +10,18 @@ import Foundation
 import UIKit
 import OAuthSwift
 
+private extension GoodreadsBook {
+    func cacheKey(forSize size: BookCoverSize) -> NSString {
+        return coverImageUrl(for: size) as NSString
+    }
+}
+
 final class CachedCoverDownloadOperation: DelayAsyncOperation {
     let book: GoodreadsBook
     private let coverSize: BookCoverSize
     private let client: GoodreadsClient
-    private lazy var amazonClient: AmazonClient = {
-        return AmazonClient()
-    }()
+    private lazy var amazonClient: AmazonClient = { return AmazonClient() }()
+    private let cache = NSCache<NSString, UIImage>()
     
     init(coverSize: BookCoverSize, book: GoodreadsBook, credential: OAuthSwiftCredential) {
         self.book = book
@@ -28,26 +33,28 @@ final class CachedCoverDownloadOperation: DelayAsyncOperation {
     override func execute() {
         if isCancelled { return }
         
-        if book.hasValidCoverImage(for: coverSize) {
-            do {
-                let url = URL(string: book.coverImageUrl(for: coverSize))!
-                let data = try Data(contentsOf: url)
-                if isCancelled { return }
-                
-                if data.isEmpty {
-                    book.setDownloadState(.failed, forSize: coverSize)
-                    book.setCoverImage(#imageLiteral(resourceName: "BookCover"), forSize: coverSize)
-                    finish()
-                } else {
-                    let image = UIImage(data: data)!
-                    book.setCoverImage(image, forSize: coverSize)
-                    book.setDownloadState(.downloaded, forSize: coverSize)
+        if book.hasValidCoverImageUrl(for: coverSize) {
+            if let cachedImage = cache.object(forKey: book.cacheKey(forSize: self.coverSize)) {
+                book.setCoverImage(cachedImage, forSize: coverSize)
+            } else {
+                do {
+                    let url = URL(string: book.coverImageUrl(for: coverSize))!
+                    let data = try Data(contentsOf: url)
+                    if isCancelled { return }
+                    
+                    if data.isEmpty {
+                        self.setOperationResult(.failed)
+                        finish()
+                    } else {
+                        let image = UIImage(data: data)!
+                        cache.setObject(image, forKey: book.cacheKey(forSize: self.coverSize))
+                        self.setOperationResult(.downloaded, image: image)
+                        finish()
+                    }
+                } catch {
+                    self.setOperationResult(.failed)
                     finish()
                 }
-            } catch {
-                book.setDownloadState(.failed, forSize: coverSize)
-                book.setCoverImage(#imageLiteral(resourceName: "BookCover"), forSize: coverSize)
-                finish()
             }
         } else {
             
@@ -67,33 +74,35 @@ final class CachedCoverDownloadOperation: DelayAsyncOperation {
                         if self.isCancelled { return }
                         
                         if data.isEmpty {
-                            self.book.setDownloadState(.failed, forSize: self.coverSize)
-                            self.book.setCoverImage(#imageLiteral(resourceName: "BookCover"), forSize: self.coverSize)
+                            self.setOperationResult(.failed)
                             self.finish()
                         } else {
                             let image = UIImage(data: data)!
-                            self.book.setCoverImage(image, forSize: self.coverSize)
-                            self.book.setDownloadState(.downloaded, forSize: self.coverSize)
+                            self.cache.setObject(image, forKey: self.book.cacheKey(forSize: self.coverSize))
+                            self.setOperationResult(.downloaded, image: image)
                             self.finish()
                         }
                     } catch {
-                        self.book.setDownloadState(.failed, forSize: self.coverSize)
-                        self.book.setCoverImage(#imageLiteral(resourceName: "BookCover"), forSize: self.coverSize)
+                        self.setOperationResult(.failed)
                         self.finish()
                     }
                 case .failure(let error):
                     switch error {
                     case .clientThrottled:
-                        self.book.imageDownloadState = .throttled
-                        self.book.setDownloadState(.throttled, forSize: self.coverSize)
+                        self.setOperationResult(.throttled)
                     default:
-                        self.book.setDownloadState(.failed, forSize: self.coverSize)
+                        self.setOperationResult(.failed)
                     }
-                    self.book.setCoverImage(#imageLiteral(resourceName: "BookCover"), forSize: self.coverSize)
+                    
                     self.finish()
                 }
             }
         }
+    }
+    
+    private func setOperationResult(_ state: ImageDownloadState, image: UIImage = #imageLiteral(resourceName: "BookCover")) {
+        book.setDownloadState(state, forSize: coverSize)
+        book.setCoverImage(image, forSize: coverSize)
     }
 }
 

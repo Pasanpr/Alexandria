@@ -51,7 +51,7 @@ final class ShelfCoordinator: Coordinator {
     func start() {
         shelfController.delegate = self
         
-        let loadAllShelvesAndBooks = LoadAllShelvesAndBooksOperation(user: goodreadsUser, credential: credential, sortType: .dateAdded, sortOrder: .descending, resultsPerPage: 12)
+        let loadAllShelvesAndBooks = LoadAllShelvesAndBooksOperation(user: goodreadsUser, credential: credential, sortType: .dateAdded, sortOrder: .descending, resultsPerPage: Preferences.booksPerShelf)
         loadAllShelvesAndBooks.completionBlock = {
             DispatchQueue.main.async {
                 self.shelfController.updateDataSource(with: loadAllShelvesAndBooks.shelves)

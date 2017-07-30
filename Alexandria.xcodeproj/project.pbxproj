@@ -25,6 +25,7 @@
 		972C2E321F0AC43700DBBF99 /* GoodreadsBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972C2E311F0AC43700DBBF99 /* GoodreadsBook.swift */; };
 		972C2E341F0AC67300DBBF99 /* GoodreadsAuthor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972C2E331F0AC67300DBBF99 /* GoodreadsAuthor.swift */; };
 		97651D231F2BB91200E11E92 /* ListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97651D221F2BB91200E11E92 /* ListDataSource.swift */; };
+		976D05531F2E5DA3003BE100 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976D05521F2E5DA3003BE100 /* Preferences.swift */; };
 		978BDD291F2B895200F3A52C /* ShelvesListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978BDD281F2B895200F3A52C /* ShelvesListHeaderView.swift */; };
 		978BDD2D1F2B990300F3A52C /* ListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978BDD2C1F2B990300F3A52C /* ListCoordinator.swift */; };
 		978BDD2F1F2B9D1D00F3A52C /* ListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978BDD2E1F2B9D1D00F3A52C /* ListController.swift */; };
@@ -103,6 +104,7 @@
 		972C2E311F0AC43700DBBF99 /* GoodreadsBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodreadsBook.swift; sourceTree = "<group>"; };
 		972C2E331F0AC67300DBBF99 /* GoodreadsAuthor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodreadsAuthor.swift; sourceTree = "<group>"; };
 		97651D221F2BB91200E11E92 /* ListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDataSource.swift; sourceTree = "<group>"; };
+		976D05521F2E5DA3003BE100 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		978BDD281F2B895200F3A52C /* ShelvesListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShelvesListHeaderView.swift; sourceTree = "<group>"; };
 		978BDD2C1F2B990300F3A52C /* ListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCoordinator.swift; sourceTree = "<group>"; };
 		978BDD2E1F2B9D1D00F3A52C /* ListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListController.swift; sourceTree = "<group>"; };
@@ -258,6 +260,7 @@
 				97E319B51F0A86AA00D6177B /* Networking */,
 				97E319B61F0A86B300D6177B /* Models */,
 				97AF9A521F1031BB00337F99 /* Array+Helpers.swift */,
+				976D05521F2E5DA3003BE100 /* Preferences.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -521,6 +524,7 @@
 				97CE71D71F0F2EB200E955E5 /* BookCell.swift in Sources */,
 				97E319BD1F0A8E4400D6177B /* AuthenticationCoordinator.swift in Sources */,
 				97651D231F2BB91200E11E92 /* ListDataSource.swift in Sources */,
+				976D05531F2E5DA3003BE100 /* Preferences.swift in Sources */,
 				97E319BA1F0A8C5100D6177B /* ShelfCoordinator.swift in Sources */,
 				978BDD2F1F2B9D1D00F3A52C /* ListController.swift in Sources */,
 				970387111F06E707000EF0F6 /* ViewController.swift in Sources */,

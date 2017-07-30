@@ -124,25 +124,25 @@ final class GoodreadsBook: XMLIndexerDeserializable {
 }
 
 extension GoodreadsBook {
-    func hasValidCoverImage(for size: BookCoverSize) -> Bool {
+    func hasValidCoverImageUrl(for size: BookCoverSize) -> Bool {
         switch size {
-        case .small: return hasValidSmallImage
-        case .regular: return hasValidRegularImage
-        case .large: return hasValidLargeImage
+        case .small: return hasValidSmallImageUrl
+        case .regular: return hasValidRegularImageUrl
+        case .large: return hasValidLargeImageUrl
         }
     }
     
-    private var hasValidSmallImage: Bool {
+    private var hasValidSmallImageUrl: Bool {
         let components = smallImageUrl.split(separator: "/")
         return !components.contains("nophoto")
     }
     
-    private var hasValidRegularImage: Bool {
+    private var hasValidRegularImageUrl: Bool {
         let components = imageUrl.split(separator: "/")
         return !components.contains("nophoto")
     }
     
-    private var hasValidLargeImage: Bool {
+    private var hasValidLargeImageUrl: Bool {
         if largeImageUrl.isEmpty { return false }
         let components = largeImageUrl.split(separator: "/")
         return !components.contains("nophoto")
