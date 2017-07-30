@@ -15,7 +15,6 @@ class PendingBookCoverOperations {
     
     lazy var downloadQueue: OperationQueue = {
         let queue = OperationQueue()
-        queue.maxConcurrentOperationCount = 1
         return queue
     }()
 }
@@ -90,7 +89,7 @@ class ShelfListDataSource: NSObject, UICollectionViewDataSource {
             return
         }
         
-        let operation = BookCoverDownloadOperation(book: book, credential: credential)
+        let operation = LargeBookCoverDownloadOperation(book: book, credential: credential)
         
         operation.completionBlock = {
             if operation.isCancelled { return }
@@ -151,7 +150,7 @@ extension ShelfListDataSource: UITableViewDataSource {
             let listCell = tableView.dequeueReusableCell(withIdentifier: ListCell.reuseIdentifier, for: indexPath) as! ListCell
             
             listCell.collectionView.dataSource = self
-            listCell.collectionView.prefetchDataSource = self
+//            listCell.collectionView.prefetchDataSource = self
             listCell.collectionView.index = indexPath.section
             listCell.collectionView.reloadData()
             

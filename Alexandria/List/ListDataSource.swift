@@ -81,7 +81,7 @@ extension ListDataSource: UICollectionViewDataSource {
             return
         }
         
-        let operation = BookCoverDownloadOperation(book: book, credential: credential)
+        let operation = LargeBookCoverDownloadOperation(book: book, credential: credential)
         
         operation.completionBlock = {
             if operation.isCancelled { return }

@@ -1,16 +1,15 @@
 //
-//  MediumBookCoverDownloadOperation.swift
+//  BookCoverDownloadOperation.swift
 //  Alexandria
 //
-//  Created by Pasan Premaratne on 7/29/17.
+//  Created by Pasan Premaratne on 7/7/17.
 //  Copyright © 2017 Pasan Premaratne. All rights reserved.
 //
 
-import Foundation
 import UIKit
 import OAuthSwift
 
-final class BookCoverDownloadOperation: DelayAsyncOperation {
+final class LargeBookCoverDownloadOperation: DelayAsyncOperation {
     let book: GoodreadsBook
     let client: GoodreadsClient
     
@@ -27,25 +26,25 @@ final class BookCoverDownloadOperation: DelayAsyncOperation {
     override func execute() {
         if isCancelled { return }
         
-        if book.hasValidImage {
+        if book.hasValidLargeImage {
             do {
-                let url = URL(string: book.imageUrl)!
+                let url = URL(string: book.largeImageUrl)!
                 let data = try Data(contentsOf: url)
                 if isCancelled { return }
                 
                 if data.isEmpty {
-                    book.imageDownloadState = .failed
-                    book.image = #imageLiteral(resourceName: "BookCover")
+                    book.largeImageDownloadState = .failed
+                    book.largeImage = #imageLiteral(resourceName: "BookCover")
                     finish()
                 } else {
                     let image = UIImage(data: data)!
-                    book.image = image
-                    book.imageDownloadState = .downloaded
+                    book.largeImage = image
+                    book.largeImageDownloadState = .downloaded
                     finish()
                 }
             } catch {
-                book.imageDownloadState = .failed
-                book.image = #imageLiteral(resourceName: "BookCover")
+                book.largeImageDownloadState = .failed
+                book.largeImage = #imageLiteral(resourceName: "BookCover")
                 finish()
             }
         } else {
@@ -62,34 +61,34 @@ final class BookCoverDownloadOperation: DelayAsyncOperation {
                     self.book.smallImageUrl = amazonBookCover.smallImageUrl!
                     
                     do {
-                        let url = URL(string: self.book.imageUrl)!
+                        let url = URL(string: self.book.largeImageUrl)!
                         let data = try Data(contentsOf: url)
                         if self.isCancelled { return }
                         
                         if data.isEmpty {
-                            self.book.imageDownloadState = .failed
-                            self.book.image = #imageLiteral(resourceName: "BookCover")
+                            self.book.largeImageDownloadState = .failed
+                            self.book.largeImage = #imageLiteral(resourceName: "BookCover")
                             self.finish()
                         } else {
                             let image = UIImage(data: data)!
-                            self.book.image = image
-                            self.book.imageDownloadState = .downloaded
+                            self.book.largeImage = image
+                            self.book.largeImageDownloadState = .downloaded
                             self.finish()
                         }
                     } catch {
-                        self.book.imageDownloadState = .failed
-                        self.book.image = #imageLiteral(resourceName: "BookCover")
+                        self.book.largeImageDownloadState = .failed
+                        self.book.largeImage = #imageLiteral(resourceName: "BookCover")
                         self.finish()
                     }
                 case .failure(let error):
                     switch error {
                     case .clientThrottled:
-                        self.book.imageDownloadState = .throttled
+                        self.book.largeImageDownloadState = .throttled
                     default:
-                        self.book.imageDownloadState = .failed
+                        self.book.largeImageDownloadState = .failed
                     }
                     
-                    self.book.image = #imageLiteral(resourceName: "BookCover")
+                    self.book.largeImage = #imageLiteral(resourceName: "BookCover")
                     self.finish()
                 }
             }
