@@ -26,6 +26,12 @@ enum BookFormat: XMLElementDeserializable {
     }
 }
 
+enum BookCoverSize {
+    case small
+    case regular
+    case large
+}
+
 enum ImageDownloadState {
     case placeholder
     case downloaded
@@ -118,14 +124,75 @@ final class GoodreadsBook: XMLIndexerDeserializable {
 }
 
 extension GoodreadsBook {
-    var hasValidImage: Bool {
+    func hasValidCoverImage(for size: BookCoverSize) -> Bool {
+        switch size {
+        case .small: return hasValidSmallImage
+        case .regular: return hasValidRegularImage
+        case .large: return hasValidLargeImage
+        }
+    }
+    
+    private var hasValidSmallImage: Bool {
+        let components = smallImageUrl.split(separator: "/")
+        return !components.contains("nophoto")
+    }
+    
+    private var hasValidRegularImage: Bool {
         let components = imageUrl.split(separator: "/")
         return !components.contains("nophoto")
     }
     
-    var hasValidLargeImage: Bool {
+    private var hasValidLargeImage: Bool {
         if largeImageUrl.isEmpty { return false }
         let components = largeImageUrl.split(separator: "/")
         return !components.contains("nophoto")
+    }
+    
+    func setCoverImageUrl(_ urlString: String, for size: BookCoverSize) {
+        switch size {
+        case .small: smallImageUrl = urlString
+        case .regular: imageUrl = urlString
+        case .large: largeImageUrl = urlString
+        }
+    }
+    
+    func coverImageUrl(for size: BookCoverSize) -> String {
+        switch size {
+        case .small: return smallImageUrl
+        case .regular: return imageUrl
+        case .large: return largeImageUrl
+        }
+    }
+    
+    func coverImageDownloadState(forSize size: BookCoverSize) -> ImageDownloadState {
+        switch size {
+        case .small: return smallImageDownloadState
+        case .regular: return imageDownloadState
+        case .large: return largeImageDownloadState
+        }
+    }
+    
+    func setDownloadState(_ state: ImageDownloadState, forSize size: BookCoverSize) {
+        switch size {
+        case .small: smallImageDownloadState = state
+        case .regular: imageDownloadState = state
+        case .large: largeImageDownloadState = state
+        }
+    }
+    
+    func coverImage(forSize size: BookCoverSize) -> UIImage? {
+        switch size {
+        case .small: return smallImage
+        case .regular: return image
+        case .large: return largeImage
+        }
+    }
+    
+    func setCoverImage(_ image: UIImage, forSize size: BookCoverSize) {
+        switch size {
+        case .small: smallImage = image
+        case .regular: self.image = image
+        case .large: largeImage = image
+        }
     }
 }

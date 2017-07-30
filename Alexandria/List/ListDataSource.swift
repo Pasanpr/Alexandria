@@ -60,14 +60,14 @@ extension ListDataSource: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BookCell.reuseIdentifier, for: indexPath) as! BookCell
         
         let book = reviews[indexPath.item].book
-
-        if let cover = book.largeImage {
+        
+        if let cover = book.coverImage(forSize: .large) {
             cell.bookCoverView.image = cover
         } else {
             cell.bookCoverView.image = #imageLiteral(resourceName: "BookCover")
         }
         
-        switch book.largeImageDownloadState {
+        switch book.coverImageDownloadState(forSize: .large) {
         case .placeholder, .throttled:
             startOperation(for: book, at: indexPath)
         default: break
@@ -81,7 +81,7 @@ extension ListDataSource: UICollectionViewDataSource {
             return
         }
         
-        let operation = LargeBookCoverDownloadOperation(book: book, credential: credential)
+        let operation = CachedCoverDownloadOperation(coverSize: .large, book: book, credential: credential)
         
         operation.completionBlock = {
             if operation.isCancelled { return }

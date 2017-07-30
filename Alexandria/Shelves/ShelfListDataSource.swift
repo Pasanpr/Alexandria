@@ -89,7 +89,7 @@ class ShelfListDataSource: NSObject, UICollectionViewDataSource {
             return
         }
         
-        let operation = LargeBookCoverDownloadOperation(book: book, credential: credential)
+        let operation = CachedCoverDownloadOperation(coverSize: .large, book: book, credential: credential)
         
         operation.completionBlock = {
             if operation.isCancelled { return }
