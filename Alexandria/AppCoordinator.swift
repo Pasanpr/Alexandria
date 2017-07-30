@@ -18,13 +18,15 @@ final class AppCoordinator: Coordinator {
     let shelfCoordinator: ShelfCoordinator
     var client: GoodreadsClient!
     
+    let bookCoverCache = NSCache<NSString, UIImage>()
+    
     lazy var authCoordinator: AuthenticationCoordinator = {
         return AuthenticationCoordinator(navigationController: self.navigationController, delegate: self)
     }()
     
     init(managedObjectContext: NSManagedObjectContext) {
         self.managedObjectContext = managedObjectContext
-        self.shelfCoordinator = ShelfCoordinator(navigationController: navigationController, delegate: nil)
+        self.shelfCoordinator = ShelfCoordinator(navigationController: navigationController, delegate: nil, bookCoverCache: self.bookCoverCache)
         shelfCoordinator.delegate = self
     }
     

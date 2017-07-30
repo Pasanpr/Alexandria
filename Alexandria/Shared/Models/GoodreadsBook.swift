@@ -26,7 +26,7 @@ enum BookFormat: XMLElementDeserializable {
     }
 }
 
-enum BookCoverSize {
+enum BookCoverSize: String {
     case small
     case regular
     case large

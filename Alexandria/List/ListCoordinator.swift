@@ -20,24 +20,20 @@ final class ListCoordinator: Coordinator {
     private let credential: OAuthSwiftCredential
     private let goodreadsUser: GoodreadsUser
     private let shelf: Shelf
-    
-    lazy var client: GoodreadsClient = {
-        return GoodreadsClient(credential: self.credential)
-    }()
-    
+    private let cache: NSCache<NSString, UIImage>
+    lazy var client: GoodreadsClient = { return GoodreadsClient(credential: self.credential) }()
     weak var delegate: ListCoordinatorDelegate?
-    
     let listController: ListController
     let listDataSource: ListDataSource
 
-    init(navigationController: UINavigationController, credential: OAuthSwiftCredential, goodreadsUser: GoodreadsUser, shelf: Shelf) {
+    init(navigationController: UINavigationController, credential: OAuthSwiftCredential, goodreadsUser: GoodreadsUser, shelf: Shelf, bookCoverCache: NSCache<NSString, UIImage>) {
         self.navigationController = navigationController
         self.credential = credential
         self.goodreadsUser = goodreadsUser
         self.shelf = shelf
-        
+        self.cache = bookCoverCache
         self.listController = ListController()
-        self.listDataSource = ListDataSource(collectionView: listController.collectionView, shelf: shelf, credential: credential, goodreadsUser: goodreadsUser)
+        self.listDataSource = ListDataSource(collectionView: listController.collectionView, shelf: shelf, credential: credential, goodreadsUser: goodreadsUser, bookCoverCache: self.cache)
         listController.dataSource = self.listDataSource
     }
     

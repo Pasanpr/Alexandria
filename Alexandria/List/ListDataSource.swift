@@ -16,6 +16,7 @@ final class ListDataSource: NSObject {
     private let goodreadsUser: GoodreadsUser
     private let collectionView: UICollectionView
     private let pendingOperations = PendingBookCoverOperations()
+    private let cache: NSCache<NSString, UIImage>
     
     var booksOnShelf: Int {
         return shelf.bookCount
@@ -29,12 +30,13 @@ final class ListDataSource: NSObject {
     
     var currentFetchRange = 0..<Preferences.booksPerShelf
     
-    init(collectionView: UICollectionView, shelf: Shelf, credential: OAuthSwiftCredential, goodreadsUser: GoodreadsUser) {
+    init(collectionView: UICollectionView, shelf: Shelf, credential: OAuthSwiftCredential, goodreadsUser: GoodreadsUser, bookCoverCache: NSCache<NSString, UIImage>) {
         self.collectionView = collectionView
         self.shelf = shelf.shelf
         self.reviews = shelf.reviews
         self.credential = credential
         self.goodreadsUser = goodreadsUser
+        self.cache = bookCoverCache
         super.init()
     }
     
@@ -81,7 +83,7 @@ extension ListDataSource: UICollectionViewDataSource {
             return
         }
         
-        let operation = CachedCoverDownloadOperation(coverSize: .large, book: book, credential: credential)
+        let operation = CachedCoverDownloadOperation(coverSize: .large, book: book, credential: credential, cache: cache)
         
         operation.completionBlock = {
             if operation.isCancelled { return }

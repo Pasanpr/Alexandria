@@ -21,12 +21,13 @@ class PendingBookCoverOperations {
 
 class ShelfListDataSource: NSObject, UICollectionViewDataSource {
     private var shelves: [Shelf]
-    private let credential: OAuthSwiftCredential!
+    var credential: OAuthSwiftCredential!
     private let pendingOperations = PendingBookCoverOperations()
+    private let cache: NSCache<NSString, UIImage>
     
-    init(shelves: [Shelf], credential: OAuthSwiftCredential!) {
+    init(shelves: [Shelf], bookCoverCache: NSCache<NSString, UIImage>) {
         self.shelves = shelves
-        self.credential = credential
+        self.cache = bookCoverCache
         super.init()
     }
     
@@ -89,7 +90,7 @@ class ShelfListDataSource: NSObject, UICollectionViewDataSource {
             return
         }
         
-        let operation = CachedCoverDownloadOperation(coverSize: .large, book: book, credential: credential)
+        let operation = CachedCoverDownloadOperation(coverSize: .large, book: book, credential: credential, cache: cache)
         
         operation.completionBlock = {
             if operation.isCancelled { return }

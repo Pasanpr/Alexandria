@@ -27,19 +27,13 @@ final class ShelfController: UIViewController {
         return view
     }()
     
-    private lazy var dataSource: ShelfListDataSource = {
-        return ShelfListDataSource(shelves: [], credential: self.credential)
-    }()
-    
+    var dataSource: ShelfListDataSource
     weak var delegate: ShelfControllerDelegate?
     
-    init(delegate: ShelfControllerDelegate?) {
+    init(dataSource: ShelfListDataSource, delegate: ShelfControllerDelegate?) {
+        self.dataSource = dataSource
         self.delegate = delegate
         super.init(nibName: nil, bundle: nil)
-    }
-    
-    convenience init() {
-        self.init(delegate: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -65,6 +59,8 @@ final class ShelfController: UIViewController {
         if let onViewDidLoad = onViewDidLoad {
             onViewDidLoad()
         }
+        
+        shelfView.dataSource = dataSource
     }
     
     override func viewWillLayoutSubviews() {

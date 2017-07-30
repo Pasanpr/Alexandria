@@ -19,23 +19,16 @@ final class ShelfCoordinator: Coordinator {
     var childCoordinators: [Coordinator] = []
     weak var delegate: ShelfCoordinatorDelegate?
     
-    private var credential: OAuthSwiftCredential! {
-        didSet {
-            if let credential = credential {
-                shelfController.credential = credential
-            }
-        }
-    }
+    private var credential: OAuthSwiftCredential!
+    
     private var goodreadsUser: GoodreadsUser!
-    private lazy var client: GoodreadsClient = {
-        return GoodreadsClient(credential: self.credential)
-    }()
-    
-    lazy var shelfController: ShelfController = {
-        return ShelfController(delegate: self)
-    }()
-    
+    private lazy var client: GoodreadsClient = { return GoodreadsClient(credential: self.credential) }()
+    private lazy var shelfController: ShelfController = { return ShelfController(dataSource: self.dataSource, delegate: self) }()
     private let operationQueue = OperationQueue()
+    private let cache: NSCache<NSString, UIImage>
+    private lazy var dataSource: ShelfListDataSource = {
+        return ShelfListDataSource(shelves: [], bookCoverCache: self.cache)
+    }()
     
     var onLoad: (() -> Void)? {
         didSet {
@@ -43,13 +36,15 @@ final class ShelfCoordinator: Coordinator {
         }
     }
     
-    init(navigationController: UINavigationController, delegate: ShelfCoordinatorDelegate?) {
+    init(navigationController: UINavigationController, delegate: ShelfCoordinatorDelegate?, bookCoverCache: NSCache<NSString, UIImage>) {
         self.navigationController = navigationController
         self.delegate = delegate
+        self.cache = bookCoverCache
     }
     
     func start() {
         shelfController.delegate = self
+        dataSource.credential = credential
         
         let loadAllShelvesAndBooks = LoadAllShelvesAndBooksOperation(user: goodreadsUser, credential: credential, sortType: .dateAdded, sortOrder: .descending, resultsPerPage: Preferences.booksPerShelf)
         loadAllShelvesAndBooks.completionBlock = {
@@ -76,7 +71,7 @@ final class ShelfCoordinator: Coordinator {
 
 extension ShelfCoordinator: ShelfControllerDelegate {
     func didSelectShelf(_ shelf: Shelf) {
-        let listCoordinator = ListCoordinator(navigationController: self.navigationController, credential: self.credential, goodreadsUser: self.goodreadsUser, shelf: shelf)
+        let listCoordinator = ListCoordinator(navigationController: self.navigationController, credential: self.credential, goodreadsUser: self.goodreadsUser, shelf: shelf, bookCoverCache: self.cache)
         listCoordinator.delegate = self
         childCoordinators.append(listCoordinator)
         

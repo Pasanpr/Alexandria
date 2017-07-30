@@ -12,31 +12,34 @@ import OAuthSwift
 
 private extension GoodreadsBook {
     func cacheKey(forSize size: BookCoverSize) -> NSString {
-        return coverImageUrl(for: size) as NSString
+        return "\(title) - \(authors.first!.name) - \(size.rawValue)" as NSString
     }
 }
 
 final class CachedCoverDownloadOperation: DelayAsyncOperation {
+    typealias BookCoverCache = NSCache<NSString, UIImage>
+    
     let book: GoodreadsBook
     private let coverSize: BookCoverSize
     private let client: GoodreadsClient
     private lazy var amazonClient: AmazonClient = { return AmazonClient() }()
-    private let cache = NSCache<NSString, UIImage>()
+    private let cache: BookCoverCache
     
-    init(coverSize: BookCoverSize, book: GoodreadsBook, credential: OAuthSwiftCredential) {
+    init(coverSize: BookCoverSize, book: GoodreadsBook, credential: OAuthSwiftCredential, cache: BookCoverCache) {
         self.book = book
         self.coverSize = coverSize
         self.client = GoodreadsClient(credential: credential)
+        self.cache = cache
         super.init(delay: 0.0, isDelayedAfter: false)
     }
     
     override func execute() {
         if isCancelled { return }
         
-        if book.hasValidCoverImageUrl(for: coverSize) {
-            if let cachedImage = cache.object(forKey: book.cacheKey(forSize: self.coverSize)) {
-                book.setCoverImage(cachedImage, forSize: coverSize)
-            } else {
+        if let cachedCover = cachedBookCover {
+            book.setCoverImage(cachedCover, forSize: coverSize)
+        } else {
+            if book.hasValidCoverImageUrl(for: coverSize) {
                 do {
                     let url = URL(string: book.coverImageUrl(for: coverSize))!
                     let data = try Data(contentsOf: url)
@@ -47,7 +50,7 @@ final class CachedCoverDownloadOperation: DelayAsyncOperation {
                         finish()
                     } else {
                         let image = UIImage(data: data)!
-                        cache.setObject(image, forKey: book.cacheKey(forSize: self.coverSize))
+                        self.cacheBookCover(image)
                         self.setOperationResult(.downloaded, image: image)
                         finish()
                     }
@@ -55,46 +58,45 @@ final class CachedCoverDownloadOperation: DelayAsyncOperation {
                     self.setOperationResult(.failed)
                     finish()
                 }
-            }
-        } else {
-            
-            let authorsLastName = book.authors.first!.name.words.last!
-            let query = book.title.words.count <= 2 ? "\(book.titleWithoutSeries) \(authorsLastName)" : book.titleWithoutSeries
-            
-            amazonClient.coverImages(for: query) { result in
-                switch result {
-                case .success(let amazonBookCover):
-                    self.book.setCoverImageUrl(amazonBookCover.smallImageUrl!, for: .small)
-                    self.book.setCoverImageUrl(amazonBookCover.mediumImageUrl!, for: .regular)
-                    self.book.setCoverImageUrl(amazonBookCover.largeImageUrl!, for: .large)
-                    
-                    do {
-                        let url = URL(string: self.book.coverImageUrl(for: self.coverSize))!
-                        let data = try Data(contentsOf: url)
-                        if self.isCancelled { return }
+            } else {
+                let authorsLastName = book.authors.first!.name.words.last!
+                let query = book.title.words.count <= 2 ? "\(book.titleWithoutSeries) \(authorsLastName)" : book.titleWithoutSeries
+                
+                amazonClient.coverImages(for: query) { result in
+                    switch result {
+                    case .success(let amazonBookCover):
+                        self.book.setCoverImageUrl(amazonBookCover.smallImageUrl!, for: .small)
+                        self.book.setCoverImageUrl(amazonBookCover.mediumImageUrl!, for: .regular)
+                        self.book.setCoverImageUrl(amazonBookCover.largeImageUrl!, for: .large)
                         
-                        if data.isEmpty {
+                        do {
+                            let url = URL(string: self.book.coverImageUrl(for: self.coverSize))!
+                            let data = try Data(contentsOf: url)
+                            if self.isCancelled { return }
+                            
+                            if data.isEmpty {
+                                self.setOperationResult(.failed)
+                                self.finish()
+                            } else {
+                                let image = UIImage(data: data)!
+                                self.cacheBookCover(image)
+                                self.setOperationResult(.downloaded, image: image)
+                                self.finish()
+                            }
+                        } catch {
                             self.setOperationResult(.failed)
                             self.finish()
-                        } else {
-                            let image = UIImage(data: data)!
-                            self.cache.setObject(image, forKey: self.book.cacheKey(forSize: self.coverSize))
-                            self.setOperationResult(.downloaded, image: image)
-                            self.finish()
                         }
-                    } catch {
-                        self.setOperationResult(.failed)
+                    case .failure(let error):
+                        switch error {
+                        case .clientThrottled:
+                            self.setOperationResult(.throttled)
+                        default:
+                            self.setOperationResult(.failed)
+                        }
+                        
                         self.finish()
                     }
-                case .failure(let error):
-                    switch error {
-                    case .clientThrottled:
-                        self.setOperationResult(.throttled)
-                    default:
-                        self.setOperationResult(.failed)
-                    }
-                    
-                    self.finish()
                 }
             }
         }
@@ -103,6 +105,14 @@ final class CachedCoverDownloadOperation: DelayAsyncOperation {
     private func setOperationResult(_ state: ImageDownloadState, image: UIImage = #imageLiteral(resourceName: "BookCover")) {
         book.setDownloadState(state, forSize: coverSize)
         book.setCoverImage(image, forSize: coverSize)
+    }
+    
+    private func cacheBookCover(_ image: UIImage) {
+        cache.setObject(image, forKey: self.book.cacheKey(forSize: self.coverSize))
+    }
+    
+    private var cachedBookCover: UIImage? {
+        return cache.object(forKey: self.book.cacheKey(forSize: self.coverSize))
     }
 }
 
