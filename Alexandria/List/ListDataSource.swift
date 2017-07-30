@@ -38,6 +38,8 @@ final class ListDataSource: NSObject {
         self.goodreadsUser = goodreadsUser
         self.cache = bookCoverCache
         super.init()
+        
+        collectionView.delegate = self
     }
     
     func review(at indexPath: IndexPath) -> GoodreadsReview {
@@ -63,16 +65,24 @@ extension ListDataSource: UICollectionViewDataSource {
         
         let book = reviews[indexPath.item].book
         
+        // Check if the model has an image
+        // Check if image is available in cache
+        
         if let cover = book.coverImage(forSize: .large) {
+            cell.bookCoverView.image = cover
+        } else if let cover = cache.object(forKey: book.cacheKey(forSize: .large)) {
+            book.setDownloadState(.downloaded, forSize: .large)
             cell.bookCoverView.image = cover
         } else {
             cell.bookCoverView.image = #imageLiteral(resourceName: "BookCover")
         }
         
-        switch book.coverImageDownloadState(forSize: .large) {
-        case .placeholder, .throttled:
-            startOperation(for: book, at: indexPath)
-        default: break
+        if !collectionView.isDragging && !collectionView.isDecelerating {
+            switch book.coverImageDownloadState(forSize: .large) {
+            case .placeholder, .throttled:
+                startOperation(for: book, at: indexPath)
+            default: break
+            }
         }
         
         return cell
@@ -118,6 +128,56 @@ extension ListDataSource: UICollectionViewDataSourcePrefetching {
                 case .failure(let error):
                     print("Error prefetching: \(error.localizedDescription)")
                 }
+            }
+        }
+    }
+}
+
+extension ListDataSource: UICollectionViewDelegate {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        suspendOperations()
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            loadCoversForVisibleItems()
+            resumeOperations()
+        }
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        loadCoversForVisibleItems()
+        resumeOperations()
+    }
+    
+    func suspendOperations() {
+        pendingOperations.downloadQueue.isSuspended = true
+    }
+    
+    func resumeOperations() {
+        pendingOperations.downloadQueue.isSuspended = false
+    }
+    
+    func loadCoversForVisibleItems() {
+        let visiblePaths = Set(collectionView.indexPathsForVisibleItems)
+        let allPendingOperations = Set(pendingOperations.downloadsInProgress.keys)
+        
+        let operationsToCancel = allPendingOperations.subtracting(visiblePaths)
+        let operationsToStart = visiblePaths.subtracting(allPendingOperations)
+        
+        for indexPath in operationsToCancel {
+            if let pendingDownload = pendingOperations.downloadsInProgress[indexPath] {
+                pendingDownload.cancel()
+            }
+            pendingOperations.downloadsInProgress.removeValue(forKey: indexPath)
+        }
+        
+        for indexPath in operationsToStart {
+            let book = reviews[indexPath.item].book
+            switch book.coverImageDownloadState(forSize: .large) {
+            case .placeholder, .throttled:
+                startOperation(for: book, at: indexPath)
+            default: break
             }
         }
     }

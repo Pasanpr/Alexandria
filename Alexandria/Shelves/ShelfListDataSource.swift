@@ -37,6 +37,14 @@ class ShelfListDataSource: NSObject, UICollectionViewDataSource {
         return shelves[section]
     }
     
+    func suspendAllOperations() {
+        pendingOperations.downloadQueue.isSuspended = true
+    }
+    
+    func resumeAllOperations() {
+        pendingOperations.downloadQueue.isSuspended = false
+    }
+    
     // MARK: - UICollectionViewDataSource
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {

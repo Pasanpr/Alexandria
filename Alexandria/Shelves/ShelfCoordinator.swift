@@ -71,6 +71,7 @@ final class ShelfCoordinator: Coordinator {
 
 extension ShelfCoordinator: ShelfControllerDelegate {
     func didSelectShelf(_ shelf: Shelf) {
+//        dataSource.suspendAllOperations()
         let listCoordinator = ListCoordinator(navigationController: self.navigationController, credential: self.credential, goodreadsUser: self.goodreadsUser, shelf: shelf, bookCoverCache: self.cache)
         listCoordinator.delegate = self
         childCoordinators.append(listCoordinator)
