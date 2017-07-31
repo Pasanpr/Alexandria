@@ -65,11 +65,14 @@ extension ListDataSource: UICollectionViewDataSource {
         
         let book = reviews[indexPath.item].book
         
-        // Check if the model has an image
-        // Check if image is available in cache
-        
         if let cover = book.coverImage(forSize: .large) {
-            cell.bookCoverView.image = cover
+            UIView.transition(
+                with: cell.bookCoverView,
+                duration: 0.3,
+                options: .transitionCrossDissolve,
+                animations: { cell.bookCoverView.image = cover },
+                completion: nil
+            )
         } else if let cover = cache.object(forKey: book.cacheKey(forSize: .large)) {
             book.setDownloadState(.downloaded, forSize: .large)
             cell.bookCoverView.image = cover
