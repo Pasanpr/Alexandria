@@ -22,6 +22,11 @@ final class ListDataSource: NSObject {
         return shelf.bookCount
     }
     
+    var allBooksFetched: Bool {
+        let maxCurrentFetch = currentFetchRange.max()!
+        return maxCurrentFetch == booksOnShelf
+    }
+    
     var currentPage = 1
     
     lazy var goodreadsClient: GoodreadsClient = {
@@ -66,13 +71,7 @@ extension ListDataSource: UICollectionViewDataSource {
         let book = reviews[indexPath.item].book
         
         if let cover = book.coverImage(forSize: .large) {
-            UIView.transition(
-                with: cell.bookCoverView,
-                duration: 0.3,
-                options: .transitionCrossDissolve,
-                animations: { cell.bookCoverView.image = cover },
-                completion: nil
-            )
+            cell.bookCoverView.image = cover
         } else if let cover = cache.object(forKey: book.cacheKey(forSize: .large)) {
             book.setDownloadState(.downloaded, forSize: .large)
             cell.bookCoverView.image = cover
@@ -113,6 +112,29 @@ extension ListDataSource: UICollectionViewDataSource {
     }
 }
 
+extension ListDataSource {
+    func scrollViewDidReachEnd(_ scrollView: UIScrollView) -> Bool {
+        let bottomEdge = scrollView.contentOffset.y + scrollView.frame.height
+        return bottomEdge >= scrollView.contentSize.height
+    }
+    
+    func updateDataSource() {
+        let maxCurrentFetch = currentFetchRange.max()!
+        currentFetchRange = maxCurrentFetch..<(maxCurrentFetch + Preferences.booksPerShelf)
+        
+        goodreadsClient.books(forUserId: goodreadsUser.id, onShelf: shelf.name, sortType: .dateAdded, sortOrder: .descending, query: nil, page: currentPage + 1, resultsPerPage: Preferences.booksPerShelf) { result in
+            switch result {
+            case .success(let reviews):
+                self.append(reviews)
+                self.collectionView.reloadData()
+                self.currentPage += 1
+            case .failure(let error):
+                print("Error prefetching: \(error.localizedDescription)")
+            }
+        }
+    }
+}
+
 extension ListDataSource: UICollectionViewDataSourcePrefetching {
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         let maxCurrentFetch = currentFetchRange.max()!
@@ -120,18 +142,7 @@ extension ListDataSource: UICollectionViewDataSourcePrefetching {
         let shouldFetchRange = (maxCurrentFetch - 2)...maxCurrentFetch
         
         if maxCurrentFetch <= booksOnShelf && shouldFetchRange.contains(maxPrefetch) {
-            currentFetchRange = maxCurrentFetch..<(maxCurrentFetch + Preferences.booksPerShelf)
-            
-            goodreadsClient.books(forUserId: goodreadsUser.id, onShelf: shelf.name, sortType: .dateAdded, sortOrder: .descending, query: nil, page: currentPage + 1, resultsPerPage: Preferences.booksPerShelf) { result in
-                switch result {
-                case .success(let reviews):
-                    self.append(reviews)
-                    self.collectionView.reloadData()
-                    self.currentPage += 1
-                case .failure(let error):
-                    print("Error prefetching: \(error.localizedDescription)")
-                }
-            }
+            updateDataSource()
         }
     }
 }
@@ -149,6 +160,10 @@ extension ListDataSource: UICollectionViewDelegate {
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if scrollViewDidReachEnd(scrollView) && !allBooksFetched {
+            updateDataSource()
+        }
+        
         loadCoversForVisibleItems()
         resumeOperations()
     }
