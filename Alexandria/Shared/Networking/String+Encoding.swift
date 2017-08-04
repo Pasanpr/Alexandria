@@ -62,4 +62,8 @@ extension String {
     var replacedPunctuation: String {        
         return words.joined(separator: " ")
     }
+    
+    var splitAtUppercase: String {
+        return self.characters.splitBefore(separator: { $0.isUppercase }).map({ String($0) }).joined(separator: " ")
+    }
 }

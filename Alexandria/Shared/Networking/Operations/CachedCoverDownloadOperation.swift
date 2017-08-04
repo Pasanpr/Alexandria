@@ -38,7 +38,12 @@ final class CachedCoverDownloadOperation: DelayAsyncOperation {
         
         if book.hasValidCoverImageUrl(for: coverSize) {
             do {
-                let url = URL(string: book.coverImageUrl(for: coverSize))!
+                guard let urlString = self.book.coverImageUrl(for: self.coverSize), let url = URL(string: urlString) else {
+                    self.setOperationResult(.failed)
+                    self.finish()
+                    return
+                }
+                
                 let data = try Data(contentsOf: url)
                 if isCancelled { return }
                 
@@ -56,18 +61,33 @@ final class CachedCoverDownloadOperation: DelayAsyncOperation {
                 finish()
             }
         } else {
-            let authorsLastName = book.authors.first!.name.words.last!
-            let query = book.title.words.count <= 2 ? "\(book.titleWithoutSeries) \(authorsLastName)" : book.titleWithoutSeries
+            var query = ""
+            let authorsLastName = book.authors.first!.name.words.first!.splitAtUppercase
+            
+            if let index = book.title.index(of: ":") {
+                let substring = book.title[book.title.startIndex..<index]
+                query = String(substring) + " \(authorsLastName)"
+            } else {
+                query = book.title.words.count <= 2 ? "\(book.titleWithoutSeries) \(authorsLastName)" : book.titleWithoutSeries
+            }
+            
+            print("\(query)")
             
             amazonClient.coverImages(for: query) { result in
                 switch result {
                 case .success(let amazonBookCover):
-                    self.book.setCoverImageUrl(amazonBookCover.smallImageUrl!, for: .small)
-                    self.book.setCoverImageUrl(amazonBookCover.mediumImageUrl!, for: .regular)
-                    self.book.setCoverImageUrl(amazonBookCover.largeImageUrl!, for: .large)
+                    
+                    self.book.setCoverImageUrl(amazonBookCover.smallImageUrl, for: .small)
+                    self.book.setCoverImageUrl(amazonBookCover.mediumImageUrl, for: .regular)
+                    self.book.setCoverImageUrl(amazonBookCover.largeImageUrl, for: .large)
                     
                     do {
-                        let url = URL(string: self.book.coverImageUrl(for: self.coverSize))!
+                        guard let urlString = self.book.coverImageUrl(for: self.coverSize), let url = URL(string: urlString) else {
+                            self.setOperationResult(.failed)
+                            self.finish()
+                            return
+                        }
+                        
                         let data = try Data(contentsOf: url)
                         if self.isCancelled { return }
                         

@@ -46,9 +46,9 @@ final class GoodreadsBook: XMLIndexerDeserializable {
     let reviewsCount: Int
     let title: String
     let titleWithoutSeries: String
-    var imageUrl: String
-    var smallImageUrl: String
-    var largeImageUrl: String
+    var imageUrl: String?
+    var smallImageUrl: String?
+    var largeImageUrl: String?
     let link: String
     let numberOfPages: String?
     let format: BookFormat
@@ -133,22 +133,25 @@ extension GoodreadsBook {
     }
     
     private var hasValidSmallImageUrl: Bool {
+        guard let smallImageUrl = smallImageUrl else { return false }
         let components = smallImageUrl.split(separator: "/")
         return !components.contains("nophoto")
     }
     
     private var hasValidRegularImageUrl: Bool {
+        guard let imageUrl = imageUrl else { return false }
         let components = imageUrl.split(separator: "/")
         return !components.contains("nophoto")
     }
     
     private var hasValidLargeImageUrl: Bool {
+        guard let largeImageUrl = largeImageUrl else { return false }
         if largeImageUrl.isEmpty { return false }
         let components = largeImageUrl.split(separator: "/")
         return !components.contains("nophoto")
     }
     
-    func setCoverImageUrl(_ urlString: String, for size: BookCoverSize) {
+    func setCoverImageUrl(_ urlString: String?, for size: BookCoverSize) {
         switch size {
         case .small: smallImageUrl = urlString
         case .regular: imageUrl = urlString
@@ -156,7 +159,7 @@ extension GoodreadsBook {
         }
     }
     
-    func coverImageUrl(for size: BookCoverSize) -> String {
+    func coverImageUrl(for size: BookCoverSize) -> String? {
         switch size {
         case .small: return smallImageUrl
         case .regular: return imageUrl
