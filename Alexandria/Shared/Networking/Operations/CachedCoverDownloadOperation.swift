@@ -14,6 +14,20 @@ extension GoodreadsBook {
     func cacheKey(forSize size: BookCoverSize) -> NSString {
         return "\(title) - \(authors.first!.name) - \(size.rawValue)" as NSString
     }
+    
+    var coverQuery: String {
+        var query = ""
+        let authorQueryName = authors.first!.queryName
+        
+        if let index = title.index(of: ":") {
+            let substring = title[title.startIndex..<index]
+            query = String(substring) + " \(authorQueryName)"
+        } else {
+            query = title.words.count <= 4 ? "\(titleWithoutSeries) \(authorQueryName)" : titleWithoutSeries
+        }
+        
+        return query
+    }
 }
 
 final class CachedCoverDownloadOperation: DelayAsyncOperation {
@@ -61,19 +75,7 @@ final class CachedCoverDownloadOperation: DelayAsyncOperation {
                 finish()
             }
         } else {
-            var query = ""
-            let authorsLastName = book.authors.first!.name.words.first!.splitAtUppercase
-            
-            if let index = book.title.index(of: ":") {
-                let substring = book.title[book.title.startIndex..<index]
-                query = String(substring) + " \(authorsLastName)"
-            } else {
-                query = book.title.words.count <= 2 ? "\(book.titleWithoutSeries) \(authorsLastName)" : book.titleWithoutSeries
-            }
-            
-            print("\(query)")
-            
-            amazonClient.coverImages(for: query) { result in
+            amazonClient.coverImages(for: book.coverQuery) { result in
                 switch result {
                 case .success(let amazonBookCover):
                     

@@ -54,3 +54,13 @@ struct GoodreadsReview: XMLIndexerDeserializable {
         )
     }
 }
+
+extension GoodreadsReview: Hashable {
+    var hashValue: Int {
+        return id
+    }
+    
+    static func ==(lhs: GoodreadsReview, rhs: GoodreadsReview) -> Bool {
+        return lhs.id == rhs.id && lhs.book.title == rhs.book.title
+    }
+}

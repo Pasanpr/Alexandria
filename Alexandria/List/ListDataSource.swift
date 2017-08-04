@@ -11,7 +11,7 @@ import OAuthSwift
 
 final class ListDataSource: NSObject {
     private let shelf: GoodreadsShelf
-    private var reviews: [GoodreadsReview]
+    private var reviews: OrderedSet<GoodreadsReview> = []
     private let credential: OAuthSwiftCredential
     private let goodreadsUser: GoodreadsUser
     private let collectionView: UICollectionView
@@ -38,7 +38,7 @@ final class ListDataSource: NSObject {
     init(collectionView: UICollectionView, shelf: Shelf, credential: OAuthSwiftCredential, goodreadsUser: GoodreadsUser, bookCoverCache: NSCache<NSString, UIImage>) {
         self.collectionView = collectionView
         self.shelf = shelf.shelf
-        self.reviews = shelf.reviews
+        self.reviews.add(shelf.reviews)
         self.credential = credential
         self.goodreadsUser = goodreadsUser
         self.cache = bookCoverCache
@@ -48,11 +48,11 @@ final class ListDataSource: NSObject {
     }
     
     func review(at indexPath: IndexPath) -> GoodreadsReview {
-        return reviews[indexPath.row]
+        return reviews.object(at: indexPath.row)
     }
     
     func append(_ reviews: [GoodreadsReview]) {
-        self.reviews.append(contentsOf: reviews)
+        self.reviews.add(reviews)
     }
 }
 
@@ -68,7 +68,7 @@ extension ListDataSource: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BookCell.reuseIdentifier, for: indexPath) as! BookCell
         
-        let book = reviews[indexPath.item].book
+        let book = reviews.object(at: indexPath.item).book
         
         if let cover = book.coverImage(forSize: .large) {
             cell.bookCoverView.image = cover
@@ -124,8 +124,8 @@ extension ListDataSource {
         
         goodreadsClient.books(forUserId: goodreadsUser.id, onShelf: shelf.name, sortType: .dateAdded, sortOrder: .descending, query: nil, page: currentPage + 1, resultsPerPage: Preferences.booksPerShelf) { result in
             switch result {
-            case .success(let reviews):
-                self.append(reviews)
+            case .success(let fetchedReviews):
+                self.append(fetchedReviews)
                 self.collectionView.reloadData()
                 self.currentPage += 1
             case .failure(let error):
@@ -137,13 +137,18 @@ extension ListDataSource {
 
 extension ListDataSource: UICollectionViewDataSourcePrefetching {
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        
         let maxCurrentFetch = currentFetchRange.max()!
         let maxPrefetch = indexPaths.last!.item
-        let shouldFetchRange = (maxCurrentFetch - 2)...maxCurrentFetch
+        let shouldFetchRange = (maxCurrentFetch - (Preferences.booksPerShelf/2))...maxCurrentFetch
         
         if maxCurrentFetch <= booksOnShelf && shouldFetchRange.contains(maxPrefetch) {
+            print("Updating prefetch data source")
             updateDataSource()
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
     }
 }
 
@@ -161,7 +166,7 @@ extension ListDataSource: UICollectionViewDelegate {
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if scrollViewDidReachEnd(scrollView) && !allBooksFetched {
-            updateDataSource()
+//            updateDataSource()
         }
         
         loadCoversForVisibleItems()
@@ -191,7 +196,7 @@ extension ListDataSource: UICollectionViewDelegate {
         }
         
         for indexPath in operationsToStart {
-            let book = reviews[indexPath.item].book
+            let book = reviews.object(at: indexPath.item).book
             switch book.coverImageDownloadState(forSize: .large) {
             case .placeholder, .throttled:
                 startOperation(for: book, at: indexPath)

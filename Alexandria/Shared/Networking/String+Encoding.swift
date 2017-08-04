@@ -9,6 +9,10 @@
 import Foundation
 
 extension String {
+    var isUppercase: Bool {
+        return self == self.uppercased()
+    }
+    
     func encodedQueryForSigning() -> String? {
         let customUrlQueryDisallowedCharacters = CharacterSet(charactersIn: ":,/")
         let customUrlQueryAllowedCharacters = customUrlQueryDisallowedCharacters.inverted
@@ -67,3 +71,4 @@ extension String {
         return self.characters.splitBefore(separator: { $0.isUppercase }).map({ String($0) }).joined(separator: " ")
     }
 }
+

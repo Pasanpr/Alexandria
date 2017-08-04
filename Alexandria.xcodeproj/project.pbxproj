@@ -28,6 +28,7 @@
 		976D05531F2E5DA3003BE100 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976D05521F2E5DA3003BE100 /* Preferences.swift */; };
 		97741F2B1F34C9100097E88A /* Sequence+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97741F2A1F34C9100097E88A /* Sequence+Utilities.swift */; };
 		97741F2D1F34C9BE0097E88A /* Character+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97741F2C1F34C9BE0097E88A /* Character+Utilities.swift */; };
+		97741F2F1F34D4E90097E88A /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97741F2E1F34D4E90097E88A /* OrderedSet.swift */; };
 		978BDD291F2B895200F3A52C /* ShelvesListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978BDD281F2B895200F3A52C /* ShelvesListHeaderView.swift */; };
 		978BDD2D1F2B990300F3A52C /* ListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978BDD2C1F2B990300F3A52C /* ListCoordinator.swift */; };
 		978BDD2F1F2B9D1D00F3A52C /* ListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978BDD2E1F2B9D1D00F3A52C /* ListController.swift */; };
@@ -109,6 +110,7 @@
 		976D05521F2E5DA3003BE100 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		97741F2A1F34C9100097E88A /* Sequence+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+Utilities.swift"; sourceTree = "<group>"; };
 		97741F2C1F34C9BE0097E88A /* Character+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Character+Utilities.swift"; sourceTree = "<group>"; };
+		97741F2E1F34D4E90097E88A /* OrderedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
 		978BDD281F2B895200F3A52C /* ShelvesListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShelvesListHeaderView.swift; sourceTree = "<group>"; };
 		978BDD2C1F2B990300F3A52C /* ListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCoordinator.swift; sourceTree = "<group>"; };
 		978BDD2E1F2B9D1D00F3A52C /* ListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListController.swift; sourceTree = "<group>"; };
@@ -337,6 +339,7 @@
 				97AF9A501F10206500337F99 /* GoodreadsWork.swift */,
 				97CE71D41F0F2CCB00E955E5 /* Shelf.swift */,
 				9705A2F71F192F3800F5E808 /* AmazonBookCover.swift */,
+				97741F2E1F34D4E90097E88A /* OrderedSet.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -521,6 +524,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9705A2F81F192F3800F5E808 /* AmazonBookCover.swift in Sources */,
+				97741F2F1F34D4E90097E88A /* OrderedSet.swift in Sources */,
 				972C2E341F0AC67300DBBF99 /* GoodreadsAuthor.swift in Sources */,
 				97C0348C1F1979A1005AB8A8 /* CurrentlyReadingCell.swift in Sources */,
 				9795B3401F09B97000419EC3 /* CoreDataStack.swift in Sources */,

@@ -32,3 +32,30 @@ struct GoodreadsAuthor: XMLIndexerDeserializable {
         )
     }
 }
+
+extension GoodreadsAuthor {
+    var nameComponents: PersonNameComponents? {
+        let formatter = PersonNameComponentsFormatter()
+        return formatter.personNameComponents(from: name)
+    }
+    
+    var firstName: String? {
+        return nameComponents?.givenName
+    }
+    
+    var middleName: String? {
+        return nameComponents?.middleName
+    }
+    
+    var lastName: String? {
+        return nameComponents?.familyName
+    }
+    
+    var queryName: String {
+        guard let first = firstName, let last = lastName else {
+            return name
+        }
+        
+        return first + " " + last
+    }
+}
