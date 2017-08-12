@@ -35,6 +35,7 @@ final class ListCoordinator: Coordinator {
         self.listController = ListController()
         self.listDataSource = ListDataSource(collectionView: listController.collectionView, shelf: shelf, credential: credential, goodreadsUser: goodreadsUser, bookCoverCache: self.cache)
         listController.dataSource = self.listDataSource
+        listController.onReviewSelect = didSelectReview
     }
     
     func start() {
@@ -42,5 +43,10 @@ final class ListCoordinator: Coordinator {
         navigationController.pushViewController(listController, animated: true)
     }
     
-    
+    func didSelectReview(_ review: GoodreadsReview) {
+        let coordinator = BookCoordinator(navigationController: self.navigationController, review: review)
+        childCoordinators.append(coordinator)
+        
+        coordinator.start()
+    }
 }

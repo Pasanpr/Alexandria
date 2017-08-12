@@ -50,6 +50,10 @@
 		97C2E6191F0FD30000EC8977 /* LoadAllShelvesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C2E6181F0FD30000EC8977 /* LoadAllShelvesOperation.swift */; };
 		97C2E61B1F0FE43300EC8977 /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C2E61A1F0FE43300EC8977 /* ListCell.swift */; };
 		97C2E61D1F0FE5CD00EC8977 /* ListCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C2E61C1F0FE5CD00EC8977 /* ListCollectionView.swift */; };
+		97CC15041F350B4500B18092 /* CardPresentingAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CC15031F350B4500B18092 /* CardPresentingAnimationController.swift */; };
+		97CC15061F350CB300B18092 /* UIView+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CC15051F350CB300B18092 /* UIView+Utilities.swift */; };
+		97CC15081F350F2800B18092 /* CardDismissingAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CC15071F350F2800B18092 /* CardDismissingAnimationController.swift */; };
+		97CC150A1F350F5F00B18092 /* CardPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CC15091F350F5F00B18092 /* CardPresentationController.swift */; };
 		97CE71D31F0F2B7500E955E5 /* ShelfListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CE71D21F0F2B7500E955E5 /* ShelfListDataSource.swift */; };
 		97CE71D51F0F2CCB00E955E5 /* Shelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CE71D41F0F2CCB00E955E5 /* Shelf.swift */; };
 		97CE71D71F0F2EB200E955E5 /* BookCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CE71D61F0F2EB200E955E5 /* BookCell.swift */; };
@@ -60,6 +64,9 @@
 		97E319BA1F0A8C5100D6177B /* ShelfCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E319B91F0A8C5100D6177B /* ShelfCoordinator.swift */; };
 		97E319BD1F0A8E4400D6177B /* AuthenticationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E319BC1F0A8E4400D6177B /* AuthenticationCoordinator.swift */; };
 		97E319BF1F0A9CF500D6177B /* GoodreadsShelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E319BE1F0A9CF500D6177B /* GoodreadsShelf.swift */; };
+		97E70CBF1F34F690003B076C /* BookCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E70CBE1F34F690003B076C /* BookCoordinator.swift */; };
+		97E70CC11F34F7DC003B076C /* BookController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E70CC01F34F7DC003B076C /* BookController.swift */; };
+		97E70CC41F35026A003B076C /* CardTransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E70CC31F35026A003B076C /* CardTransitionDelegate.swift */; };
 		97EB7E041F223135008360DE /* DelayAsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EB7E031F223135008360DE /* DelayAsyncOperation.swift */; };
 		97F4A4141F096F3B0040DC1A /* GoodreadsAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F4A4131F096F3B0040DC1A /* GoodreadsAccount.swift */; };
 		97F4A4171F0972980040DC1A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F4A4161F0972980040DC1A /* LoginViewController.swift */; };
@@ -133,6 +140,10 @@
 		97C2E61A1F0FE43300EC8977 /* ListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
 		97C2E61C1F0FE5CD00EC8977 /* ListCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCollectionView.swift; sourceTree = "<group>"; };
 		97C42CF61F1928C600E7B3EE /* CryptoSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CryptoSwift.framework; path = Carthage/Build/iOS/CryptoSwift.framework; sourceTree = "<group>"; };
+		97CC15031F350B4500B18092 /* CardPresentingAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardPresentingAnimationController.swift; sourceTree = "<group>"; };
+		97CC15051F350CB300B18092 /* UIView+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Utilities.swift"; sourceTree = "<group>"; };
+		97CC15071F350F2800B18092 /* CardDismissingAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDismissingAnimationController.swift; sourceTree = "<group>"; };
+		97CC15091F350F5F00B18092 /* CardPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardPresentationController.swift; sourceTree = "<group>"; };
 		97CE71D21F0F2B7500E955E5 /* ShelfListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShelfListDataSource.swift; sourceTree = "<group>"; };
 		97CE71D41F0F2CCB00E955E5 /* Shelf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shelf.swift; sourceTree = "<group>"; };
 		97CE71D61F0F2EB200E955E5 /* BookCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCell.swift; sourceTree = "<group>"; };
@@ -143,6 +154,9 @@
 		97E319B91F0A8C5100D6177B /* ShelfCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShelfCoordinator.swift; sourceTree = "<group>"; };
 		97E319BC1F0A8E4400D6177B /* AuthenticationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationCoordinator.swift; sourceTree = "<group>"; };
 		97E319BE1F0A9CF500D6177B /* GoodreadsShelf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodreadsShelf.swift; sourceTree = "<group>"; };
+		97E70CBE1F34F690003B076C /* BookCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCoordinator.swift; sourceTree = "<group>"; };
+		97E70CC01F34F7DC003B076C /* BookController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookController.swift; sourceTree = "<group>"; };
+		97E70CC31F35026A003B076C /* CardTransitionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTransitionDelegate.swift; sourceTree = "<group>"; };
 		97EB7E031F223135008360DE /* DelayAsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelayAsyncOperation.swift; sourceTree = "<group>"; };
 		97F4A4131F096F3B0040DC1A /* GoodreadsAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodreadsAccount.swift; sourceTree = "<group>"; };
 		97F4A4151F0970020040DC1A /* Locksmith.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Locksmith.framework; path = Carthage/Build/iOS/Locksmith.framework; sourceTree = "<group>"; };
@@ -209,6 +223,7 @@
 				9795B3421F09BB7400419EC3 /* AppCoordinator.swift */,
 				9795B3461F09BE8800419EC3 /* Shelves */,
 				978BDD2B1F2B98F000F3A52C /* List */,
+				97E70CBD1F34F681003B076C /* Book */,
 				97E319BB1F0A8E3300D6177B /* Authentication */,
 				970387101F06E707000EF0F6 /* ViewController.swift */,
 				970387181F06E707000EF0F6 /* Assets.xcassets */,
@@ -351,6 +366,28 @@
 				97F4A4161F0972980040DC1A /* LoginViewController.swift */,
 			);
 			path = Authentication;
+			sourceTree = "<group>";
+		};
+		97E70CBD1F34F681003B076C /* Book */ = {
+			isa = PBXGroup;
+			children = (
+				97E70CC21F35025A003B076C /* Transition */,
+				97E70CBE1F34F690003B076C /* BookCoordinator.swift */,
+				97E70CC01F34F7DC003B076C /* BookController.swift */,
+			);
+			path = Book;
+			sourceTree = "<group>";
+		};
+		97E70CC21F35025A003B076C /* Transition */ = {
+			isa = PBXGroup;
+			children = (
+				97E70CC31F35026A003B076C /* CardTransitionDelegate.swift */,
+				97CC15031F350B4500B18092 /* CardPresentingAnimationController.swift */,
+				97CC15071F350F2800B18092 /* CardDismissingAnimationController.swift */,
+				97CC15091F350F5F00B18092 /* CardPresentationController.swift */,
+				97CC15051F350CB300B18092 /* UIView+Utilities.swift */,
+			);
+			path = Transition;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -526,6 +563,7 @@
 				9705A2F81F192F3800F5E808 /* AmazonBookCover.swift in Sources */,
 				97741F2F1F34D4E90097E88A /* OrderedSet.swift in Sources */,
 				972C2E341F0AC67300DBBF99 /* GoodreadsAuthor.swift in Sources */,
+				97E70CBF1F34F690003B076C /* BookCoordinator.swift in Sources */,
 				97C0348C1F1979A1005AB8A8 /* CurrentlyReadingCell.swift in Sources */,
 				9795B3401F09B97000419EC3 /* CoreDataStack.swift in Sources */,
 				97FE596F1F16E59B0027FC1F /* AmazonProductAdvertising.swift in Sources */,
@@ -533,6 +571,7 @@
 				9795B34E1F09C22A00419EC3 /* GoodreadsClient.swift in Sources */,
 				97CE71D71F0F2EB200E955E5 /* BookCell.swift in Sources */,
 				97E319BD1F0A8E4400D6177B /* AuthenticationCoordinator.swift in Sources */,
+				97CC15061F350CB300B18092 /* UIView+Utilities.swift in Sources */,
 				97651D231F2BB91200E11E92 /* ListDataSource.swift in Sources */,
 				976D05531F2E5DA3003BE100 /* Preferences.swift in Sources */,
 				97E319BA1F0A8C5100D6177B /* ShelfCoordinator.swift in Sources */,
@@ -547,6 +586,7 @@
 				9795B3501F09C24000419EC3 /* Result.swift in Sources */,
 				97C2E6191F0FD30000EC8977 /* LoadAllShelvesOperation.swift in Sources */,
 				978BDD291F2B895200F3A52C /* ShelvesListHeaderView.swift in Sources */,
+				97CC150A1F350F5F00B18092 /* CardPresentationController.swift in Sources */,
 				9795B3541F0A769B00419EC3 /* GoodreadsUser.swift in Sources */,
 				97741F2D1F34C9BE0097E88A /* Character+Utilities.swift in Sources */,
 				97CE71DE1F0FB03700E955E5 /* ShelfReviewsOperation.swift in Sources */,
@@ -555,7 +595,9 @@
 				9795B33D1F09B8CF00419EC3 /* Coordinator.swift in Sources */,
 				97C2E61B1F0FE43300EC8977 /* ListCell.swift in Sources */,
 				9795B3431F09BB7400419EC3 /* AppCoordinator.swift in Sources */,
+				97E70CC11F34F7DC003B076C /* BookController.swift in Sources */,
 				97F4A4141F096F3B0040DC1A /* GoodreadsAccount.swift in Sources */,
+				97CC15081F350F2800B18092 /* CardDismissingAnimationController.swift in Sources */,
 				9795B3521F0A75B500419EC3 /* APIError.swift in Sources */,
 				9795B3481F09BF7900419EC3 /* Goodreads.swift in Sources */,
 				97C2E61D1F0FE5CD00EC8977 /* ListCollectionView.swift in Sources */,
@@ -568,6 +610,8 @@
 				9703870F1F06E707000EF0F6 /* AppDelegate.swift in Sources */,
 				97CE71D51F0F2CCB00E955E5 /* Shelf.swift in Sources */,
 				97AF9A531F1031BB00337F99 /* Array+Helpers.swift in Sources */,
+				97CC15041F350B4500B18092 /* CardPresentingAnimationController.swift in Sources */,
+				97E70CC41F35026A003B076C /* CardTransitionDelegate.swift in Sources */,
 				978BDD2D1F2B990300F3A52C /* ListCoordinator.swift in Sources */,
 				97CE71D31F0F2B7500E955E5 /* ShelfListDataSource.swift in Sources */,
 				9795B34C1F09C01E00419EC3 /* Endpoint.swift in Sources */,

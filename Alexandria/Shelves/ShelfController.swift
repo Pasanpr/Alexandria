@@ -44,12 +44,22 @@ final class ShelfController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
         
         navigationController?.navigationBar.prefersLargeTitles = true
         
-        let font = UIFont(name: "Palatino-Roman", size: 24.0)!
+        // FIXME: Refactor
+        
+        navigationController?.navigationBar.barTintColor = .white
+        
+        let smallFont = UIFont(name: "Palatino-Roman", size: 24.0)!
         let attributedStringKey = NSAttributedStringKey(NSAttributedStringKey.font.rawValue)
-        navigationController?.navigationBar.titleTextAttributes = [attributedStringKey: font]
+        navigationController?.navigationBar.titleTextAttributes = [attributedStringKey: smallFont]
+        
+        let largeFont = UIFont(name: "Palatino-Roman", size: 48.0)!
+        let largeAttributedStringKey = NSAttributedStringKey(NSAttributedStringKey.font.rawValue)
+        navigationController?.navigationBar.largeTitleTextAttributes = [largeAttributedStringKey: largeFont]
+        
         self.title = "Lists"
         
         shelfView.register(ListCell.self, forCellReuseIdentifier: ListCell.reuseIdentifier)

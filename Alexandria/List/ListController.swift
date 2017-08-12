@@ -32,6 +32,7 @@ class ListController: UIViewController {
     }()
     
     var dataSource: ListDataSource?
+    var onReviewSelect: ((GoodreadsReview) -> Void)?
     
     init(dataSource: ListDataSource?) {
         self.dataSource = dataSource
@@ -48,9 +49,15 @@ class ListController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
+        // FIXME: Refactor
+        navigationController?.navigationBar.barTintColor = .white
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
 
         collectionView.dataSource = dataSource
         collectionView.prefetchDataSource = dataSource
+        collectionView.delegate = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -69,5 +76,12 @@ class ListController: UIViewController {
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8.0),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
+    }
+}
+
+extension ListController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let review = dataSource?.review(at: indexPath) else { return }
+        onReviewSelect?(review)
     }
 }
