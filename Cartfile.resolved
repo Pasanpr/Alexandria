@@ -1,4 +1,4 @@
-github "krzyzanowskim/CryptoSwift" "f9a8ede667430b19a35c7fe3384956283b5752c7"
-github "matthewpalmer/Locksmith" "3.0.0"
 github "OAuthSwift/OAuthSwift" "1.1.2"
 github "drmohundro/SWXMLHash" "4.1.1"
+github "krzyzanowskim/CryptoSwift" "f9a8ede667430b19a35c7fe3384956283b5752c7"
+github "matthewpalmer/Locksmith" "3.0.0"

@@ -43,8 +43,6 @@ final class CardPresentationController: UIPresentationController {
         self.presentCompletion = presentCompletion
         self.dismissAnimation = dismissAnimation
         self.dismissCompletion = dismissCompletion
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(CardPresentationController.updateForStatusBar), name: .UIApplicationDidChangeStatusBarFrame, object: nil)
     }
     
     override var frameOfPresentedViewInContainerView: CGRect {
@@ -58,7 +56,6 @@ final class CardPresentationController: UIPresentationController {
     // MARK: - Presentation
     
     override func presentationTransitionWillBegin() {
-        
         guard let containerView = containerView else { return }
         
         backgroundView = UIView()
@@ -75,100 +72,9 @@ final class CardPresentationController: UIPresentationController {
     }
     
     override func presentationTransitionDidEnd(_ completed: Bool) {
-        guard let containerView = containerView else { return }
-        
         if completed {
-            
-//            presentedViewController.view.frame = frameOfPresentedViewInContainerView
-//            presentedViewController.view.round(corners: [.topLeft, .topRight], withRadius: 8)
-//            presentAnimation?()
-//
-//            presentingViewSnapshotView = UIView()
-//            presentingViewSnapshotView?.translatesAutoresizingMaskIntoConstraints = false
-//        containerView.insertSubview(presentingViewSnapshotView!, belowSubview: presentingViewController.view)
-//
-//        NSLayoutConstraint.activate([
-//            presentingViewSnapshotView!.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-//            presentingViewSnapshotView!.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
-//            presentingViewSnapshotView!.heightAnchor.constraint(equalTo: containerView.heightAnchor, constant: -40)
-//            ])
-//
-
-//        presentingViewController.view.transform = .identity
-
-//        updateForStatusBar()
+            presentCompletion?(completed)
         }
-    }
-    
-//    override func presentationTransitionDidEnd(_ completed: Bool) {
-//        guard let containerView = containerView else { return }
-//
-//        updateForStatusBar()
-//
-//        if completed {
-//            presentedViewController.view.frame = frameOfPresentedViewInContainerView
-//            presentedViewController.view.round(corners: [.topLeft, .topRight], withRadius: 8)
-//            presentAnimation?()
-//
-//            presentingViewSnapshotView = UIView()
-//            presentingViewSnapshotView?.translatesAutoresizingMaskIntoConstraints = false
-//            containerView.insertSubview(presentingViewSnapshotView!, belowSubview: presentedViewController.view)
-//
-//            NSLayoutConstraint.activate([
-//                presentingViewSnapshotView!.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-//                presentingViewSnapshotView!.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
-//                presentingViewSnapshotView!.heightAnchor.constraint(equalTo: containerView.heightAnchor, constant: -40)
-//            ])
-//
-//            backgroundView = UIView()
-//            backgroundView!.backgroundColor = .black
-//            backgroundView!.translatesAutoresizingMaskIntoConstraints = false
-//            containerView.insertSubview(backgroundView!, belowSubview: presentingViewSnapshotView!)
-//
-//            NSLayoutConstraint.activate([
-//                backgroundView!.topAnchor.constraint(equalTo: containerView.window!.topAnchor),
-//                backgroundView!.leftAnchor.constraint(equalTo: containerView.window!.leftAnchor),
-//                backgroundView!.rightAnchor.constraint(equalTo: containerView.window!.rightAnchor),
-//                backgroundView!.bottomAnchor.constraint(equalTo: containerView.window!.bottomAnchor)
-//            ])
-//
-//            presentingViewController.view.transform = .identity
-//        }
-//
-//        presentCompletion?(completed)
-//    }
-    
-    @objc func updateForStatusBar() {
-        print("Update for status bar")
-        
-        guard let containerView = containerView else { return }
-        
-//        presentingViewController.view.alpha = 0.0
-        
-        let fullHeight = containerView.window!.frame.size.height
-        let statusBarHeight: CGFloat = {
-            let tempHeight = UIApplication.shared.statusBarFrame.height
-            if tempHeight >= 20 {
-                return tempHeight - 18
-            } else {
-                return tempHeight
-            }
-        }()
-        
-        let newHeight = fullHeight - statusBarHeight
-        
-        UIView.animate(
-            withDuration: 0.2,
-            animations: { [weak self] in
-                self?.presentingViewController.view.alpha = 0.8
-                containerView.frame = CGRect(x: 0, y: statusBarHeight, width: containerView.frame.width, height: newHeight)
-                self?.presentedViewController.view.mask = nil
-                self?.presentedViewController.view.round(corners: [.topLeft, .topRight], withRadius: 8)
-                
-            },
-            completion: { [weak self] _ in
-//                self?.updateSnapshotView()
-        })
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {

@@ -23,7 +23,33 @@ final class CardDismissingAnimationController: NSObject, UIViewControllerAnimate
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-        //
+        let presentingViewController = transitionContext.viewController(forKey: .to)!
+        let presentedViewController = transitionContext.viewController(forKey: .from)!
+        
+        let containerView = transitionContext.containerView
+        containerView.addSubview(presentingViewController.view)
+        containerView.addSubview(presentedViewController.view)
+        
+        let offscreenFrame = CGRect(x: 0, y: containerView.bounds.height, width: containerView.bounds.width, height: containerView.bounds.height)
+        
+        UIView.animate(
+            withDuration: transitionDuration(using: transitionContext),
+            delay: 0,
+            options: .curveEaseOut,
+            animations: {
+                presentingViewController.view.alpha = 1
+                presentingViewController.view.round(corners: [.topLeft, .topRight], withRadius: 0)
+                presentingViewController.view.transform = .identity
+                presentingViewController.view.frame = transitionContext.finalFrame(for: presentingViewController)
+                
+                presentedViewController.view.frame = offscreenFrame
+                self.animation?()
+        },
+            completion: { [weak self] finished in
+//                transitionContext.completeTransition(finished)
+                self?.completion?(finished)
+                
+        })
     }
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
