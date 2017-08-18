@@ -11,7 +11,7 @@ import UIKit
 typealias TransitionAnimation = () -> ()
 typealias TransitionCompletion = (Bool) -> ()
 
-final class CardTransitionDelegate: NSObject, UIViewControllerTransitioningDelegate {
+final class CardTransitionDelegate: NSObject, UIViewControllerTransitioningDelegate, CardPresentationControllerDelegate {
     var isDismissEnabled = true
     
     // MARK: - Private
@@ -44,6 +44,14 @@ final class CardTransitionDelegate: NSObject, UIViewControllerTransitioningDeleg
     }
     
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        return CardPresentationController(presentedViewController: presented, presenting: presenting, presentAnimation: presentAnimation, presentCompletion: presentCompletion, dismissAnimation: dismissAnimation, dismissCompletion: dismissCompletion)
+        let presentationController = CardPresentationController(presentedViewController: presented, presenting: presenting, presentAnimation: presentAnimation, presentCompletion: presentCompletion, dismissAnimation: dismissAnimation, dismissCompletion: dismissCompletion)
+        presentationController.transitioningDelegate = self
+        
+        return presentationController
     }
+    
+    func isDismissGestureEnabled() -> Bool {
+        return isDismissEnabled
+    }
+    
 }

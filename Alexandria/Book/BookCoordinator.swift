@@ -18,6 +18,7 @@ final class BookCoordinator: Coordinator {
     // - MARK: Private
     let review: GoodreadsReview
     let bookController: BookController
+    let transitionDelegate = CardTransitionDelegate()
     
     init(navigationController: UINavigationController, review: GoodreadsReview) {
         self.navigationController = navigationController
@@ -26,7 +27,6 @@ final class BookCoordinator: Coordinator {
     }
     
     func start() {
-        let transitionDelegate = CardTransitionDelegate()
         bookController.transitioningDelegate = transitionDelegate
         bookController.modalPresentationStyle = .custom
         navigationController.present(bookController, animated: true, completion: nil)

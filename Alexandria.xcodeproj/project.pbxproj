@@ -113,6 +113,7 @@
 		972C2E2F1F0AC16000DBBF99 /* GoodreadsReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodreadsReview.swift; sourceTree = "<group>"; };
 		972C2E311F0AC43700DBBF99 /* GoodreadsBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodreadsBook.swift; sourceTree = "<group>"; };
 		972C2E331F0AC67300DBBF99 /* GoodreadsAuthor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodreadsAuthor.swift; sourceTree = "<group>"; };
+		9747731C1F4730260027AD4F /* DeckTransition.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DeckTransition.framework; path = Carthage/Build/iOS/DeckTransition.framework; sourceTree = "<group>"; };
 		97651D221F2BB91200E11E92 /* ListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDataSource.swift; sourceTree = "<group>"; };
 		976D05521F2E5DA3003BE100 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		97741F2A1F34C9100097E88A /* Sequence+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+Utilities.swift"; sourceTree = "<group>"; };
@@ -255,6 +256,7 @@
 		970387441F06F86B000EF0F6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9747731C1F4730260027AD4F /* DeckTransition.framework */,
 				97C42CF61F1928C600E7B3EE /* CryptoSwift.framework */,
 				9795B33A1F09806100419EC3 /* SWXMLHash.framework */,
 				97F4A4151F0970020040DC1A /* Locksmith.framework */,

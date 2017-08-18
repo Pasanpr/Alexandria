@@ -27,28 +27,36 @@ final class CardDismissingAnimationController: NSObject, UIViewControllerAnimate
         let presentedViewController = transitionContext.viewController(forKey: .from)!
         
         let containerView = transitionContext.containerView
-        containerView.addSubview(presentingViewController.view)
-        containerView.addSubview(presentedViewController.view)
         
         let offscreenFrame = CGRect(x: 0, y: containerView.bounds.height, width: containerView.bounds.width, height: containerView.bounds.height)
+        
+        let indexOfPresentedView = containerView.subviews.index(of: presentedViewController.view)!
+        let indexOfSnapshotView = containerView.subviews.index(before: indexOfPresentedView)
+        let snapshotView = containerView.subviews[indexOfSnapshotView]
         
         UIView.animate(
             withDuration: transitionDuration(using: transitionContext),
             delay: 0,
             options: .curveEaseOut,
             animations: {
-                presentingViewController.view.alpha = 1
-                presentingViewController.view.round(corners: [.topLeft, .topRight], withRadius: 0)
-                presentingViewController.view.transform = .identity
-                presentingViewController.view.frame = transitionContext.finalFrame(for: presentingViewController)
                 
+                // FIXME: UINavigationController bug
+                // https://openradar.appspot.com/33794596
+                presentingViewController.additionalSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+
+                snapshotView.alpha = 1
+                snapshotView.round(corners: [.topLeft, .topRight], withRadius: 0)
+                snapshotView.transform = .identity
+                snapshotView.frame = transitionContext.finalFrame(for: presentingViewController)
+                presentingViewController.view.frame = transitionContext.finalFrame(for: presentingViewController)
+
                 presentedViewController.view.frame = offscreenFrame
                 self.animation?()
         },
             completion: { [weak self] finished in
-//                transitionContext.completeTransition(finished)
+                transitionContext.completeTransition(finished)
                 self?.completion?(finished)
-                
+
         })
     }
     

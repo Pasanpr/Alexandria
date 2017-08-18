@@ -12,7 +12,7 @@ protocol CardPresentationControllerDelegate {
     func isDismissGestureEnabled() -> Bool
 }
 
-final class CardPresentationController: UIPresentationController {
+final class CardPresentationController: UIPresentationController, UIGestureRecognizerDelegate {
     
     // MARK: - Constants
     
@@ -26,9 +26,6 @@ final class CardPresentationController: UIPresentationController {
     // MARK: - Private
     
     private var backgroundView: UIView?
-    private var presentingViewSnapshotView: UIView?
-    private var cachedContainerWidth: CGFloat = 0
-    private var aspectRatioConstraint: NSLayoutConstraint?
     
     private var presentAnimation: TransitionAnimation? = nil
     private var presentCompletion: TransitionCompletion? = nil
@@ -72,9 +69,15 @@ final class CardPresentationController: UIPresentationController {
     }
     
     override func presentationTransitionDidEnd(_ completed: Bool) {
+        
         if completed {
-            presentCompletion?(completed)
+            pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+            pan!.delegate = self
+            pan!.maximumNumberOfTouches = 1
+            presentedViewController.view.addGestureRecognizer(pan!)
         }
+        
+        presentCompletion?(completed)
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -90,42 +93,76 @@ final class CardPresentationController: UIPresentationController {
                 self.presentedViewController.view.frame = frame
                 self.presentedViewController.view.mask = nil
                 self.presentedViewController.view.round(corners: [.topLeft, .topRight], withRadius: 8)
-                self.updateSnapshotViewAspectRatio()
+//                self.updateSnapshotViewAspectRatio()
             }, completion: { _ in
-                self.updateSnapshotView()
+//                self.updateSnapshotView()
         }
         )
     }
     
-    private func updateSnapshotView() {
-        guard let presentingViewSnapshotView = presentingViewSnapshotView else { return }
+    @objc private func handlePan(gestureRecognizer: UIPanGestureRecognizer) {
+        guard gestureRecognizer.isEqual(pan) else {
+            return
+        }
         
-        updateSnapshotViewAspectRatio()
-        
-        if let snapshotView = presentingViewController.view.snapshotView(afterScreenUpdates: true) {
-            presentingViewSnapshotView.subviews.forEach { $0.removeFromSuperview() }
+        switch gestureRecognizer.state {
             
-            snapshotView.translatesAutoresizingMaskIntoConstraints = false
-            presentingViewSnapshotView.round(corners: [.topLeft, .topRight], withRadius: 8)
-            presentingViewSnapshotView.addSubview(snapshotView)
+        case .began:
+            gestureRecognizer.setTranslation(CGPoint(x: 0, y: 0), in: containerView)
             
-            NSLayoutConstraint.activate([
-                snapshotView.topAnchor.constraint(equalTo: presentingViewSnapshotView.topAnchor),
-                snapshotView.leftAnchor.constraint(equalTo: presentingViewSnapshotView.leftAnchor),
-                snapshotView.rightAnchor.constraint(equalTo: presentingViewSnapshotView.rightAnchor),
-                snapshotView.bottomAnchor.constraint(equalTo: presentingViewSnapshotView.bottomAnchor),
-            ])
+        case .changed:
+            if let view = presentedView {
+                /// The dismiss gesture needs to be enabled for the pan gesture
+                /// to do anything.
+                if transitioningDelegate?.isDismissGestureEnabled() ?? false {
+                    let translation = gestureRecognizer.translation(in: view)
+                    updatePresentedViewForTranslation(inVerticalDirection: translation.y)
+                } else {
+                    gestureRecognizer.setTranslation(.zero, in: view)
+                }
+            }
+            
+        case .ended:
+            UIView.animate(
+                withDuration: 0.25,
+                animations: {
+                    self.presentedView?.transform = .identity
+            }
+            )
+            
+        default: break
         }
     }
-    
-    private func updateSnapshotViewAspectRatio() {
-        guard let containerView = containerView, let presentingViewSnapshotView = presentingViewSnapshotView, cachedContainerWidth != containerView.bounds.width else { return }
         
-        cachedContainerWidth = containerView.bounds.width
-        aspectRatioConstraint?.isActive = false
+    private func updatePresentedViewForTranslation(inVerticalDirection translation: CGFloat) {
+        let elasticThreshold: CGFloat = 120.0
+        let dismissThreshold: CGFloat = 240.0
+        let translationFactor: CGFloat = 1/2
         
-        let aspectRatio = containerView.bounds.width / containerView.bounds.height
-        aspectRatioConstraint = presentingViewSnapshotView.widthAnchor.constraint(equalTo: presentingViewSnapshotView.heightAnchor, multiplier: aspectRatio)
-        aspectRatioConstraint?.isActive = true
+        if translation >= 0 {
+            let translationForModal: CGFloat = {
+                if translation >= elasticThreshold {
+                    let frictionLength = translation - elasticThreshold
+                    let frictionTranslation = 30 * atan(frictionLength/120) + frictionLength/10
+                    return frictionTranslation + (elasticThreshold * translationFactor)
+                } else {
+                    return translation * translationFactor
+                }
+            }()
+            
+            presentedView?.transform = CGAffineTransform(translationX: 0, y: translationForModal)
+            
+            if translation >= dismissThreshold {
+                presentedViewController.dismiss(animated: true, completion: nil)
+            }
+        }
+    }
+        
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        guard gestureRecognizer.isEqual(pan) else {
+            return false
+        }
+        
+        return true
     }
 }

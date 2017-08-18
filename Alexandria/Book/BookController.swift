@@ -36,9 +36,6 @@ final class BookController: UIViewController {
         modalPresentationCapturesStatusBarAppearance = true
         view.backgroundColor = .white
         bookTitleLabel.text = review.book.title
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissBookController))
-        view.addGestureRecognizer(tapGesture)
     }
     
     @objc func dismissBookController () {
