@@ -37,7 +37,7 @@ final class ListCell: UITableViewCell {
         NSLayoutConstraint.activate([
             collectionView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 20.0),
             collectionView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            collectionView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -20.0),
+            collectionView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
             collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }

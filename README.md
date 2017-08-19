@@ -14,6 +14,10 @@ Lightweight book lists
 - [ ] Create Book detail page
 - [x] Create list detail page
 
+Refactor Tasks:
+
+- [ ] Define consistent API for callbacks. Coordinators use delegates in some places, closures in others
+
 
 **Version 0.2**: Accessibility
 

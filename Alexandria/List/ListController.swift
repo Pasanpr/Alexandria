@@ -52,8 +52,8 @@ class ListController: UIViewController {
         view.backgroundColor = .white
         // FIXME: Refactor
         navigationController?.navigationBar.barTintColor = .white
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
+//        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+//        navigationController?.navigationBar.shadowImage = UIImage()
 
         collectionView.dataSource = dataSource
         collectionView.prefetchDataSource = dataSource

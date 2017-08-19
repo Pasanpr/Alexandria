@@ -44,6 +44,8 @@ final class ShelfCoordinator: Coordinator {
     
     func start() {
         shelfController.delegate = self
+        
+        dataSource.onReviewSelect = didSelectReview
         dataSource.credential = credential
         
         let loadAllShelvesAndBooks = LoadAllShelvesAndBooksOperation(user: goodreadsUser, credential: credential, sortType: .dateAdded, sortOrder: .descending, resultsPerPage: Preferences.booksPerShelf)
@@ -67,6 +69,13 @@ final class ShelfCoordinator: Coordinator {
     func setGoodreadsUser(_ user: GoodreadsUser) {
         self.goodreadsUser = user
     }
+    
+    func didSelectReview(_ review: GoodreadsReview) {
+        let coordinator = BookCoordinator(navigationController: self.navigationController, review: review)
+        childCoordinators.append(coordinator)
+        
+        coordinator.start()
+    }
 }
 
 extension ShelfCoordinator: ShelfControllerDelegate {
@@ -83,6 +92,8 @@ extension ShelfCoordinator: ShelfControllerDelegate {
 extension ShelfCoordinator: ListCoordinatorDelegate {
     
 }
+
+// FIXME: BookCoordinatorDelegate
 
 
 

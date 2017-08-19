@@ -8,16 +8,16 @@
 
 import Foundation
 
-extension String {
+extension StringProtocol {
     var isUppercase: Bool {
-        return self == self.uppercased()
+        return String(self) == String(self).uppercased()
     }
     
     func encodedQueryForSigning() -> String? {
         let customUrlQueryDisallowedCharacters = CharacterSet(charactersIn: ":,/")
         let customUrlQueryAllowedCharacters = customUrlQueryDisallowedCharacters.inverted
         
-        let intermediate = addingPercentEncoding(withAllowedCharacters: customUrlQueryAllowedCharacters)!
+        let intermediate = String(self).addingPercentEncoding(withAllowedCharacters: customUrlQueryAllowedCharacters)!
         let allowedSet = CharacterSet.whitespaces.inverted
         return intermediate.addingPercentEncoding(withAllowedCharacters: allowedSet)
     }
@@ -28,11 +28,11 @@ extension String {
     }
     
     func encodedQueryString() -> String {
-        return addingPercentEncoding(withAllowedCharacters: rfc3986UnreservedEncodedSet)!
+        return String(self).addingPercentEncoding(withAllowedCharacters: rfc3986UnreservedEncodedSet)!
     }
     
     func replacedAllInstances(of characterToReplace: Character, with replacement: Character) -> String {
-        var mutableString = self
+        var mutableString = String(self)
         
         for character in mutableString.characters where character == characterToReplace {
             if let index = mutableString.index(of: character) {
@@ -45,7 +45,7 @@ extension String {
     }
     
     func removedAllInstances(of character: Character) -> String {
-        var mutableString = self
+        var mutableString = String(self)
         
         while mutableString.contains(character) {
             if let index = mutableString.index(of: character) {
@@ -57,7 +57,7 @@ extension String {
     }
     
     var words: [String] {
-        return components(separatedBy: .punctuationCharacters)
+        return String(self).components(separatedBy: .punctuationCharacters)
             .joined()
             .components(separatedBy: .whitespaces)
             .filter{!$0.isEmpty}
@@ -68,7 +68,15 @@ extension String {
     }
     
     var splitAtUppercase: String {
-        return self.characters.splitBefore(separator: { $0.isUppercase }).map({ String($0) }).joined(separator: " ")
+        return String(self).characters.splitBefore(separator: { $0.isUppercase }).map({ String($0) }).joined(separator: " ")
+    }
+    
+    var removedEscapedHtml: String {
+        let formatTags = "<(/?b|/?i|/?div)>"
+        let intermediate = String(self).replacingOccurrences(of: formatTags, with: "", options: .regularExpression)
+        
+        let newlineTags = "<br />"
+        return intermediate.replacingOccurrences(of: newlineTags, with: "\n", options: .regularExpression)
     }
 }
 

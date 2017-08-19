@@ -1,3 +1,4 @@
+github "evgenyneu/Cosmos" "a2d864e02f94fa439387eaeb648cc17a7e5452c4"
 github "krzyzanowskim/CryptoSwift" "451042009badca8a3dd75c002fdfe04770d54d9c"
 github "matthewpalmer/Locksmith" "3.0.0"
 github "OAuthSwift/OAuthSwift" "1.1.2"

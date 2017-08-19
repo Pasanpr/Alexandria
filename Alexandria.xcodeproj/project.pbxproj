@@ -24,6 +24,7 @@
 		972C2E301F0AC16000DBBF99 /* GoodreadsReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972C2E2F1F0AC16000DBBF99 /* GoodreadsReview.swift */; };
 		972C2E321F0AC43700DBBF99 /* GoodreadsBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972C2E311F0AC43700DBBF99 /* GoodreadsBook.swift */; };
 		972C2E341F0AC67300DBBF99 /* GoodreadsAuthor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972C2E331F0AC67300DBBF99 /* GoodreadsAuthor.swift */; };
+		973E9D5C1F477E3F004DCFF7 /* Cosmos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 973E9D5B1F477E3F004DCFF7 /* Cosmos.framework */; };
 		97651D231F2BB91200E11E92 /* ListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97651D221F2BB91200E11E92 /* ListDataSource.swift */; };
 		976D05531F2E5DA3003BE100 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976D05521F2E5DA3003BE100 /* Preferences.swift */; };
 		97741F2B1F34C9100097E88A /* Sequence+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97741F2A1F34C9100097E88A /* Sequence+Utilities.swift */; };
@@ -113,6 +114,7 @@
 		972C2E2F1F0AC16000DBBF99 /* GoodreadsReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodreadsReview.swift; sourceTree = "<group>"; };
 		972C2E311F0AC43700DBBF99 /* GoodreadsBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodreadsBook.swift; sourceTree = "<group>"; };
 		972C2E331F0AC67300DBBF99 /* GoodreadsAuthor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodreadsAuthor.swift; sourceTree = "<group>"; };
+		973E9D5B1F477E3F004DCFF7 /* Cosmos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cosmos.framework; path = Carthage/Build/iOS/Cosmos.framework; sourceTree = "<group>"; };
 		9747731C1F4730260027AD4F /* DeckTransition.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DeckTransition.framework; path = Carthage/Build/iOS/DeckTransition.framework; sourceTree = "<group>"; };
 		97651D221F2BB91200E11E92 /* ListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDataSource.swift; sourceTree = "<group>"; };
 		976D05521F2E5DA3003BE100 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
@@ -172,6 +174,7 @@
 			files = (
 				9705A2F91F19385F00F5E808 /* SWXMLHash.framework in Frameworks */,
 				97B626641F06FDB500A07463 /* OAuthSwift.framework in Frameworks */,
+				973E9D5C1F477E3F004DCFF7 /* Cosmos.framework in Frameworks */,
 				9705A2FA1F19385F00F5E808 /* Locksmith.framework in Frameworks */,
 				9705A2FB1F19385F00F5E808 /* CryptoSwift.framework in Frameworks */,
 			);
@@ -256,6 +259,7 @@
 		970387441F06F86B000EF0F6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				973E9D5B1F477E3F004DCFF7 /* Cosmos.framework */,
 				9747731C1F4730260027AD4F /* DeckTransition.framework */,
 				97C42CF61F1928C600E7B3EE /* CryptoSwift.framework */,
 				9795B33A1F09806100419EC3 /* SWXMLHash.framework */,
@@ -283,6 +287,7 @@
 				97E319B51F0A86AA00D6177B /* Networking */,
 				97E319B61F0A86B300D6177B /* Models */,
 				97AF9A521F1031BB00337F99 /* Array+Helpers.swift */,
+				9705A2F31F192E0F00F5E808 /* String+Encoding.swift */,
 				976D05521F2E5DA3003BE100 /* Preferences.swift */,
 			);
 			path = Shared;
@@ -334,7 +339,6 @@
 				9795B34D1F09C22A00419EC3 /* GoodreadsClient.swift */,
 				97FE596E1F16E59B0027FC1F /* AmazonProductAdvertising.swift */,
 				9705A2F51F192E7000F5E808 /* AmazonClient.swift */,
-				9705A2F31F192E0F00F5E808 /* String+Encoding.swift */,
 				97741F2C1F34C9BE0097E88A /* Character+Utilities.swift */,
 				9795B3491F09BFA300419EC3 /* URLQueryItem+Extensions.swift */,
 				97741F2A1F34C9100097E88A /* Sequence+Utilities.swift */,
@@ -544,12 +548,14 @@
 				"$(SRCROOT)/Carthage/Build/iOS/Locksmith.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SWXMLHash.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/CryptoSwift.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Cosmos.framework",
 			);
 			outputPaths = (
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/OAuthSwift.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Locksmith.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SWXMLHash.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/CryptoSwift.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Cosmos.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

@@ -25,6 +25,8 @@ class ShelfListDataSource: NSObject, UICollectionViewDataSource {
     private let pendingOperations = PendingBookCoverOperations()
     private let cache: NSCache<NSString, UIImage>
     
+    var onReviewSelect: ((GoodreadsReview) -> Void)?
+    
     init(shelves: [Shelf], bookCoverCache: NSCache<NSString, UIImage>) {
         self.shelves = shelves
         self.cache = bookCoverCache
@@ -132,6 +134,7 @@ extension ShelfListDataSource: UITableViewDataSource {
             currentlyReadingCell.backgroundColor = UIColor(red: 32/255.0, green: 36/255.0, blue: 44/255.0, alpha: 1.0)
             
             currentlyReadingCell.collectionView.dataSource = self
+            currentlyReadingCell.collectionView.delegate = self
             currentlyReadingCell.collectionView.index = indexPath.section
             currentlyReadingCell.collectionView.reloadData()
             
@@ -140,6 +143,7 @@ extension ShelfListDataSource: UITableViewDataSource {
             let listCell = tableView.dequeueReusableCell(withIdentifier: ListCell.reuseIdentifier, for: indexPath) as! ListCell
             
             listCell.collectionView.dataSource = self
+            listCell.collectionView.delegate = self
             listCell.collectionView.index = indexPath.section
             listCell.collectionView.reloadData()
             
@@ -154,5 +158,15 @@ extension ShelfListDataSource: UITableViewDataSource {
             let shelf = shelves[section]
             return shelf.shelf.name
         }
+    }
+}
+
+extension ShelfListDataSource: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let listCollectionView = collectionView as? ListCollectionView else { return }
+        let reviews = shelves[listCollectionView.index].reviews
+        
+        let review = reviews[indexPath.item]
+        onReviewSelect?(review)
     }
 }
