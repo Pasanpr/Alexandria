@@ -45,14 +45,14 @@ final class CardPresentingAnimationController: NSObject, UIViewControllerAnimate
             delay: 0,
             options: .curveEaseOut,
             animations: { [weak self] in
-                let scale: CGFloat = 1 - (40/presentingViewController.view.frame.height)
+                let scale: CGFloat = 1 - ((presentingViewController.view.safeAreaInsets.top * 2)/presentingViewController.view.frame.height)
                 self?.presentingViewSnapshotView.alpha = 0.8
                 self?.presentingViewSnapshotView.transform = CGAffineTransform(scaleX: scale, y: scale)
                 self?.presentingViewSnapshotView.round(corners: [.topLeft, .topRight], withRadius: 8)
 
                 // FIXME: UINavigationController bug
                 // https://openradar.appspot.com/33794596
-                presentingViewController.additionalSafeAreaInsets = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
+//                presentingViewController.additionalSafeAreaInsets = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
                 presentingViewController.view.layer.masksToBounds = true
                 
                 presentedViewController.view.frame = transitionContext.finalFrame(for: presentedViewController)

@@ -20,6 +20,12 @@ final class BookController: UIViewController {
         return view
     }()
     
+    lazy var bottomFixedView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     lazy var bookCoverImageView: UIImageView = {
         let imageView = UIImageView(image: self.review.book.largeImage)
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -103,6 +109,7 @@ final class BookController: UIViewController {
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
+        view.addSubview(bottomFixedView)
         view.addSubview(scrollView)
         
         let stackView = UIStackView()
@@ -113,7 +120,11 @@ final class BookController: UIViewController {
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: bottomFixedView.topAnchor),
+            bottomFixedView.heightAnchor.constraint(equalToConstant: 64.0),
+            bottomFixedView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            bottomFixedView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            bottomFixedView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 36.0),
             stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),

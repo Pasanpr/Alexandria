@@ -16,7 +16,11 @@ final class CardPresentationController: UIPresentationController, UIGestureRecog
     
     // MARK: - Constants
     
-    let offset: CGFloat = 28
+    let padding: CGFloat = 8
+    
+    lazy var offset: CGFloat = {
+       return self.presentingViewController.view.safeAreaInsets.top + self.padding
+    }()
     
     // MARK: - Internal
     

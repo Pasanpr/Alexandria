@@ -71,6 +71,8 @@
 		97EB7E041F223135008360DE /* DelayAsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EB7E031F223135008360DE /* DelayAsyncOperation.swift */; };
 		97F4A4141F096F3B0040DC1A /* GoodreadsAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F4A4131F096F3B0040DC1A /* GoodreadsAccount.swift */; };
 		97F4A4171F0972980040DC1A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F4A4161F0972980040DC1A /* LoginViewController.swift */; };
+		97FA01BE1F6D28E1004C7790 /* AlternateBookController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FA01BD1F6D28E1004C7790 /* AlternateBookController.swift */; };
+		97FA01C11F6D2E0B004C7790 /* BookCoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FA01C01F6D2E0B004C7790 /* BookCoverCell.swift */; };
 		97FE596F1F16E59B0027FC1F /* AmazonProductAdvertising.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FE596E1F16E59B0027FC1F /* AmazonProductAdvertising.swift */; };
 /* End PBXBuildFile section */
 
@@ -164,6 +166,8 @@
 		97F4A4131F096F3B0040DC1A /* GoodreadsAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodreadsAccount.swift; sourceTree = "<group>"; };
 		97F4A4151F0970020040DC1A /* Locksmith.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Locksmith.framework; path = Carthage/Build/iOS/Locksmith.framework; sourceTree = "<group>"; };
 		97F4A4161F0972980040DC1A /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		97FA01BD1F6D28E1004C7790 /* AlternateBookController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternateBookController.swift; sourceTree = "<group>"; };
+		97FA01C01F6D2E0B004C7790 /* BookCoverCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCoverCell.swift; sourceTree = "<group>"; };
 		97FE596E1F16E59B0027FC1F /* AmazonProductAdvertising.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmazonProductAdvertising.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -377,9 +381,11 @@
 		97E70CBD1F34F681003B076C /* Book */ = {
 			isa = PBXGroup;
 			children = (
+				97FA01BF1F6D2DFD004C7790 /* Table View Cells */,
 				97E70CC21F35025A003B076C /* Transition */,
 				97E70CBE1F34F690003B076C /* BookCoordinator.swift */,
 				97E70CC01F34F7DC003B076C /* BookController.swift */,
+				97FA01BD1F6D28E1004C7790 /* AlternateBookController.swift */,
 			);
 			path = Book;
 			sourceTree = "<group>";
@@ -394,6 +400,14 @@
 				97CC15051F350CB300B18092 /* UIView+Utilities.swift */,
 			);
 			path = Transition;
+			sourceTree = "<group>";
+		};
+		97FA01BF1F6D2DFD004C7790 /* Table View Cells */ = {
+			isa = PBXGroup;
+			children = (
+				97FA01C01F6D2E0B004C7790 /* BookCoverCell.swift */,
+			);
+			path = "Table View Cells";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -578,9 +592,11 @@
 				97E319BF1F0A9CF500D6177B /* GoodreadsShelf.swift in Sources */,
 				9795B34E1F09C22A00419EC3 /* GoodreadsClient.swift in Sources */,
 				97CE71D71F0F2EB200E955E5 /* BookCell.swift in Sources */,
+				97FA01C11F6D2E0B004C7790 /* BookCoverCell.swift in Sources */,
 				97E319BD1F0A8E4400D6177B /* AuthenticationCoordinator.swift in Sources */,
 				97CC15061F350CB300B18092 /* UIView+Utilities.swift in Sources */,
 				97651D231F2BB91200E11E92 /* ListDataSource.swift in Sources */,
+				97FA01BE1F6D28E1004C7790 /* AlternateBookController.swift in Sources */,
 				976D05531F2E5DA3003BE100 /* Preferences.swift in Sources */,
 				97E319BA1F0A8C5100D6177B /* ShelfCoordinator.swift in Sources */,
 				978BDD2F1F2B9D1D00F3A52C /* ListController.swift in Sources */,
