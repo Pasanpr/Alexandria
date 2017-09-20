@@ -69,22 +69,9 @@ final class BookController: UIViewController {
     }()
     
     lazy var bookDescriptionLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        
-//        let attributeOptionsDict: [NSAttributedString.DocumentReadingOptionKey : Any] = [
-//            NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html,
-//            NSAttributedString.DocumentReadingOptionKey.characterEncoding: NSNumber(value: String.Encoding.utf8.rawValue)
-//            ]
-//        let attributedDescription = try! NSAttributedString(data: self.review.book.description.data(using: .utf8)!, options: attributeOptionsDict, documentAttributes: nil)
-        
-        
-        
-        label.text = self.review.book.description.removedEscapedHtml
-        
-        label.textAlignment = .left
-        label.numberOfLines = 0
-        return label
+        let expandableLabel = ExpandableLabel()
+        expandableLabel.translatesAutoresizingMaskIntoConstraints = false
+        return expandableLabel
     }()
     
     init(review: GoodreadsReview) {
@@ -104,6 +91,13 @@ final class BookController: UIViewController {
         super.viewDidLoad()
         modalPresentationCapturesStatusBarAppearance = true
         view.backgroundColor = .white
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        bookDescriptionLabel.text = self.review.book.description.removedEscapedHtml
+        print(self.review.book.description.removedEscapedHtml)
     }
     
     override func viewWillLayoutSubviews() {
@@ -155,6 +149,8 @@ final class BookController: UIViewController {
         stackView.setCustomSpacing(32.0, after: ratingsDetailLabel)
         
         NSLayoutConstraint.activate([
+            bookTitleLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 16.0),
+            bookTitleLabel.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -16.0),
             bookDescriptionLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 16.0),
             bookDescriptionLabel.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -16.0)
         ])

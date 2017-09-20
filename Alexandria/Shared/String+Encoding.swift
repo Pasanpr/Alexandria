@@ -9,6 +9,10 @@
 import Foundation
 
 extension StringProtocol {
+    var stringRange: NSRange {
+        return NSMakeRange(0, Int(count))
+    }
+    
     var isUppercase: Bool {
         return String(self) == String(self).uppercased()
     }
@@ -72,7 +76,7 @@ extension StringProtocol {
     }
     
     var removedEscapedHtml: String {
-        let formatTags = "<(/?b|/?i|/?div)>"
+        let formatTags = "<(/?b|/?p|/?em|/?strong|/?i|/?div|/?mark|/?u|/?q)>"
         let intermediate = String(self).replacingOccurrences(of: formatTags, with: "", options: .regularExpression)
         
         let newlineTags = "<br />"

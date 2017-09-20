@@ -17,13 +17,13 @@ final class BookCoordinator: Coordinator {
     
     // - MARK: Private
     let review: GoodreadsReview
-    let bookController: AlternateBookController
+    let bookController: BookController
     let transitionDelegate = CardTransitionDelegate()
     
     init(navigationController: UINavigationController, review: GoodreadsReview) {
         self.navigationController = navigationController
         self.review = review
-        self.bookController = AlternateBookController(review: review)
+        self.bookController = BookController(review: review)
     }
     
     func start() {

@@ -25,6 +25,8 @@
 		972C2E321F0AC43700DBBF99 /* GoodreadsBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972C2E311F0AC43700DBBF99 /* GoodreadsBook.swift */; };
 		972C2E341F0AC67300DBBF99 /* GoodreadsAuthor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972C2E331F0AC67300DBBF99 /* GoodreadsAuthor.swift */; };
 		973E9D5C1F477E3F004DCFF7 /* Cosmos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 973E9D5B1F477E3F004DCFF7 /* Cosmos.framework */; };
+		975A7AB61F72B9F700C98EB8 /* ExpandableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975A7AB51F72B9F700C98EB8 /* ExpandableLabel.swift */; };
+		975A7AB81F72BE0E00C98EB8 /* NSAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975A7AB71F72BE0E00C98EB8 /* NSAttributedString+Extensions.swift */; };
 		97651D231F2BB91200E11E92 /* ListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97651D221F2BB91200E11E92 /* ListDataSource.swift */; };
 		976D05531F2E5DA3003BE100 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976D05521F2E5DA3003BE100 /* Preferences.swift */; };
 		97741F2B1F34C9100097E88A /* Sequence+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97741F2A1F34C9100097E88A /* Sequence+Utilities.swift */; };
@@ -71,8 +73,7 @@
 		97EB7E041F223135008360DE /* DelayAsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EB7E031F223135008360DE /* DelayAsyncOperation.swift */; };
 		97F4A4141F096F3B0040DC1A /* GoodreadsAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F4A4131F096F3B0040DC1A /* GoodreadsAccount.swift */; };
 		97F4A4171F0972980040DC1A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F4A4161F0972980040DC1A /* LoginViewController.swift */; };
-		97FA01BE1F6D28E1004C7790 /* AlternateBookController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FA01BD1F6D28E1004C7790 /* AlternateBookController.swift */; };
-		97FA01C11F6D2E0B004C7790 /* BookCoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FA01C01F6D2E0B004C7790 /* BookCoverCell.swift */; };
+		97FA01C31F6E9410004C7790 /* BookCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FA01C21F6E9410004C7790 /* BookCoverView.swift */; };
 		97FE596F1F16E59B0027FC1F /* AmazonProductAdvertising.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FE596E1F16E59B0027FC1F /* AmazonProductAdvertising.swift */; };
 /* End PBXBuildFile section */
 
@@ -118,6 +119,8 @@
 		972C2E331F0AC67300DBBF99 /* GoodreadsAuthor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodreadsAuthor.swift; sourceTree = "<group>"; };
 		973E9D5B1F477E3F004DCFF7 /* Cosmos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cosmos.framework; path = Carthage/Build/iOS/Cosmos.framework; sourceTree = "<group>"; };
 		9747731C1F4730260027AD4F /* DeckTransition.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DeckTransition.framework; path = Carthage/Build/iOS/DeckTransition.framework; sourceTree = "<group>"; };
+		975A7AB51F72B9F700C98EB8 /* ExpandableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableLabel.swift; sourceTree = "<group>"; };
+		975A7AB71F72BE0E00C98EB8 /* NSAttributedString+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extensions.swift"; sourceTree = "<group>"; };
 		97651D221F2BB91200E11E92 /* ListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDataSource.swift; sourceTree = "<group>"; };
 		976D05521F2E5DA3003BE100 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		97741F2A1F34C9100097E88A /* Sequence+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+Utilities.swift"; sourceTree = "<group>"; };
@@ -166,8 +169,7 @@
 		97F4A4131F096F3B0040DC1A /* GoodreadsAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodreadsAccount.swift; sourceTree = "<group>"; };
 		97F4A4151F0970020040DC1A /* Locksmith.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Locksmith.framework; path = Carthage/Build/iOS/Locksmith.framework; sourceTree = "<group>"; };
 		97F4A4161F0972980040DC1A /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		97FA01BD1F6D28E1004C7790 /* AlternateBookController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternateBookController.swift; sourceTree = "<group>"; };
-		97FA01C01F6D2E0B004C7790 /* BookCoverCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCoverCell.swift; sourceTree = "<group>"; };
+		97FA01C21F6E9410004C7790 /* BookCoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCoverView.swift; sourceTree = "<group>"; };
 		97FE596E1F16E59B0027FC1F /* AmazonProductAdvertising.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmazonProductAdvertising.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -293,6 +295,7 @@
 				97AF9A521F1031BB00337F99 /* Array+Helpers.swift */,
 				9705A2F31F192E0F00F5E808 /* String+Encoding.swift */,
 				976D05521F2E5DA3003BE100 /* Preferences.swift */,
+				975A7AB71F72BE0E00C98EB8 /* NSAttributedString+Extensions.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -381,11 +384,11 @@
 		97E70CBD1F34F681003B076C /* Book */ = {
 			isa = PBXGroup;
 			children = (
-				97FA01BF1F6D2DFD004C7790 /* Table View Cells */,
 				97E70CC21F35025A003B076C /* Transition */,
 				97E70CBE1F34F690003B076C /* BookCoordinator.swift */,
 				97E70CC01F34F7DC003B076C /* BookController.swift */,
-				97FA01BD1F6D28E1004C7790 /* AlternateBookController.swift */,
+				97FA01C21F6E9410004C7790 /* BookCoverView.swift */,
+				975A7AB51F72B9F700C98EB8 /* ExpandableLabel.swift */,
 			);
 			path = Book;
 			sourceTree = "<group>";
@@ -400,14 +403,6 @@
 				97CC15051F350CB300B18092 /* UIView+Utilities.swift */,
 			);
 			path = Transition;
-			sourceTree = "<group>";
-		};
-		97FA01BF1F6D2DFD004C7790 /* Table View Cells */ = {
-			isa = PBXGroup;
-			children = (
-				97FA01C01F6D2E0B004C7790 /* BookCoverCell.swift */,
-			);
-			path = "Table View Cells";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -592,12 +587,11 @@
 				97E319BF1F0A9CF500D6177B /* GoodreadsShelf.swift in Sources */,
 				9795B34E1F09C22A00419EC3 /* GoodreadsClient.swift in Sources */,
 				97CE71D71F0F2EB200E955E5 /* BookCell.swift in Sources */,
-				97FA01C11F6D2E0B004C7790 /* BookCoverCell.swift in Sources */,
 				97E319BD1F0A8E4400D6177B /* AuthenticationCoordinator.swift in Sources */,
 				97CC15061F350CB300B18092 /* UIView+Utilities.swift in Sources */,
 				97651D231F2BB91200E11E92 /* ListDataSource.swift in Sources */,
-				97FA01BE1F6D28E1004C7790 /* AlternateBookController.swift in Sources */,
 				976D05531F2E5DA3003BE100 /* Preferences.swift in Sources */,
+				975A7AB61F72B9F700C98EB8 /* ExpandableLabel.swift in Sources */,
 				97E319BA1F0A8C5100D6177B /* ShelfCoordinator.swift in Sources */,
 				978BDD2F1F2B9D1D00F3A52C /* ListController.swift in Sources */,
 				970387111F06E707000EF0F6 /* ViewController.swift in Sources */,
@@ -614,6 +608,7 @@
 				9795B3541F0A769B00419EC3 /* GoodreadsUser.swift in Sources */,
 				97741F2D1F34C9BE0097E88A /* Character+Utilities.swift in Sources */,
 				97CE71DE1F0FB03700E955E5 /* ShelfReviewsOperation.swift in Sources */,
+				975A7AB81F72BE0E00C98EB8 /* NSAttributedString+Extensions.swift in Sources */,
 				97CE71DA1F0FAC0E00E955E5 /* AllShelvesOperation.swift in Sources */,
 				9705A2F41F192E0F00F5E808 /* String+Encoding.swift in Sources */,
 				9795B33D1F09B8CF00419EC3 /* Coordinator.swift in Sources */,
@@ -638,6 +633,7 @@
 				97E70CC41F35026A003B076C /* CardTransitionDelegate.swift in Sources */,
 				978BDD2D1F2B990300F3A52C /* ListCoordinator.swift in Sources */,
 				97CE71D31F0F2B7500E955E5 /* ShelfListDataSource.swift in Sources */,
+				97FA01C31F6E9410004C7790 /* BookCoverView.swift in Sources */,
 				9795B34C1F09C01E00419EC3 /* Endpoint.swift in Sources */,
 				9795B34A1F09BFA300419EC3 /* URLQueryItem+Extensions.swift in Sources */,
 			);
