@@ -26,9 +26,22 @@ final class BookController: UIViewController {
         return view
     }()
     
+    lazy var gradientView: LumaGradientView = {
+        let view =  LumaGradientView(image: self.review.book.largeImage!, blurEffectStyle: .regular)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     lazy var bookCoverImageView: UIImageView = {
         let imageView = UIImageView(image: self.review.book.largeImage)
+        imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        imageView.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
+        imageView.layer.shadowOffset = CGSize(width: 0, height: 1)
+        imageView.layer.shadowOpacity = 1
+        imageView.layer.shadowRadius = 1.0
+        imageView.clipsToBounds = false
         return imageView
     }()
     
@@ -120,7 +133,7 @@ final class BookController: UIViewController {
             bottomFixedView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             bottomFixedView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            stackView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 36.0),
+            stackView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 0),
             stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -16.0),
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
@@ -132,23 +145,36 @@ final class BookController: UIViewController {
         
         let screenBounds = UIScreen.main.bounds
         
+        let bookCoverView = UIView()
+        bookCoverView.addSubview(gradientView)
+        bookCoverView.addSubview(bookCoverImageView)
+        
         NSLayoutConstraint.activate([
+            gradientView.leadingAnchor.constraint(equalTo: bookCoverView.leadingAnchor),
+            gradientView.topAnchor.constraint(equalTo: bookCoverView.topAnchor),
+            gradientView.trailingAnchor.constraint(equalTo: bookCoverView.trailingAnchor),
+            gradientView.bottomAnchor.constraint(equalTo: bookCoverView.bottomAnchor),
             bookCoverImageView.widthAnchor.constraint(equalToConstant: screenBounds.width/2),
-            bookCoverImageView.heightAnchor.constraint(equalTo: bookCoverImageView.widthAnchor, multiplier: 1.5)
+            bookCoverImageView.heightAnchor.constraint(equalTo: bookCoverImageView.widthAnchor, multiplier: 1.5),
+            bookCoverImageView.centerXAnchor.constraint(equalTo: gradientView.centerXAnchor),
+            bookCoverImageView.centerYAnchor.constraint(equalTo: gradientView.centerYAnchor),
+            gradientView.heightAnchor.constraint(equalTo: bookCoverImageView.heightAnchor, multiplier: 1.0, constant: 32)
         ])
         
-        stackView.addArrangedSubview(bookCoverImageView)
+        stackView.addArrangedSubview(bookCoverView)
         stackView.addArrangedSubview(bookTitleLabel)
         stackView.addArrangedSubview(authorLabel)
         stackView.addArrangedSubview(starRatingview)
         stackView.addArrangedSubview(ratingsDetailLabel)
         stackView.addArrangedSubview(bookDescriptionLabel)
         
-        stackView.setCustomSpacing(32.0, after: bookCoverImageView)
+        stackView.setCustomSpacing(32.0, after: bookCoverView)
         stackView.setCustomSpacing(16.0, after: authorLabel)
         stackView.setCustomSpacing(32.0, after: ratingsDetailLabel)
         
         NSLayoutConstraint.activate([
+            bookCoverView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+            bookCoverView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
             bookTitleLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 16.0),
             bookTitleLabel.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -16.0),
             bookDescriptionLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 16.0),
