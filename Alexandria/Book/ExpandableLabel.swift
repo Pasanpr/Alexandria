@@ -81,6 +81,15 @@ final class ExpandableLabel: UILabel {
         }
     }
     
+    private var customFont: UIFont = UIFont.systemFont(ofSize: UIFont.systemFontSize)
+    
+    override var font: UIFont! {
+        didSet {
+            customFont = font
+            attributedTruncationToken = NSAttributedString(string: "More", attributes: [.font: UIFont.boldSystemFont(ofSize: customFont.pointSize)])
+        }
+    }
+    
     // MARK: Private
     
     private var expandedText: NSAttributedString?
@@ -107,7 +116,7 @@ final class ExpandableLabel: UILabel {
         isUserInteractionEnabled = true
         lineBreakMode = .byClipping
         numberOfLines = 5
-        attributedTruncationToken = NSAttributedString(string: "More", attributes: [.font: UIFont.boldSystemFont(ofSize: font.pointSize)])
+        attributedTruncationToken = NSAttributedString(string: "More", attributes: [.font: UIFont.boldSystemFont(ofSize: customFont.pointSize)])
     }
     
     override func layoutSubviews() {
@@ -150,7 +159,7 @@ final class ExpandableLabel: UILabel {
         (lineText.string as NSString).enumerateSubstrings(in: NSRange(location: 0, length: lineText.length), options: [.byWords, .reverse]) { (word, substringRange, enclosingRange, stop) -> Void in
             let lineTextWithLastWordRemoved = lineText.attributedSubstring(from: NSRange(location: 0, length: substringRange.location))
             let lineTextWithAddedTruncationToken = NSMutableAttributedString(attributedString: lineTextWithLastWordRemoved)
-            lineTextWithAddedTruncationToken.append(NSAttributedString(string: "...", attributes: [.font: self.font]))
+            lineTextWithAddedTruncationToken.append(NSAttributedString(string: "...", attributes: [.font: self.customFont]))
                 lineTextWithAddedTruncationToken.append(token)
             
             let fits = self.textFitsWidth(lineTextWithAddedTruncationToken)

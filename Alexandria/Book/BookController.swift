@@ -26,6 +26,14 @@ final class BookController: UIViewController {
         return view
     }()
     
+    lazy var detailsButton: UIButton = {
+        let button = UIButton()
+        button.setImage(#imageLiteral(resourceName: "Options"), for: .normal)
+        button.addTarget(self, action: #selector(BookController.viewDetails(_:)), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     lazy var gradientView: LumaGradientView = {
         let view =  LumaGradientView(image: self.review.book.largeImage!, blurEffectStyle: .regular)
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -83,6 +91,8 @@ final class BookController: UIViewController {
     
     lazy var bookDescriptionLabel: UILabel = {
         let expandableLabel = ExpandableLabel()
+        expandableLabel.font = UIFont.systemFont(ofSize: 14.0)
+        expandableLabel.numberOfLines = 10
         expandableLabel.translatesAutoresizingMaskIntoConstraints = false
         return expandableLabel
     }()
@@ -117,6 +127,16 @@ final class BookController: UIViewController {
         super.viewWillLayoutSubviews()
         
         view.addSubview(bottomFixedView)
+        
+        bottomFixedView.addSubview(detailsButton)
+        
+        NSLayoutConstraint.activate([
+            detailsButton.centerXAnchor.constraint(equalTo: bottomFixedView.centerXAnchor),
+            detailsButton.centerYAnchor.constraint(equalTo: bottomFixedView.centerYAnchor),
+            detailsButton.heightAnchor.constraint(equalToConstant: 44.0),
+            detailsButton.widthAnchor.constraint(equalToConstant: 100)
+        ])
+        
         view.addSubview(scrollView)
         
         let stackView = UIStackView()
@@ -128,7 +148,7 @@ final class BookController: UIViewController {
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: bottomFixedView.topAnchor),
-            bottomFixedView.heightAnchor.constraint(equalToConstant: 64.0),
+            bottomFixedView.heightAnchor.constraint(equalToConstant: 44.0),
             bottomFixedView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             bottomFixedView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             bottomFixedView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
@@ -187,6 +207,10 @@ final class BookController: UIViewController {
         stackView.axis = .vertical
         stackView.alignment = .center
         return stackView
+    }
+    
+    @objc private func viewDetails(_ sender: UIButton) {
+        print("Details tapped")
     }
 }
 
