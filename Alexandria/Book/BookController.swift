@@ -215,6 +215,7 @@ final class BookController: UIViewController {
 }
 
 extension BookController: UIScrollViewDelegate {
+    // Needed to fix bug when card view contains its own scrolling view
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if let delegate = transitioningDelegate as? CardTransitionDelegate {
             if scrollView.contentOffset.y > 0 {

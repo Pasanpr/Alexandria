@@ -11,13 +11,8 @@ Lightweight book lists
 - [x] Fix missing cover issues
 - [x] See all button for each list
 - [x] Highlight Currently Reading section
-- [ ] Create Book detail page
+- [x] Create Book detail page
 - [x] Create list detail page
-
-Current Tasks:
-
-- Figure out what the book detail page should look like. Variable length descriptions mess with current design
-- Fix status bar funkiness
 
 Refactor Tasks:
 
