@@ -9,6 +9,10 @@
 import Foundation
 import UIKit
 
+protocol ExpandableLabelDelegate: class {
+    func willExpandLabel(_ label: ExpandableLabel)
+}
+
 final class ExpandableLabel: UILabel {
     
     typealias LineIndexTuple = (line: CTLine, index: Int)
@@ -19,11 +23,11 @@ final class ExpandableLabel: UILabel {
     }
     
     // MARK: Configurable
-    
+    var linkHighlighted = false
     var isCollapsed: Bool = true {
         didSet {
-            // Set attributed text
-            // Set number of lines
+            super.attributedText = isCollapsed ? self.collapsedText : self.expandedText
+            super.numberOfLines = isCollapsed ? self.numberOfCollapsedLines : 0
         }
     }
     
@@ -44,8 +48,6 @@ final class ExpandableLabel: UILabel {
         }
     }
     
-    var textReplacement: TextReplacement = .word
-    
     override var text: String? {
         set(text) {
             if let text = text {
@@ -65,8 +67,9 @@ final class ExpandableLabel: UILabel {
             if let attributedText = attributedText?.copyWithAddedFontAttribute(font), attributedText.length > 0 {
                 // Calculate number of lines
                 self.collapsedText = collapsedText(with: attributedText, withTruncationToken: attributedTruncationToken)
+                self.expandedText = attributedText
                 // Assign expandedText
-                super.attributedText = collapsedText
+                super.attributedText = isCollapsed ? self.collapsedText : self.expandedText
             }
         }
         
@@ -86,9 +89,11 @@ final class ExpandableLabel: UILabel {
     override var font: UIFont! {
         didSet {
             customFont = font
-            attributedTruncationToken = NSAttributedString(string: "More", attributes: [.font: UIFont.boldSystemFont(ofSize: customFont.pointSize)])
+            attributedTruncationToken = NSAttributedString(string: "More", attributes: [.font: UIFont.boldSystemFont(ofSize: customFont.pointSize), .foregroundColor: UIColor.blue])
         }
     }
+    
+    weak var delegate: ExpandableLabelDelegate?
     
     // MARK: Private
     
@@ -106,17 +111,26 @@ final class ExpandableLabel: UILabel {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupDefaults()
+        delegate = nil
+    }
+    
+    convenience init(delegate: ExpandableLabelDelegate) {
+        self.init(frame: .zero)
+        self.delegate = delegate
+        setupDefaults()
     }
     
     convenience init() {
         self.init(frame: .zero)
+        delegate = nil
+        setupDefaults()
     }
     
     private func setupDefaults() {
         isUserInteractionEnabled = true
         lineBreakMode = .byClipping
         numberOfLines = 5
-        attributedTruncationToken = NSAttributedString(string: "More", attributes: [.font: UIFont.boldSystemFont(ofSize: customFont.pointSize)])
+        attributedTruncationToken = NSAttributedString(string: "More", attributes: [.font: UIFont.boldSystemFont(ofSize: customFont.pointSize), .foregroundColor: UIColor.blue])
     }
     
     override func layoutSubviews() {
@@ -127,13 +141,29 @@ final class ExpandableLabel: UILabel {
         super.sizeToFit()
     }
     
+    
+    /// Returns an attributed string collapsed to fit a number of lines.
+    /// If the line of text displayed on the last line is empty or contains a
+    /// newline character, the previous line is truncated to append the token.
+    ///
+    /// - Parameters:
+    ///   - text: text to collapse
+    ///   - token: the truncation token to append to the end of the collapsed text
+    /// - Returns: An attributed string that is truncated to fit the number of lines.
     private func collapsedText(with text: NSAttributedString?, withTruncationToken token: NSAttributedString) -> NSAttributedString? {
         guard let text = text else { return nil }
         let lines = text.lines(for: frame.size.width)
         
         if numberOfCollapsedLines > 0 && numberOfCollapsedLines < lines.count {
-            let lastLineRef = lines[numberOfCollapsedLines-1]
-            let lineIndex: LineIndexTuple = (lastLineRef, numberOfCollapsedLines-1)
+            var index = 1
+            var lastLineRef = lines[numberOfCollapsedLines-index]
+            
+            while text.text(for: lastLineRef).string.contains("\n") {
+                index += 1
+                lastLineRef = lines[numberOfCollapsedLines-index]
+            }
+            
+            let lineIndex: LineIndexTuple = (lastLineRef, numberOfCollapsedLines-index)
             let modifiedLastLine = replacedWordInText(text, atLineIndex: lineIndex, withTruncationToken: token)
             
             let collapsedLines = NSMutableAttributedString()
@@ -148,6 +178,8 @@ final class ExpandableLabel: UILabel {
         return text
     }
     
+    
+    /// Determines if given text fits the width of the current label
     private func textFitsWidth(_ text: NSAttributedString) -> Bool {
         return (text.boundingRect(for: frame.size.width).size.height <= font.lineHeight) as Bool
     }
@@ -170,6 +202,46 @@ final class ExpandableLabel: UILabel {
             }
         }
         return lineTextWithTruncationToken
-        
+    }
+    
+    // MARK: Touch Handling
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if isCollapsed {
+            isCollapsed = false
+            delegate?.willExpandLabel(self)
+        }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

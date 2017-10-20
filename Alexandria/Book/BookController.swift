@@ -92,7 +92,8 @@ final class BookController: UIViewController {
     lazy var bookDescriptionLabel: UILabel = {
         let expandableLabel = ExpandableLabel()
         expandableLabel.font = UIFont.systemFont(ofSize: 14.0)
-        expandableLabel.numberOfLines = 10
+        expandableLabel.numberOfLines = 8
+        expandableLabel.delegate = self
         expandableLabel.translatesAutoresizingMaskIntoConstraints = false
         return expandableLabel
     }()
@@ -120,7 +121,6 @@ final class BookController: UIViewController {
         super.viewDidAppear(animated)
         
         bookDescriptionLabel.text = self.review.book.description.removedEscapedHtml
-        print(self.review.book.description.removedEscapedHtml)
     }
     
     override func viewWillLayoutSubviews() {
@@ -238,5 +238,11 @@ extension BookController: UIScrollViewDelegate {
                 }
             }
         }
+    }
+}
+
+extension BookController: ExpandableLabelDelegate {
+    func willExpandLabel(_ label: ExpandableLabel) {
+        bookDescriptionLabel.setNeedsDisplay()
     }
 }
