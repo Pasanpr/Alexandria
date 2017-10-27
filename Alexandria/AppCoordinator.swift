@@ -64,7 +64,6 @@ final class AppCoordinator: Coordinator {
     private func launchAuthenticationFlow() {
         childCoordinators.append(authCoordinator)
         shelfCoordinator.onLoad = {
-            print("Shelf coordinator on load")
             self.authCoordinator.start()
         }
     }

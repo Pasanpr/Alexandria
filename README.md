@@ -14,11 +14,17 @@ Lightweight book lists
 - [x] Create Book detail page
 - [x] Create list detail page
 
-Refactor Tasks:
+**Version 0.1.1**: Accessibility
+
+- [ ] Add accessibility labels
+- [ ] Add dynamic type
+
+**Version 0.2**: Update Book Details
+
+- [ ] Add progress bar for currently reading
+- [ ] Add shelf tags to book page
+- [ ] Modal view for book updates
+
+**Refactor Tasks**:
 
 - [ ] Define consistent API for callbacks. Coordinators use delegates in some places, closures in others
-
-
-**Version 0.2**: Accessibility
-
-

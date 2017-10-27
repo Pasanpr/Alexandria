@@ -72,7 +72,6 @@ final class AuthenticationCoordinator: Coordinator {
                 let account = GoodreadsAccount(credential: credential)
                 do {
                     try account.save()
-                    print("Credential saved")
                 } catch let keychainError {
                     let error = AuthenticationError.keychainError(message: keychainError.localizedDescription)
                     self.delegate?.authenticationFailedWithError(error, for: self)
