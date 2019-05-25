@@ -10,6 +10,7 @@ import OAuthSwift
 
 #if os(iOS)
     import UIKit
+    import SafariServices
 #elseif os(OSX)
     import AppKit
 #endif
@@ -76,7 +77,7 @@ extension ViewController {
         // Ask to user by showing form from storyboards
         self.formData.data = nil
         Queue.main.async { [unowned self] in
-            self.performSegue(withIdentifier: Storyboards.Main.FormSegue, sender: self)
+            self.performSegue(withIdentifier: Storyboards.Main.formSegue, sender: self)
             // see prepare for segue
         }
         // Wait for result
@@ -99,6 +100,8 @@ extension ViewController {
         parameters["name"] = service
 
         switch service {
+        case "Imgur" :
+            doOAuthImgur(parameters)
         case "500px" :
             doOAuth500px(parameters)
         case "Spotify" :
@@ -167,6 +170,8 @@ extension ViewController {
             doOAuthDigu(parameters)
         case "Noun":
             doOAuthNoun(parameters)
+        case "Lyft":
+            doOAuthLyft(parameters)
         default:
             print("\(service) not implemented")
         }
@@ -220,7 +225,35 @@ extension ViewController {
             }
         )
     }
-    
+
+    // MARK: Imgur
+    func doOAuthImgur(_ serviceParameters: [String:String]){
+        let oauthswift = OAuth2Swift(
+            consumerKey:    serviceParameters["consumerKey"]!,
+            consumerSecret: serviceParameters["consumerSecret"]!,
+            authorizeUrl:   "https://api.imgur.com/oauth2/authorize",
+            accessTokenUrl: "https://api.imgur.com/oauth2/token",
+            responseType:   "token"
+        )
+        self.oauthswift = oauthswift
+        oauthswift.encodeCallbackURL = true
+        oauthswift.encodeCallbackURLQuery = false
+        oauthswift.authorizeURLHandler = getURLHandler()
+        let state = generateState(withLength: 20)
+
+        let _ = oauthswift.authorize(
+            withCallbackURL: URL(string: "oauth-swift://oauth-callback/imgur")!,
+            scope: "",
+            state: state,
+            success: { credential, response, parameters in
+                self.showTokenAlert(name: serviceParameters["name"], credential: credential)
+            },
+            failure: { error in
+                print(error.description)
+            }
+        )
+    }
+
     // MARK: Twitter
     func doOAuthTwitter(_ serviceParameters: [String:String]){
         let oauthswift = OAuth1Swift(
@@ -716,6 +749,7 @@ extension ViewController {
         // For googgle the redirect_uri should match your this syntax: your.bundle.id:/oauth2Callback
         self.oauthswift = oauthswift
         oauthswift.authorizeURLHandler = getURLHandler()
+        oauthswift.allowMissingStateCheck = true
         // in plist define a url schem with: your.bundle.id:
         let _ = oauthswift.authorize(
             withCallbackURL: URL(string: "https://oauthswift.herokuapp.com/callback/google")!, scope: "https://www.googleapis.com/auth/drive", state: "",
@@ -1285,6 +1319,29 @@ extension ViewController {
         })
     }
 
+    // MARK: Lyft
+    func doOAuthLyft(_ serviceParameters: [String:String]){
+        let oauthswift = OAuth2Swift(
+            consumerKey:    serviceParameters["consumerKey"]!,
+            consumerSecret: serviceParameters["consumerSecret"]!,
+            authorizeUrl:   "https://api.lyft.com/oauth/authorize",
+            accessTokenUrl: "https://api.lyft.com/oauth/token",
+            responseType:   "code",
+            contentType:    "application/json"
+        )
+        self.oauthswift = oauthswift
+        oauthswift.authorizeURLHandler = getURLHandler()
+        let state = generateState(withLength: 20)
+        let _ = oauthswift.authorize(
+            withCallbackURL: URL(string: "oauth-swift://oauth-callback/lift")!, scope: "rides.read", state: state,
+            success: { credential, response, parameters in
+                self.showTokenAlert(name: serviceParameters["name"], credential: credential)
+        },
+            failure: { error in
+                print(error.description)
+        }
+        )
+    }
 }
 
 let services = Services()
@@ -1375,7 +1432,7 @@ extension ViewController {
             let fullScreenshot = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
             UIImageWriteToSavedPhotosAlbum(fullScreenshot!, nil, nil, nil)
-            return UIImageJPEGRepresentation(fullScreenshot!, 0.5)!
+            return fullScreenshot!.jpegData(compressionQuality: 0.5)!
         #elseif os(OSX)
             let rep: NSBitmapImageRep = self.view.bitmapImageRepForCachingDisplay(in: self.view.bounds)!
             self.view.cacheDisplay(in: self.view.bounds, to:rep)
@@ -1385,8 +1442,8 @@ extension ViewController {
     
     func showAlertView(title: String, message: String) {
         #if os(iOS)
-            let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.default, handler: nil))
+            let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "Close", style: UIAlertAction.Style.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         #elseif os(OSX)
             let alert = NSAlert()
@@ -1421,7 +1478,7 @@ extension ViewController {
             return OAuthSwiftOpenURLExternally.sharedInstance
         case .`internal`:
             if internalWebViewController.parent == nil {
-                self.addChildViewController(internalWebViewController)
+                self.addChild(internalWebViewController)
             }
             return internalWebViewController
         case .safari:
@@ -1434,6 +1491,15 @@ extension ViewController {
                     handler.dismissCompletion = {
                         print("Safari dismissed")
                     }
+                    handler.factory = { url in
+                        let controller = SFSafariViewController(url: url)
+                        // Customize it, for instance
+                        if #available(iOS 10.0, *) {
+                           //  controller.preferredBarTintColor = UIColor.red
+                        }
+                        return controller
+                    }
+                    
                     return handler
                 }
             #endif
@@ -1460,7 +1526,7 @@ extension ViewController {
     
     
     override func prepare(for segue: OAuthStoryboardSegue, sender: Any?) {
-        if segue.identifier == Storyboards.Main.FormSegue {
+        if segue.identifier == Storyboards.Main.formSegue {
             #if os(OSX)
                 let controller = segue.destinationController as? FormViewController
             #else
@@ -1488,7 +1554,7 @@ public typealias Queue = DispatchQueue
             return services.keys.count
         }
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            let cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: "Cell")
+            let cell: UITableViewCell = UITableViewCell(style: UITableViewCell.CellStyle.subtitle, reuseIdentifier: "Cell")
             let service = services.keys[indexPath.row]
             cell.textLabel?.text = service
             

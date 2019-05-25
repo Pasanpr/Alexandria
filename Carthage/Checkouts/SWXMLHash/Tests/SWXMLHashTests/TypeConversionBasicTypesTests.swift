@@ -26,31 +26,56 @@
 import SWXMLHash
 import XCTest
 
-// swiftlint:disable force_try
 // swiftlint:disable identifier_name
 // swiftlint:disable file_length
 // swiftlint:disable line_length
 // swiftlint:disable type_body_length
 
+struct SampleUserInfo {
+    enum ApiVersion {
+        case v1
+        case v2
+    }
+
+    var apiVersion = ApiVersion.v2
+
+    func suffix() -> String {
+        if apiVersion == ApiVersion.v1 {
+            return " (v1)"
+        } else {
+            return ""
+        }
+    }
+
+    static let key = CodingUserInfoKey(rawValue: "test")!
+
+    init(apiVersion: ApiVersion) {
+        self.apiVersion = apiVersion
+    }
+}
+
 class TypeConversionBasicTypesTests: XCTestCase {
     var parser: XMLIndexer?
-    let xmlWithBasicTypes = "<root>" +
-        "  <string>the string value</string>" +
-        "  <int>100</int>" +
-        "  <double>100.45</double>" +
-        "  <float>44.12</float>" +
-        "  <bool1>0</bool1>" +
-        "  <bool2>true</bool2>" +
-        "  <empty></empty>" +
-        "  <basicItem>" +
-        "    <name>the name of basic item</name>" +
-        "    <price>99.14</price>" +
-        "  </basicItem>" +
-        "  <attr string=\"stringValue\" int=\"200\" double=\"200.15\" float=\"205.42\" bool1=\"0\" bool2=\"true\"/>" +
-        "  <attributeItem name=\"the name of attribute item\" price=\"19.99\"/>" +
-    "</root>"
+    let xmlWithBasicTypes = """
+        <root>
+          <string>the string value</string>
+          <int>100</int>
+          <double>100.45</double>
+          <float>44.12</float>
+          <bool1>0</bool1>
+          <bool2>true</bool2>
+          <empty></empty>
+          <basicItem id="1234">
+            <name>the name of basic item</name>
+            <price>99.14</price>
+          </basicItem>
+          <attr string=\"stringValue\" int=\"200\" double=\"200.15\" float=\"205.42\" bool1=\"0\" bool2=\"true\"/>
+          <attributeItem name=\"the name of attribute item\" price=\"19.99\"/>
+        </root>
+    """
 
     override func setUp() {
+        super.setUp()
         parser = SWXMLHash.parse(xmlWithBasicTypes)
     }
 
@@ -135,6 +160,48 @@ class TypeConversionBasicTypesTests: XCTestCase {
         let value: String? = parser!["root"]["attr"].value(ofAttribute: "missing")
         XCTAssertNil(value)
     }
+
+    // swiftlint:disable nesting
+    func testShouldConvertAttributeToNonOptionalWithStringRawRepresentable() {
+        enum Keys: String {
+            case string
+        }
+        do {
+            let value: String = try parser!["root"]["attr"].value(ofAttribute: Keys.string)
+            XCTAssertEqual(value, "stringValue")
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+
+    func testShouldConvertAttributeToOptionalWithStringRawRepresentable() {
+        enum Keys: String {
+            case string
+        }
+        let value: String? = parser!["root"]["attr"].value(ofAttribute: Keys.string)
+        XCTAssertEqual(value, "stringValue")
+    }
+
+    func testShouldThrowWhenConvertingMissingAttributeToNonOptionalWithStringRawRepresentable() {
+        enum Keys: String {
+            case missing
+        }
+        XCTAssertThrowsError(try (parser!["root"]["attr"].value(ofAttribute: Keys.missing) as String)) { error in
+            guard error is XMLDeserializationError else {
+                XCTFail("Wrong type of error")
+                return
+            }
+        }
+    }
+
+    func testShouldConvertMissingAttributeToOptionalWithStringRawRepresentable() {
+        enum Keys: String {
+            case missing
+        }
+        let value: String? = parser!["root"]["attr"].value(ofAttribute: Keys.missing)
+        XCTAssertNil(value)
+    }
+    // swiftlint:enable nesting
 
     func testIntShouldConvertValueToNonOptional() {
         do {
@@ -412,7 +479,7 @@ class TypeConversionBasicTypesTests: XCTestCase {
         XCTAssertEqual(value, true)
     }
 
-    let correctBasicItem = BasicItem(name: "the name of basic item", price: 99.14)
+    let correctBasicItem = BasicItem(name: "the name of basic item", price: 99.14, id: "1234")
 
     func testBasicItemShouldConvertBasicitemToNonOptional() {
         do {
@@ -469,11 +536,21 @@ class TypeConversionBasicTypesTests: XCTestCase {
     }
 
     let correctAttributeItem = AttributeItem(name: "the name of attribute item", price: 19.99)
+    let correctAttributeItemStringRawRepresentable = AttributeItemStringRawRepresentable(name: "the name of attribute item", price: 19.99)
 
     func testAttributeItemShouldConvertAttributeItemToNonOptional() {
         do {
             let value: AttributeItem = try parser!["root"]["attributeItem"].value()
             XCTAssertEqual(value, correctAttributeItem)
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+
+    func testAttributeItemStringRawRepresentableShouldConvertAttributeItemToNonOptional() {
+        do {
+            let value: AttributeItemStringRawRepresentable = try parser!["root"]["attributeItem"].value()
+            XCTAssertEqual(value, correctAttributeItemStringRawRepresentable)
         } catch {
             XCTFail("\(error)")
         }
@@ -523,24 +600,46 @@ class TypeConversionBasicTypesTests: XCTestCase {
             XCTFail("\(error)")
         }
     }
+
+    func testShouldBeAbleToGetUserInfoDuringDeserialization() {
+        parser = SWXMLHash.config { config in
+            let options = SampleUserInfo(apiVersion: .v1)
+            config.userInfo = [ SampleUserInfo.key: options ]
+        }.parse(xmlWithBasicTypes)
+
+        do {
+            let value: BasicItem = try parser!["root"]["basicItem"].value()
+            XCTAssertEqual(value.name, "the name of basic item (v1)")
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
 }
 
 struct BasicItem: XMLIndexerDeserializable {
     let name: String
     let price: Double
+    let id: String
 
     static func deserialize(_ node: XMLIndexer) throws -> BasicItem {
+        var name: String = try node["name"].value()
+
+        if let opts = node.userInfo[SampleUserInfo.key] as? SampleUserInfo {
+            name += opts.suffix()
+        }
+
         return try BasicItem(
-            name: node["name"].value(),
-            price: node["price"].value()
+            name: name,
+            price: node["price"].value(),
+            id: node.value(ofAttribute: "id")
         )
     }
 }
 
-extension BasicItem: Equatable {}
-
-func == (a: BasicItem, b: BasicItem) -> Bool {
-    return a.name == b.name && a.price == b.price
+extension BasicItem: Equatable {
+    static func == (a: BasicItem, b: BasicItem) -> Bool {
+        return a.name == b.name && a.price == b.price
+    }
 }
 
 struct AttributeItem: XMLElementDeserializable {
@@ -548,6 +647,7 @@ struct AttributeItem: XMLElementDeserializable {
     let price: Double
 
     static func deserialize(_ element: SWXMLHash.XMLElement) throws -> AttributeItem {
+        print("my deserialize")
         return try AttributeItem(
             name: element.value(ofAttribute: "name"),
             price: element.value(ofAttribute: "price")
@@ -555,10 +655,34 @@ struct AttributeItem: XMLElementDeserializable {
     }
 }
 
-extension AttributeItem: Equatable {}
+extension AttributeItem: Equatable {
+    static func == (a: AttributeItem, b: AttributeItem) -> Bool {
+        return a.name == b.name && a.price == b.price
+    }
+}
 
-func == (a: AttributeItem, b: AttributeItem) -> Bool {
-    return a.name == b.name && a.price == b.price
+struct AttributeItemStringRawRepresentable: XMLElementDeserializable {
+    private enum Keys: String {
+        case name
+        case price
+    }
+
+    let name: String
+    let price: Double
+
+    static func deserialize(_ element: SWXMLHash.XMLElement) throws -> AttributeItemStringRawRepresentable {
+        print("my deserialize")
+        return try AttributeItemStringRawRepresentable(
+            name: element.value(ofAttribute: Keys.name),
+            price: element.value(ofAttribute: Keys.price)
+        )
+    }
+}
+
+extension AttributeItemStringRawRepresentable: Equatable {
+    static func == (a: AttributeItemStringRawRepresentable, b: AttributeItemStringRawRepresentable) -> Bool {
+        return a.name == b.name && a.price == b.price
+    }
 }
 
 extension TypeConversionBasicTypesTests {
@@ -574,6 +698,10 @@ extension TypeConversionBasicTypesTests {
             ("testShouldConvertAttributeToOptional", testShouldConvertAttributeToOptional),
             ("testShouldThrowWhenConvertingMissingAttributeToNonOptional", testShouldThrowWhenConvertingMissingAttributeToNonOptional),
             ("testShouldConvertMissingAttributeToOptional", testShouldConvertMissingAttributeToOptional),
+            ("testShouldConvertAttributeToNonOptionalWithStringRawRepresentable", testShouldConvertAttributeToNonOptionalWithStringRawRepresentable),
+            ("testShouldConvertAttributeToOptionalWithStringRawRepresentable", testShouldConvertAttributeToOptionalWithStringRawRepresentable),
+            ("testShouldThrowWhenConvertingMissingAttributeToNonOptionalWithStringRawRepresentable", testShouldThrowWhenConvertingMissingAttributeToNonOptionalWithStringRawRepresentable),
+            ("testShouldConvertMissingAttributeToOptionalWithStringRawRepresentable", testShouldConvertMissingAttributeToOptionalWithStringRawRepresentable),
             ("testIntShouldConvertValueToNonOptional", testIntShouldConvertValueToNonOptional),
             ("testIntShouldThrowWhenConvertingEmptyToNonOptional", testIntShouldThrowWhenConvertingEmptyToNonOptional),
             ("testIntShouldThrowWhenConvertingMissingToNonOptional", testIntShouldThrowWhenConvertingMissingToNonOptional),
@@ -613,11 +741,13 @@ extension TypeConversionBasicTypesTests {
             ("testBasicItemShouldConvertEmptyToOptional", testBasicItemShouldConvertEmptyToOptional),
             ("testBasicItemShouldConvertMissingToOptional", testBasicItemShouldConvertMissingToOptional),
             ("testAttributeItemShouldConvertAttributeItemToNonOptional", testAttributeItemShouldConvertAttributeItemToNonOptional),
+            ("testAttributeItemStringRawRepresentableShouldConvertAttributeItemToNonOptional", testAttributeItemStringRawRepresentableShouldConvertAttributeItemToNonOptional),
             ("testAttributeItemShouldThrowWhenConvertingEmptyToNonOptional", testAttributeItemShouldThrowWhenConvertingEmptyToNonOptional),
             ("testAttributeItemShouldThrowWhenConvertingMissingToNonOptional", testAttributeItemShouldThrowWhenConvertingMissingToNonOptional),
             ("testAttributeItemShouldConvertAttributeItemToOptional", testAttributeItemShouldConvertAttributeItemToOptional),
             ("testAttributeItemShouldConvertEmptyToOptional", testAttributeItemShouldConvertEmptyToOptional),
-            ("testAttributeItemShouldConvertMissingToOptional", testAttributeItemShouldConvertMissingToOptional)
+            ("testAttributeItemShouldConvertMissingToOptional", testAttributeItemShouldConvertMissingToOptional),
+            ("testShouldBeAbleToGetUserInfoDuringDeserialization", testShouldBeAbleToGetUserInfoDuringDeserialization)
         ]
     }
 }

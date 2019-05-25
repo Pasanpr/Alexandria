@@ -13,6 +13,8 @@ import OAuthSwift
 extension OAuthSwiftError {
     var debugDescription: String {
         switch self {
+        case .accessDenied(let error, let request):
+            return "Access denied."
         case .configurationError(let message): return "Error code: \(self.errorCode). Configuration problem with oauth provider. Message: \(message)"
         case .tokenExpired(let error): return "Error code: \(self.errorCode). The provided token is expired, retrieve new token by using the refresh token. Error: \(error!)"
         case .missingState: return "Error code: \(self.errorCode). State missing from request (you can set allowMissingStateCheck = true to ignore)"
@@ -25,6 +27,8 @@ extension OAuthSwiftError {
         case .retain: return "Error code: \(self.errorCode). Please retain OAuthSwift object or handle"
         case .requestError(let error, let request): return "Error code: \(self.errorCode). Request error. Error: \(error) with request: \(request.description)"
         case .cancelled: return "Error code: \(self.errorCode). Request cancelled"
+        case .slowDown(let error, let request):
+            return "Slow Down"
         }
     }
 }

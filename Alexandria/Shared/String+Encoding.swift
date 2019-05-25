@@ -38,7 +38,7 @@ extension StringProtocol {
     func replacedAllInstances(of characterToReplace: Character, with replacement: Character) -> String {
         var mutableString = String(self)
         
-        for character in mutableString.characters where character == characterToReplace {
+        for character in mutableString where character == characterToReplace {
             if let index = mutableString.index(of: character) {
                 mutableString.remove(at: index)
                 mutableString.insert(replacement, at: index)
@@ -72,7 +72,7 @@ extension StringProtocol {
     }
     
     var splitAtUppercase: String {
-        return String(self).characters.splitBefore(separator: { $0.isUppercase }).map({ String($0) }).joined(separator: " ")
+        return String(self).splitBefore(separator: { $0.isUppercase }).map({ String($0) }).joined(separator: " ")
     }
     
     var removedEscapedHtml: String {

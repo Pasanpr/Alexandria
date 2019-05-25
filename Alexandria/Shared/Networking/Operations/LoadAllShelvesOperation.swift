@@ -60,7 +60,7 @@ final class LoadAllShelvesAndBooksOperation: AsynchronousOperation {
                 }
             }
             
-            let _ = reviewOperations.flatMap { self.operationQueue.addOperation($0) }
+            let _ = reviewOperations.compactMap { self.operationQueue.addOperation($0) }
             self.operationQueue.addOperation(completionOperation)
         }
         

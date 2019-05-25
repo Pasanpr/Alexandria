@@ -25,7 +25,7 @@ class SignTests: XCTestCase {
         let string = "Hello World!"
         let data = string.data(using: String.Encoding.utf8)!
         
-        guard let hash = OAuthSwiftCredential.SignatureMethod.HMAC_SHA1.sign(data: data) else {
+        guard let hash = OAuthSwiftHashMethod.sha1.hash(data: data) else {
             XCTFail("Failed to hash")
             return
         }
@@ -160,9 +160,10 @@ class SignTests: XCTestCase {
         for _ in 0..<tolerance {
             let nonce = OAuthSwiftCredential.generateNonce()
             dico[nonce] = ""
+            XCTAssertEqual(nonce.count, 8)
         }
 
-        XCTAssertEqualWithAccuracy(Double(tolerance), Double(dico.count), accuracy: 10)
+        XCTAssertEqual(Double(tolerance), Double(dico.count), accuracy: 10)
     }
 
 }

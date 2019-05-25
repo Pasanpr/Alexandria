@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import Alexandria
+
 
 class AlexandriaTests: XCTestCase {
     

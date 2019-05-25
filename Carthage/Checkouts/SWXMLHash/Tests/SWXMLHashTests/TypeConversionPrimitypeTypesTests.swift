@@ -26,28 +26,30 @@
 import SWXMLHash
 import XCTest
 
-// swiftlint:disable force_try
 // swiftlint:disable line_length
 
 class TypeConversionPrimitypeTypesTests: XCTestCase {
     var parser: XMLIndexer?
-    let xmlWithArraysOfTypes = "<root>" +
-        "<arrayOfGoodInts>" +
-        "   <int>0</int> <int>1</int> <int>2</int> <int>3</int>" +
-        "</arrayOfGoodInts>" +
-        "<arrayOfBadInts>" +
-        "   <int></int> <int>boom</int>" +
-        "</arrayOfBadInts>" +
-        "<arrayOfMixedInts>" +
-        "   <int>0</int> <int>boom</int> <int>2</int> <int>3</int>" +
-        "</arrayOfMixedInts>" +
-        "<arrayOfAttributeInts>" +
-        "   <int value=\"0\"/> <int value=\"1\"/> <int value=\"2\"/> <int value=\"3\"/>" +
-        "</arrayOfAttributeInts>" +
-        "<empty></empty>" +
-    "</root>"
+    let xmlWithArraysOfTypes = """
+        <root>
+          <arrayOfGoodInts>
+            <int>0</int> <int>1</int> <int>2</int> <int>3</int>
+          </arrayOfGoodInts>
+          <arrayOfBadInts>
+            <int></int> <int>boom</int>
+          </arrayOfBadInts>
+          <arrayOfMixedInts>
+            <int>0</int> <int>boom</int> <int>2</int> <int>3</int>
+          </arrayOfMixedInts>
+          <arrayOfAttributeInts>
+            <int value=\"0\"/> <int value=\"1\"/> <int value=\"2\"/> <int value=\"3\"/>
+          </arrayOfAttributeInts>
+          <empty></empty>
+        </root>
+    """
 
     override func setUp() {
+        super.setUp()
         parser = SWXMLHash.parse(xmlWithArraysOfTypes)
     }
 
@@ -75,7 +77,7 @@ class TypeConversionPrimitypeTypesTests: XCTestCase {
     func testShouldConvertArrayOfGoodIntsToArrayOfOptionals() {
         do {
             let value: [Int?] = try parser!["root"]["arrayOfGoodInts"]["int"].value()
-            XCTAssertEqual(value.flatMap({ $0 }), [0, 1, 2, 3])
+            XCTAssertEqual(value.compactMap({ $0 }), [0, 1, 2, 3])
         } catch {
             XCTFail("\(error)")
         }
@@ -159,11 +161,52 @@ class TypeConversionPrimitypeTypesTests: XCTestCase {
     func testShouldConvertArrayOfAttributeIntsToArrayOfOptionals() {
         do {
             let value: [Int?] = try parser!["root"]["arrayOfAttributeInts"]["int"].value(ofAttribute: "value")
-            XCTAssertEqual(value.flatMap({ $0 }), [0, 1, 2, 3])
+            XCTAssertEqual(value.compactMap({ $0 }), [0, 1, 2, 3])
         } catch {
             XCTFail("\(error)")
         }
     }
+
+    // swiftlint:disable nesting
+    func testShouldConvertArrayOfAttributeIntsToNonOptionalWithStringRawRepresentable() {
+        enum Keys: String {
+            case value
+        }
+        do {
+            let value: [Int] = try parser!["root"]["arrayOfAttributeInts"]["int"].value(ofAttribute: Keys.value)
+            XCTAssertEqual(value, [0, 1, 2, 3])
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+
+    func testShouldConvertArrayOfAttributeIntsToOptionalWithStringRawRepresentable() {
+        enum Keys: String {
+            case value
+        }
+        do {
+            let value: [Int]? = try parser!["root"]["arrayOfAttributeInts"]["int"].value(ofAttribute: Keys.value)
+            XCTAssertNotNil(value)
+            if let value = value {
+                XCTAssertEqual(value, [0, 1, 2, 3])
+            }
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+
+    func testShouldConvertArrayOfAttributeIntsToArrayOfOptionalsWithStringRawRepresentable() {
+        enum Keys: String {
+            case value
+        }
+        do {
+            let value: [Int?] = try parser!["root"]["arrayOfAttributeInts"]["int"].value(ofAttribute: Keys.value)
+            XCTAssertEqual(value.compactMap({ $0 }), [0, 1, 2, 3])
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+    // swiftlint:enable nesting
 
     func testShouldConvertEmptyArrayOfIntsToNonOptional() {
         do {
@@ -208,6 +251,9 @@ extension TypeConversionPrimitypeTypesTests {
             ("testShouldConvertArrayOfAttributeIntsToNonOptional", testShouldConvertArrayOfAttributeIntsToNonOptional),
             ("testShouldConvertArrayOfAttributeIntsToOptional", testShouldConvertArrayOfAttributeIntsToOptional),
             ("testShouldConvertArrayOfAttributeIntsToArrayOfOptionals", testShouldConvertArrayOfAttributeIntsToArrayOfOptionals),
+            ("testShouldConvertArrayOfAttributeIntsToNonOptionalWithStringRawRepresentable", testShouldConvertArrayOfAttributeIntsToNonOptionalWithStringRawRepresentable),
+            ("testShouldConvertArrayOfAttributeIntsToOptionalWithStringRawRepresentable", testShouldConvertArrayOfAttributeIntsToOptionalWithStringRawRepresentable),
+            ("testShouldConvertArrayOfAttributeIntsToArrayOfOptionalsWithStringRawRepresentable", testShouldConvertArrayOfAttributeIntsToArrayOfOptionalsWithStringRawRepresentable),
             ("testShouldConvertEmptyArrayOfIntsToNonOptional", testShouldConvertEmptyArrayOfIntsToNonOptional),
             ("testShouldConvertEmptyArrayOfIntsToOptional", testShouldConvertEmptyArrayOfIntsToOptional),
             ("testShouldConvertEmptyArrayOfIntsToArrayOfOptionals", testShouldConvertEmptyArrayOfIntsToArrayOfOptionals)

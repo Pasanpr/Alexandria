@@ -14,7 +14,7 @@ extension Int {
     }
 }
 
-fileprivate func arrayOfBytes<T>(_ value: T, length: Int? = nil) -> [UInt8] {
+private func arrayOfBytes<T>(_ value: T, length: Int? = nil) -> [UInt8] {
     let totalBytes = length ?? MemoryLayout<T>.size
 
     let valuePointer = UnsafeMutablePointer<T>.allocate(capacity: 1)
@@ -26,8 +26,8 @@ fileprivate func arrayOfBytes<T>(_ value: T, length: Int? = nil) -> [UInt8] {
         bytes[totalBytes - 1 - j] = (bytesPointer + j).pointee
     }
 
-    valuePointer.deinitialize()
-    valuePointer.deallocate(capacity: 1)
+    valuePointer.deinitialize(count: 1)
+    valuePointer.deallocate()
 
     return bytes
 }

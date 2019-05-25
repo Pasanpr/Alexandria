@@ -17,14 +17,10 @@
 		9705A2F41F192E0F00F5E808 /* String+Encoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9705A2F31F192E0F00F5E808 /* String+Encoding.swift */; };
 		9705A2F61F192E7000F5E808 /* AmazonClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9705A2F51F192E7000F5E808 /* AmazonClient.swift */; };
 		9705A2F81F192F3800F5E808 /* AmazonBookCover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9705A2F71F192F3800F5E808 /* AmazonBookCover.swift */; };
-		9705A2F91F19385F00F5E808 /* SWXMLHash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9795B33A1F09806100419EC3 /* SWXMLHash.framework */; };
-		9705A2FA1F19385F00F5E808 /* Locksmith.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97F4A4151F0970020040DC1A /* Locksmith.framework */; };
-		9705A2FB1F19385F00F5E808 /* CryptoSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C42CF61F1928C600E7B3EE /* CryptoSwift.framework */; };
 		9725E97C1F2E366F0053B5D0 /* CachedCoverDownloadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9725E97B1F2E366F0053B5D0 /* CachedCoverDownloadOperation.swift */; };
 		972C2E301F0AC16000DBBF99 /* GoodreadsReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972C2E2F1F0AC16000DBBF99 /* GoodreadsReview.swift */; };
 		972C2E321F0AC43700DBBF99 /* GoodreadsBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972C2E311F0AC43700DBBF99 /* GoodreadsBook.swift */; };
 		972C2E341F0AC67300DBBF99 /* GoodreadsAuthor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972C2E331F0AC67300DBBF99 /* GoodreadsAuthor.swift */; };
-		973E9D5C1F477E3F004DCFF7 /* Cosmos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 973E9D5B1F477E3F004DCFF7 /* Cosmos.framework */; };
 		975A7AB61F72B9F700C98EB8 /* ExpandableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975A7AB51F72B9F700C98EB8 /* ExpandableLabel.swift */; };
 		975A7AB81F72BE0E00C98EB8 /* NSAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975A7AB71F72BE0E00C98EB8 /* NSAttributedString+Extensions.swift */; };
 		97651D231F2BB91200E11E92 /* ListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97651D221F2BB91200E11E92 /* ListDataSource.swift */; };
@@ -54,7 +50,6 @@
 		9795B3541F0A769B00419EC3 /* GoodreadsUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9795B3531F0A769B00419EC3 /* GoodreadsUser.swift */; };
 		97AF9A511F10206500337F99 /* GoodreadsWork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97AF9A501F10206500337F99 /* GoodreadsWork.swift */; };
 		97AF9A531F1031BB00337F99 /* Array+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97AF9A521F1031BB00337F99 /* Array+Helpers.swift */; };
-		97B626641F06FDB500A07463 /* OAuthSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 970387451F06F86C000EF0F6 /* OAuthSwift.framework */; };
 		97C0348C1F1979A1005AB8A8 /* CurrentlyReadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C0348B1F1979A1005AB8A8 /* CurrentlyReadingCell.swift */; };
 		97C2E6191F0FD30000EC8977 /* LoadAllShelvesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C2E6181F0FD30000EC8977 /* LoadAllShelvesOperation.swift */; };
 		97C2E61B1F0FE43300EC8977 /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C2E61A1F0FE43300EC8977 /* ListCell.swift */; };
@@ -190,11 +185,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9705A2F91F19385F00F5E808 /* SWXMLHash.framework in Frameworks */,
-				97B626641F06FDB500A07463 /* OAuthSwift.framework in Frameworks */,
-				973E9D5C1F477E3F004DCFF7 /* Cosmos.framework in Frameworks */,
-				9705A2FA1F19385F00F5E808 /* Locksmith.framework in Frameworks */,
-				9705A2FB1F19385F00F5E808 /* CryptoSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -496,7 +486,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0900;
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = "Pasan Premaratne";
 				TargetAttributes = {
 					9703870A1F06E707000EF0F6 = {
@@ -594,7 +584,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks";
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -728,12 +718,16 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
@@ -784,12 +778,16 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
@@ -823,7 +821,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = GCVMC536K4;
+				DEVELOPMENT_TEAM = 82Y3EK472Q;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -842,7 +840,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = GCVMC536K4;
+				DEVELOPMENT_TEAM = 82Y3EK472Q;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",

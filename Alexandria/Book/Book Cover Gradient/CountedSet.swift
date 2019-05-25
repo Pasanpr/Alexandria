@@ -244,8 +244,8 @@ extension CountedSet: Equatable {
 // MARK: Hashable
 
 extension CountedSet: Hashable {
-    public var hashValue: Int {
-        return contents.hashValue ^ elementCounter.values.reduce(0, ^)
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(contents)
     }
 }
 

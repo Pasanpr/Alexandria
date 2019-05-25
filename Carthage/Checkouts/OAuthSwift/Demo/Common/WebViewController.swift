@@ -37,8 +37,8 @@ class WebViewController: OAuthWebViewController {
             self.webView.navigationDelegate = self
             self.webView.translatesAutoresizingMaskIntoConstraints = false
             self.view.addSubview(self.webView)
-            self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|-0-[view]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["view":self.webView]))
-            self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[view]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["view":self.webView]))
+            self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|-0-[view]-0-|", options: [], metrics: nil, views: ["view":self.webView]))
+            self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[view]-0-|", options: [], metrics: nil, views: ["view":self.webView]))
         #endif
     }
 
@@ -64,7 +64,7 @@ class WebViewController: OAuthWebViewController {
 // MARK: delegate
 #if os(iOS)
     extension WebViewController: UIWebViewDelegate {
-        func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebView.NavigationType) -> Bool {
             if let url = request.url, url.scheme == "oauth-swift" {
                 // Call here AppDelegate.sharedInstance.applicationHandleOpenURL(url) if necessary ie. if AppDelegate not configured to handle URL scheme
                 // compare the url with your own custom provided one in `authorizeWithCallbackURL`

@@ -56,8 +56,8 @@ struct GoodreadsReview: XMLIndexerDeserializable {
 }
 
 extension GoodreadsReview: Hashable {
-    var hashValue: Int {
-        return id
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
     
     static func ==(lhs: GoodreadsReview, rhs: GoodreadsReview) -> Bool {
